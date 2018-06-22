@@ -12,5 +12,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         System.out.println("Hello World");
+        System.out.println("Mareike");
     }
 }
