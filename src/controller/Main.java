@@ -5,12 +5,10 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Timer;
 
 public class Main extends Application {
 
@@ -18,6 +16,10 @@ public class Main extends Application {
     private Parent startLayout;
     private Parent gameLayout;
     private BorderPane menuLayout;
+
+    //Controller
+    private GamePaneController gamePaneController;
+    private StartPaneController startPaneController;
 
     public static void main(String[] args) {
         launch(args);
@@ -31,7 +33,8 @@ public class Main extends Application {
         initRootLayout();
         loadStartLayout();
         loadGameLayout();
-        setStartLayout();
+//        setStartLayout();
+        sampleGame();
         primaryStage.show();
     }
 
@@ -52,6 +55,8 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/StartPane.fxml"));
             startLayout = loader.load();
+            startPaneController = loader.getController();
+//            startPaneController.setInstances();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -67,6 +72,8 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/GamePane.fxml"));
             gameLayout = loader.load();
+            gamePaneController = loader.getController();
+//            gamePaneController.setInstances();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -75,6 +82,11 @@ public class Main extends Application {
 
     private void setGameLayout() {
         menuLayout.setCenter(gameLayout);
+    }
+
+    private void sampleGame() {
+        gamePaneController.buildPlayingField(10, 500);
+        setGameLayout();
     }
 
 }
