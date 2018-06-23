@@ -33,8 +33,8 @@ public class Main extends Application {
         initRootLayout();
         loadStartLayout();
         loadGameLayout();
-        setStartLayout();
-//        sampleGame();
+//        setStartLayout();
+        sampleGame();
         primaryStage.show();
     }
 
@@ -73,6 +73,7 @@ public class Main extends Application {
             loader.setLocation(Main.class.getResource("view/GamePane.fxml"));
             gameLayout = loader.load();
             gamePaneController = loader.getController();
+//            gamePaneController.setInstances();
         }
         catch (IOException e) {
             e.printStackTrace();
