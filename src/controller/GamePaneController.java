@@ -1,20 +1,21 @@
 package controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.geometry.Insets;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class GamePaneController {
 
     @FXML
     private BorderPane parent;
+
+    @FXML
+    private VBox deck;
 
     private ArrayList<Rectangle> field;
     private ArrayList<Circle> tokens;
@@ -23,30 +24,31 @@ public class GamePaneController {
         field = new ArrayList<>();
         tokens = new ArrayList<>();
         Pane pane = new Pane();
-        pane.setPrefSize(size, size);
+        pane.setMaxSize(size, size);
         double a = size / amount;
         for (int i = 0; i < amount; i++) {
             for (int j = 0; j < amount; j++) {
                 Rectangle temp = new Rectangle();
+                temp.setArcHeight(0);
+                temp.setArcWidth(0);
                 temp.setHeight(a);
                 temp.setWidth(a);
-                if (i + j % 2 == 0) {
+                if ((i + j) % 2 == 0) {
                     temp.setFill(Color.BLACK);
-                }
-                else {
+                } else {
                     temp.setFill(Color.WHITE);
                 }
-                temp.setX(i * a);
-                temp.setY(j * a);
+                temp.setLayoutX(i * a);
+                temp.setLayoutY(j * a);
                 field.add(temp);
                 pane.getChildren().add(temp);
             }
         }
-        parent.setCenter(pane);
+        deck.getChildren().add(pane);
     }
 
     public void deleteField() {
-        parent.setCenter(null);
+        deck.getChildren().clear();
     }
 
 }

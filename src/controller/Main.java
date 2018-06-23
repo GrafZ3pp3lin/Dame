@@ -17,6 +17,10 @@ public class Main extends Application {
     private Parent gameLayout;
     private BorderPane menuLayout;
 
+    //Controller
+    private GamePaneController gamePaneController;
+    private StartPaneController startPaneController;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -30,6 +34,7 @@ public class Main extends Application {
         loadStartLayout();
         loadGameLayout();
         setStartLayout();
+//        sampleGame();
         primaryStage.show();
     }
 
@@ -50,6 +55,8 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/StartPane.fxml"));
             startLayout = loader.load();
+            startPaneController = loader.getController();
+//            startPaneController.setInstances();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -65,6 +72,7 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/GamePane.fxml"));
             gameLayout = loader.load();
+            gamePaneController = loader.getController();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -73,6 +81,11 @@ public class Main extends Application {
 
     private void setGameLayout() {
         menuLayout.setCenter(gameLayout);
+    }
+
+    private void sampleGame() {
+        gamePaneController.buildPlayingField(10, 500);
+        setGameLayout();
     }
 
 }

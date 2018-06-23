@@ -4,13 +4,17 @@ import javafx.fxml.FXML;
 
 public class StartPaneController {
 
-    @FXML
-    public void onStart() {
+    public void setInstances() {
 
     }
 
     @FXML
-    public void onSettings() {
+    private void onSinglePlayerStart() {
+
+    }
+
+    @FXML
+    private void onMultiPlayerStart() {
 
     }
 
