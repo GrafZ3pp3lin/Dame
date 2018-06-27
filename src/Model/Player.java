@@ -1,9 +1,9 @@
 package Model;
 
 public class Player {
+    private Stone cStone[] = {};
 
     public Stone[] createStones(int size, Color c){
-        Stone cStone[] = {};
         int x, y;
         int strtFirst = 3 + ((size - 8)/2);
         if (c == Color.BLACK){
@@ -29,7 +29,13 @@ public class Player {
         }
         return cStone;
     }
-    public void replaceStone (){
-
+    public void replaceStone (int indexStone, Color c, int x, int y){
+        cStone[indexStone] = new Stone (c, x, y);
+    }
+    public void deleteStone (int indexStone, Color c){
+        cStone[indexStone] = null;
+    }
+    public Stone[] getArray(){
+        return cStone;
     }
 }

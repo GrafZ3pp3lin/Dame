@@ -10,7 +10,7 @@ public class PlayingField {
         return FieldSize;
     }
 
-    public Field[] createFields(){
+    public Field[] createField(){
         Field cNewPlayingField[] = {};
         int m = 0;
         boolean black = false;
