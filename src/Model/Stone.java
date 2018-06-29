@@ -1,9 +1,12 @@
 package Model;
 
+import javafx.scene.shape.Circle;
+
 public class Stone {
     private int indexX , indexY;
     private Color cColor;
     private boolean superDame;
+    private Circle cCirc;
 
     public Stone(Color c, int x, int y, boolean superD){
         cColor = c;
@@ -12,6 +15,9 @@ public class Stone {
         superDame =superD;
     }
 
+    public Circle getcCirc(){
+        return cCirc;
+    }
     public Color getColor(){
         return cColor;
     }
@@ -26,5 +32,11 @@ public class Stone {
     }
     public int getIndexY(){
         return indexY;
+    }
+    public void setIndexX(int x){
+        indexX = x;
+    }
+    public void setIndexY(int y){
+        indexY = y;
     }
 }
