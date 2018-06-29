@@ -15,6 +15,7 @@ public class Field {
         indexX = x;
         indexY = y;
     }
+    
     public Rectangle getcRec(){
         return cRec;
     }
