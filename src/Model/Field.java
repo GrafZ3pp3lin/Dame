@@ -7,7 +7,6 @@ import java.awt.*;
 public class Field {
 
     private Color cColor;
-   // private Boolean Stone[] = new Boolean [3];          //1. Stein gesetzt, 2. welcher Spieler, 3. Superdame ja/nein
     private int indexX, indexY;
     private Rectangle cRec;
 
@@ -19,14 +18,13 @@ public class Field {
     public Rectangle getcRec(){
         return cRec;
     }
-    //getset
-
-  /*  public void setStone(Boolean player, Boolean superDame){
-        Stone[0] = true;
-        Stone[1] = player;
-        Stone[2] = superDame;
+    public int getIndexX(){
+        return indexX;
     }
-    public Boolean[] getStone(){
-        return Stone;
-    }*/
+    public int getIndexY(){
+        return indexY;
+    }
+    public Color getcColor(){
+        return cColor;
+    }
 }

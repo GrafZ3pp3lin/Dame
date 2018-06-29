@@ -37,11 +37,10 @@ public class Player {
         return cStone;
     }
     public void replaceStone (int indexStone, int x, int y){
-        boolean superD = cStone[indexStone].getSuperDame();
         cStone[indexStone].setIndexX(x);
         cStone[indexStone].setIndexY(y);
     }
-    public void deleteStone (int indexStone, Color c){
+    public void deleteStone (int indexStone){
         cStone[indexStone] = null;
     }
     public Stone[] getArray(){
