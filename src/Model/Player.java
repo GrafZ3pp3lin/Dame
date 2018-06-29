@@ -5,8 +5,11 @@ public class Player {
     private String cName;
     private Color cColor;
 
-//getName
-    //construktor
+    public Player(Color c, String name){
+        cName = name;
+        cColor = c;
+    }
+
     public Stone[] createStones(int size){
         int x, y;
         int strtFirst = 3 + ((size - 8)/2);
@@ -41,5 +44,8 @@ public class Player {
     }
     public Stone[] getArray(){
         return cStone;
+    }
+    public String getName(){
+        return cName;
     }
 }
