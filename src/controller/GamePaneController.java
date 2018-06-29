@@ -88,6 +88,10 @@ public class GamePaneController {
 
     }
 
+    public void highlightFields() {
+
+    }
+
     //TODO Taken auf platz setzen
     private void setToken(int x, int y, Color c) {
         double a = size / amount;
@@ -101,10 +105,18 @@ public class GamePaneController {
 
     @FXML
     private void onFieldKlick(MouseEvent e) {
-        if (e.getSource() instanceof Rectangle) {
-            Rectangle temp = (Rectangle) e.getSource();
-            int index = field.indexOf(temp);
-            int x = (int)(index / amount), y = index % amount;
+        if (e.getSource() instanceof Rectangle || e.getSource() instanceof Circle) {
+            int x, y;
+            if (e.getSource() instanceof Rectangle) {
+                Rectangle temp = (Rectangle) e.getSource();
+                int index = field.indexOf(temp);
+                x = (int)(index / amount);
+                y = index % amount;
+            }
+            else {
+                Circle temp = (Circle) e.getSource();
+
+            }
 //            System.out.println(x + " " + y);
             //TODO Datensatz fehlt / richtiges Feld ermitteln und an Steuerung übergeben
         }
