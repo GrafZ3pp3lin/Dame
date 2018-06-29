@@ -1,5 +1,8 @@
 package controller;
 
+import Model.Field;
+import Model.PlayingField;
+import Model.Stone;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -26,7 +29,7 @@ public class GamePaneController {
         //TODO benötigte Instancen hier übergeben
     }
 
-    public void buildPlayingField(int amount, int size) {
+    public void buildPlayingField(int amount, int size, PlayingField pf) {
         this.amount = amount;
         this.size = size;
         field = new ArrayList<>();
@@ -47,10 +50,11 @@ public class GamePaneController {
                     temp.setFill(Color.WHEAT);
                 }
                 temp.setLayoutX(i * a);
-                temp.setLayoutY(j * a);
+                temp.setLayoutY(size - j * a - a);
                 temp.setOnMouseClicked(e -> onFieldKlick(e));
                 field.add(temp);
                 playingField.getChildren().add(temp);
+                pf.getField(i, j).setcRec(temp);
             }
         }
         createTokens();
@@ -63,15 +67,15 @@ public class GamePaneController {
     //TODO Feld mit Spielsteinen übergeben und auf Feld platzieren
     public void createTokens() {
         for (int j = 0; j < 2; j++) {
-            for (int i = 0; i < 15; i++) {
+            for (int i = 0; i < 20; i++) {
                 int x, y;
                 if (j < 1) {
-                    y = ((int)(i / 5));
+                    y = ((int)(i / 5)) + 1;
                     x = ((i % 5) * 2 + (y % 2));
                     setToken(x, y, Color.WHITE);
                 }
                 else {
-                    y = amount - 1 - ((int)(i / 5));
+                    y = amount - ((int)(i / 5));
                     x = ((i % 5) * 2 + (y % 2));
                     setToken(x, y, Color.BLACK);
                 }
@@ -79,16 +83,16 @@ public class GamePaneController {
         }
     }
 
-    public void removeToken() {
+    public void removeToken(Stone stone) {
 
     }
 
     //TODO Wenn sich nur ein Spielstein bewegt hat / von - zu übergeben
-    public void moveToken() {
+    public void moveToken(Stone stone, Field field) {
 
     }
 
-    public void highlightFields() {
+    public void highlightFields(Field[] fields) {
 
     }
 
@@ -99,14 +103,14 @@ public class GamePaneController {
         temp.setRadius(size / amount / 3);
         temp.setFill(c);
         temp.setLayoutX((x + 0.5) * a);
-        temp.setLayoutY((y + 0.5) * a);
+        temp.setLayoutY((y - 0.5) * a);
         playingField.getChildren().add(temp);
     }
 
     @FXML
     private void onFieldKlick(MouseEvent e) {
         if (e.getSource() instanceof Rectangle || e.getSource() instanceof Circle) {
-            int x, y;
+            int x = 0, y = 0;
             if (e.getSource() instanceof Rectangle) {
                 Rectangle temp = (Rectangle) e.getSource();
                 int index = field.indexOf(temp);
@@ -117,7 +121,7 @@ public class GamePaneController {
                 Circle temp = (Circle) e.getSource();
 
             }
-//            System.out.println(x + " " + y);
+            System.out.println(x + " " + y);
             //TODO Datensatz fehlt / richtiges Feld ermitteln und an Steuerung übergeben
         }
     }

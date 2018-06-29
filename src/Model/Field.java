@@ -19,12 +19,19 @@ public class Field {
     public Rectangle getcRec(){
         return cRec;
     }
+
+    public void setcRec(Rectangle temp) {
+        cRec = temp;
+    }
+
     public int getIndexX(){
         return indexX;
     }
+
     public int getIndexY(){
         return indexY;
     }
+
     public Color getcColor(){
         return cColor;
     }

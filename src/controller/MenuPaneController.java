@@ -9,4 +9,9 @@ public class MenuPaneController {
 
     }
 
+    @FXML
+    private void onReturn() {
+        
+    }
+
 }
