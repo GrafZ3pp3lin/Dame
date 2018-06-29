@@ -7,9 +7,6 @@ public class PlayingField {
     public PlayingField(int size){
         FieldSize = size;
     }
-    public int getSize(){
-        return FieldSize;
-    }
 
     public void createField(){
         cField = new Field[FieldSize*FieldSize];
@@ -30,6 +27,9 @@ public class PlayingField {
     }
     public Field[] getcField(){
         return cField;
+    }
+    public int getSize(){
+        return FieldSize;
     }
 
 }
