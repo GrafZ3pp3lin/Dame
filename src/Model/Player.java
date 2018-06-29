@@ -2,11 +2,15 @@ package Model;
 
 public class Player {
     private Stone cStone[] = {};
+    private String cName;
+    private Color cColor;
 
-    public Stone[] createStones(int size, Color c){
+//getName
+    //construktor
+    public Stone[] createStones(int size){
         int x, y;
         int strtFirst = 3 + ((size - 8)/2);
-        if (c == Color.BLACK){
+        if (cColor == Color.BLACK){
             x = 0;
             y = 0;
         }
@@ -16,7 +20,7 @@ public class Player {
         }
         int f = (int)(((size/4)-0.5)* size);            //Anzahl Spielsteine pro Spieler abhängig von Feldgröße
         for (int i=0; i< f; i++){
-            cStone[i] = new Stone(c, x, y);
+            cStone[i] = new Stone(cColor, x, y, false);
             if (( x + 2) > size){
                 if((y % 2) != 0){
                     x = 1;
@@ -29,8 +33,8 @@ public class Player {
         }
         return cStone;
     }
-    public void replaceStone (int indexStone, Color c, int x, int y){
-        cStone[indexStone] = new Stone (c, x, y);
+    public void replaceStone (int indexStone, Color c, int x, int y, boolean superD){
+        cStone[indexStone] = new Stone (cColor, x, y, superD);
     }
     public void deleteStone (int indexStone, Color c){
         cStone[indexStone] = null;

@@ -11,13 +11,14 @@ public class Field {
         indexX = x;
         indexY = y;
     }
+    //getset
 
-    public void setStone(Boolean player, Boolean superDame){
+  /*  public void setStone(Boolean player, Boolean superDame){
         Stone[0] = true;
         Stone[1] = player;
         Stone[2] = superDame;
     }
     public Boolean[] getStone(){
         return Stone;
-    }
+    }*/
 }
