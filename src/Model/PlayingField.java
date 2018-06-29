@@ -6,28 +6,46 @@ public class PlayingField {
 
     public PlayingField(int size){
         FieldSize = size;
+        createField();
     }
 
     public void createField(){
         cField = new Field[FieldSize*FieldSize];
-        int m = 0;
         boolean black = false;
         for (int i = 0; i < FieldSize; i++){
             for (int j = 0; j < FieldSize; j++){
+                Field temp;
                 if (black) {
-                    cField[m] = new Field(Color.BLACK, i, j);
+                    temp = new Field(Color.BLACK, i, j);
                 }
                 else{
-                    cField[m] = new Field(Color.WHITE, i, j);
+                    temp = new Field(Color.WHITE, i, j);
                 }
-                m++;
+                cField[i * FieldSize + j] = temp;
                 black = !black;
             }
         }
     }
+
     public Field[] getcField(){
         return cField;
     }
+
+    public Field getField(int x, int y) {
+        if (cField[x * FieldSize + y].getIndexX() == x && cField[x * FieldSize + y].getIndexY() == y) {
+            return cField[x * FieldSize + y];
+        }
+        else {
+            for (Field f : cField) {
+                if (f.getIndexX() == x && f.getIndexY() == y) {
+                    return f;
+                }
+            }
+        }
+        System.err.println("Oops. An Error occured");
+        return null;
+    }
+
     public int getSize(){
         return FieldSize;
     }

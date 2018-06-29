@@ -1,5 +1,6 @@
 package controller;
 
+import Model.PlayingField;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,9 @@ public class Main extends Application {
     private Parent gameLayout;
     private BorderPane menuLayout;
 
+    //Model
+    private PlayingField playingField;
+
     //Controller
     private GamePaneController gamePaneController;
     private StartPaneController startPaneController;
@@ -30,11 +34,13 @@ public class Main extends Application {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Dame");
         primaryStage.setOnCloseRequest(e -> Platform.exit());
+
+
         initRootLayout();
         loadStartLayout();
         loadGameLayout();
-//        setStartLayout();
-        sampleGame();
+        setStartLayout();
+//        sampleGame();
         primaryStage.show();
     }
 
@@ -56,7 +62,7 @@ public class Main extends Application {
             loader.setLocation(Main.class.getResource("view/StartPane.fxml"));
             startLayout = loader.load();
             startPaneController = loader.getController();
-//            startPaneController.setInstances();
+            startPaneController.setInstances(this);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -84,8 +90,9 @@ public class Main extends Application {
         menuLayout.setCenter(gameLayout);
     }
 
-    private void sampleGame() {
-        gamePaneController.buildPlayingField(10, 500);
+    public void sampleGame() {
+        playingField = new PlayingField(startPaneController.getSize());
+        gamePaneController.buildPlayingField(startPaneController.getSize(), 500, playingField);
         setGameLayout();
     }
 
