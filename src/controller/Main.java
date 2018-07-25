@@ -19,11 +19,12 @@ public class Main extends Application {
     private BorderPane menuLayout;
 
     //Model
-    private PlayingField playingField;
+    public PlayingField playingField;
 
     //Controller
     private GamePaneController gamePaneController;
     private StartPaneController startPaneController;
+    private MenuPaneController menuPaneController;
 
     public static void main(String[] args) {
         launch(args);
@@ -50,6 +51,8 @@ public class Main extends Application {
             loader.setLocation(Main.class.getResource("view/MenuPane.fxml"));
             menuLayout = loader.load();
             primaryStage.setScene(new Scene(menuLayout));
+            menuPaneController = loader.getController();
+            menuPaneController.setInstances(this);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -71,6 +74,12 @@ public class Main extends Application {
 
     private void setStartLayout() {
         menuLayout.setCenter(startLayout);
+        menuPaneController.disableReturnItem(true);
+    }
+
+    public void returnToStart() {
+        setStartLayout();
+        gamePaneController.clearField();
     }
 
     private void loadGameLayout() {
@@ -88,6 +97,7 @@ public class Main extends Application {
 
     private void setGameLayout() {
         menuLayout.setCenter(gameLayout);
+        menuPaneController.disableReturnItem(false);
     }
 
     public void sampleGame() {

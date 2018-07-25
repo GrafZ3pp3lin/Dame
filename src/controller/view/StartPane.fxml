@@ -16,9 +16,10 @@
             <Button mnemonicParsing="false" onAction="#onMultiPlayerStart" text="Multiplayer" />
          </children>
       </VBox>
-      <VBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="180.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+      <VBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="180.0" spacing="12.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <children>
             <Separator />
+            <Label text="Settings:" />
             <HBox alignment="CENTER_LEFT" spacing="20.0">
                <children>
                   <Label text="Size:" />

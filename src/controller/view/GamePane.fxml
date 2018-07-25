@@ -11,4 +11,10 @@
             <Pane fx:id="playingField" />
          </children></VBox>
    </center>
+   <top>
+      <VBox fx:id="vbox_player2" alignment="CENTER" BorderPane.alignment="CENTER" />
+   </top>
+   <bottom>
+      <VBox fx:id="vbox_player1" alignment="CENTER" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>

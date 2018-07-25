@@ -3,7 +3,9 @@ package Model;
 import javafx.scene.shape.Circle;
 
 public class Stone {
+
     private int indexX , indexY;
+    private boolean eliminated;
     private Color cColor;
     private boolean superDame;
     private Circle cCirc;
@@ -12,7 +14,9 @@ public class Stone {
         cColor = c;
         indexX = x;
         indexY = y;
-        superDame =superD;
+        superDame = superD;
+        eliminated = false;
+        cCirc = new Circle();
     }
 
     public Circle getcCirc(){
@@ -21,7 +25,7 @@ public class Stone {
     public Color getColor(){
         return cColor;
     }
-    public boolean getSuperDame(){
+    public boolean isSuperDame(){
         return superDame;
     }
     public void setSuperDame(){
@@ -39,4 +43,13 @@ public class Stone {
     public void setIndexY(int y){
         indexY = y;
     }
+
+    public boolean isEliminated() {
+        return eliminated;
+    }
+
+    public void setEliminated() {
+        eliminated = true;
+    }
+
 }
