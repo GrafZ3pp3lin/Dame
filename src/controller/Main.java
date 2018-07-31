@@ -25,6 +25,7 @@ public class Main extends Application {
     private GamePaneController gamePaneController;
     private StartPaneController startPaneController;
     private MenuPaneController menuPaneController;
+    private PlayerController playerController;
 
     public static void main(String[] args) {
         launch(args);
@@ -35,7 +36,6 @@ public class Main extends Application {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Dame");
         primaryStage.setOnCloseRequest(e -> Platform.exit());
-
 
         initRootLayout();
         loadStartLayout();
@@ -88,7 +88,7 @@ public class Main extends Application {
             loader.setLocation(Main.class.getResource("view/GamePane.fxml"));
             gameLayout = loader.load();
             gamePaneController = loader.getController();
-//            gamePaneController.setInstances();
+            gamePaneController.setInstances(this, playerController);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -103,6 +103,8 @@ public class Main extends Application {
     public void sampleGame() {
         playingField = new PlayingField(startPaneController.getSize());
         gamePaneController.buildPlayingField(startPaneController.getSize(), 500, playingField);
+        playerController = new PlayerController(false, startPaneController.getSize());
+        gamePaneController.createTokens(playerController.getPlayer1(), playerController.getPlayer2());
         setGameLayout();
     }
 

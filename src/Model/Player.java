@@ -3,6 +3,7 @@ package Model;
 import javafx.scene.shape.Circle;
 
 public class Player {
+
     private Stone cStone[];
     private String cName;
     private Color cColor;
@@ -13,7 +14,8 @@ public class Player {
         cColor = c;
     }
 
-    public Stone[] createStones(int size){
+    public void createStones(int size){
+        cStone = new Stone[size * size];
         int x, y;
         int strtFirst = 3 + ((size - 8)/2);
         if (cColor == Color.BLACK){
@@ -37,7 +39,6 @@ public class Player {
                 y = y + 1;
             }
         }
-        return cStone;
     }
 
     public void replaceStone (int indexStone, int x, int y){

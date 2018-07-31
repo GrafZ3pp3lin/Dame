@@ -133,13 +133,17 @@ public class GamePaneController {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if (!((field.getIndexX() + 0.5) * value == stone.getcCirc().getLayoutX() &&
-                        (field.getIndexY() - 0.5) * value == stone.getcCirc().getLayoutY())) {
+                //Tst ob Token in der Nähe vom richtigen Platz ist
+                if (!((field.getIndexX() + 0.25) * value <= stone.getcCirc().getLayoutX() && (field.getIndexX() + 0.75) * value >= stone.getcCirc().getLayoutX() &&
+                        (field.getIndexY() - 0.75) * value <= stone.getcCirc().getLayoutY() && (field.getIndexY() - 0.25) * value >= stone.getcCirc().getLayoutY())) {
                     stone.getcCirc().setLayoutX(stone.getcCirc().getLayoutX() + (value / 15 * a));
                     stone.getcCirc().setLayoutY(stone.getcCirc().getLayoutY() + (value / 15 * b));
                 }
                 else {
+                    stone.getcCirc().setLayoutX((field.getIndexX() + 0.5) * value);
+                    stone.getcCirc().setLayoutY((field.getIndexY() - 0.5) * value);
                     t.cancel();
+                    graphicAction = false;
                 }
             }
         };

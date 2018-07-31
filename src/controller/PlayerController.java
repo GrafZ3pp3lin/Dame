@@ -8,6 +8,15 @@ public class PlayerController {
     private Player player1;
     private Player player2;
 
+    public PlayerController(boolean ki, int size) {
+        player1 = new Player(Color.BLACK, "Spieler 1");
+        player1.createStones(size);
+        if (!ki) {
+            player2 = new Player(Color.WHITE, "Spieler 2");
+            player2.createStones(size);
+        }
+    }
+
     public Player getPlayer1() {
         return player1;
     }
@@ -25,6 +34,7 @@ public class PlayerController {
         }
     }
 
+    //return current Player
     public Player getCurrentPlayer() {
         return null;
     }
