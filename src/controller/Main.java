@@ -19,11 +19,13 @@ public class Main extends Application {
     private BorderPane menuLayout;
 
     //Model
-    private PlayingField playingField;
+    public PlayingField playingField;
 
     //Controller
     private GamePaneController gamePaneController;
     private StartPaneController startPaneController;
+    private MenuPaneController menuPaneController;
+    private PlayerController playerController;
 
     public static void main(String[] args) {
         launch(args);
@@ -34,7 +36,6 @@ public class Main extends Application {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Dame");
         primaryStage.setOnCloseRequest(e -> Platform.exit());
-
 
         initRootLayout();
         loadStartLayout();
@@ -50,6 +51,8 @@ public class Main extends Application {
             loader.setLocation(Main.class.getResource("view/MenuPane.fxml"));
             menuLayout = loader.load();
             primaryStage.setScene(new Scene(menuLayout));
+            menuPaneController = loader.getController();
+            menuPaneController.setInstances(this);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -71,6 +74,12 @@ public class Main extends Application {
 
     private void setStartLayout() {
         menuLayout.setCenter(startLayout);
+        menuPaneController.disableReturnItem(true);
+    }
+
+    public void returnToStart() {
+        setStartLayout();
+        gamePaneController.clearField();
     }
 
     private void loadGameLayout() {
@@ -79,7 +88,7 @@ public class Main extends Application {
             loader.setLocation(Main.class.getResource("view/GamePane.fxml"));
             gameLayout = loader.load();
             gamePaneController = loader.getController();
-//            gamePaneController.setInstances();
+            gamePaneController.setInstances(this, playerController);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -88,11 +97,14 @@ public class Main extends Application {
 
     private void setGameLayout() {
         menuLayout.setCenter(gameLayout);
+        menuPaneController.disableReturnItem(false);
     }
 
     public void sampleGame() {
         playingField = new PlayingField(startPaneController.getSize());
         gamePaneController.buildPlayingField(startPaneController.getSize(), 500, playingField);
+        playerController = new PlayerController(false, startPaneController.getSize());
+        gamePaneController.createTokens(playerController.getPlayer1(), playerController.getPlayer2());
         setGameLayout();
     }
 

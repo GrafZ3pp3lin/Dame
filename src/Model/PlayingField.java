@@ -42,7 +42,7 @@ public class PlayingField {
                 }
             }
         }
-        System.err.println("Oops. An Error occured");
+        System.err.println("There is no Stone at (" + x + "/" + y + ")");
         return null;
     }
 

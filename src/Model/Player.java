@@ -1,16 +1,21 @@
 package Model;
 
+import javafx.scene.shape.Circle;
+
 public class Player {
-    private Stone cStone[] = {};
+
+    private Stone cStone[];
     private String cName;
     private Color cColor;
+    private int eliminatedStones;
 
     public Player(Color c, String name){
         cName = name;
         cColor = c;
     }
 
-    public Stone[] createStones(int size){
+    public void createStones(int size){
+        cStone = new Stone[size * size];
         int x, y;
         int strtFirst = 3 + ((size - 8)/2);
         if (cColor == Color.BLACK){
@@ -34,19 +39,44 @@ public class Player {
                 y = y + 1;
             }
         }
-        return cStone;
     }
+
     public void replaceStone (int indexStone, int x, int y){
         cStone[indexStone].setIndexX(x);
         cStone[indexStone].setIndexY(y);
     }
+
     public void deleteStone (int indexStone){
         cStone[indexStone] = null;
     }
+
     public Stone[] getArray(){
         return cStone;
     }
+
     public String getName(){
         return cName;
     }
+
+    public Color getColor() {
+        return cColor;
+    }
+
+    public int getEliminatedStones() {
+        return eliminatedStones;
+    }
+
+    public void increaseEliminatedStones() {
+        eliminatedStones++;
+    }
+
+    public void setEliminatedStones(int value) {
+        eliminatedStones = value;
+    }
+
+    public Stone getStoneOfClickedCircle(Circle c) {
+        //return the Stone to this Circle
+        return null;
+    }
+
 }
