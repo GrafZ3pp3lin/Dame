@@ -88,7 +88,7 @@ public class Main extends Application {
             loader.setLocation(Main.class.getResource("view/GamePane.fxml"));
             gameLayout = loader.load();
             gamePaneController = loader.getController();
-            gamePaneController.setInstances(this, playerController);
+            gamePaneController.setInstances(this);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -106,6 +106,10 @@ public class Main extends Application {
         playerController = new PlayerController(false, startPaneController.getSize());
         gamePaneController.createTokens(playerController.getPlayer1(), playerController.getPlayer2());
         setGameLayout();
+    }
+
+    public PlayerController getPlayerController() {
+        return playerController;
     }
 
 }

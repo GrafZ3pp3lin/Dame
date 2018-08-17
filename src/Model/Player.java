@@ -14,29 +14,38 @@ public class Player {
         cColor = c;
     }
 
+    public Player(Color c, String name, int size) {
+        this(c, name);
+        createStones(size);
+    }
+
     public void createStones(int size){
-        cStone = new Stone[size * size];
+        cStone = new Stone[(int)(size * 1.5)];
         int x, y;
-        int strtFirst = 3 + ((size - 8)/2);
         if (cColor == Color.BLACK){
             x = 0;
             y = 0;
         }
         else {
-            x = 0;
-            y = strtFirst;
+            y = size - 3;
+            if (y % 2 != 0) {
+                x = 1;
+            }
+            else {
+                x = 0;
+            }
         }
         int f = (int)(((size/4)-0.5)* size);            //Anzahl Spielsteine pro Spieler abhängig von Feldgröße
         for (int i=0; i< f; i++){
             cStone[i] = new Stone(cColor, x, y, false);
-            if (( x + 2) > size){
+            if (( x += 2) >= size){
+                y += 1;
                 if((y % 2) != 0){
                     x = 1;
                 }
                 else {
                     x = 0;
                 }
-                y = y + 1;
             }
         }
     }
@@ -46,9 +55,9 @@ public class Player {
         cStone[indexStone].setIndexY(y);
     }
 
-    public void deleteStone (int indexStone){
-        cStone[indexStone] = null;
-    }
+//    public void deleteStone (int indexStone){
+//        cStone[indexStone] = null;
+//    }
 
     public Stone[] getArray(){
         return cStone;
@@ -74,8 +83,13 @@ public class Player {
         eliminatedStones = value;
     }
 
+    //returns the Stone Object to the clicked Circle
     public Stone getStoneOfClickedCircle(Circle c) {
-        //return the Stone to this Circle
+        for (Stone s : cStone) {
+            if (s.getcCirc().equals(c)) {
+                return s;
+            }
+        }
         return null;
     }
 

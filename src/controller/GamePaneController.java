@@ -18,7 +18,6 @@ import java.util.TimerTask;
 public class GamePaneController {
 
     private Main controll;
-    private PlayerController playerController;
 
     private int amount, size, tokenRadius;
     private boolean graphicAction;
@@ -38,9 +37,8 @@ public class GamePaneController {
     private ArrayList<Rectangle> field;
     private ArrayList<Circle> tokens;
 
-    public void setInstances(Main controll, PlayerController playerController) {
+    public void setInstances(Main controll) {
         this.controll = controll;
-        this.playerController = playerController;
     }
 
     public void buildPlayingField(int amount, int size, PlayingField pf) {
@@ -105,13 +103,14 @@ public class GamePaneController {
 //        }
         for (Player player : p) {
             for (Stone s : player.getArray()) {
+//                System.out.println(s.getIndexX() + " " + s.getIndexY());
                 setToken(s.getIndexX(), s.getIndexY(), s.getcCirc(), s.getColor() == Model.Color.BLACK ? Color.BLACK : Color.WHITE);
             }
         }
     }
 
     public void removeToken(Stone stone) {
-        Player temp = playerController.getPlayerByColor(stone.getColor());
+        Player temp = controll.getPlayerController().getPlayerByColor(stone.getColor());
         playingField.getChildren().remove(stone.getcCirc());
 //        stone.getcCirc().setLayoutX((temp.getEliminatedStones() + 1) * tokenRadius);
 //        stone.getcCirc().setLayoutY(tokenRadius);
@@ -162,7 +161,8 @@ public class GamePaneController {
         c.setRadius(tokenRadius);
         c.setFill(color);
         c.setLayoutX((x + 0.5) * a);
-        c.setLayoutY((y - 0.5) * a);
+        c.setLayoutY(size - (y + 0.5) * a);
+        c.setOnMouseClicked(event -> onFieldKlick(event));
         playingField.getChildren().add(c);
         tokens.add(c);
     }
@@ -179,7 +179,11 @@ public class GamePaneController {
             }
             else {
                 Circle temp = (Circle) e.getSource();
-                Stone s = playerController.getCurrentPlayer().getStoneOfClickedCircle(temp);
+                Stone s = controll.getPlayerController().getCurrentPlayer().getStoneOfClickedCircle(temp);
+                if (s == null) {
+                    System.err.println("Dieser Stein gehört nicht dir");
+                    return;
+                }
                 x = s.getIndexX();
                 y = s.getIndexY();
             }

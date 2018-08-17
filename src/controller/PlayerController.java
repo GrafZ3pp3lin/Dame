@@ -7,14 +7,14 @@ public class PlayerController {
 
     private Player player1;
     private Player player2;
+    private boolean currentPlayer1;
 
     public PlayerController(boolean ki, int size) {
-        player1 = new Player(Color.BLACK, "Spieler 1");
-        player1.createStones(size);
+        player1 = new Player(Color.BLACK, "Spieler 1", size);
         if (!ki) {
-            player2 = new Player(Color.WHITE, "Spieler 2");
-            player2.createStones(size);
+            player2 = new Player(Color.WHITE, "Spieler 2", size);
         }
+        currentPlayer1 = true;
     }
 
     public Player getPlayer1() {
@@ -36,7 +36,16 @@ public class PlayerController {
 
     //return current Player
     public Player getCurrentPlayer() {
-        return null;
+        if (currentPlayer1) {
+            return player1;
+        }
+        else {
+            return player2;
+        }
+    }
+
+    public void changePlayer() {
+        currentPlayer1 = !currentPlayer1;
     }
 
 }
