@@ -2,6 +2,7 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 
 public class StartPaneController {
 
@@ -11,7 +12,7 @@ public class StartPaneController {
     private Main control;
 
     @FXML
-    private ChoiceBox choiceBox_size;
+    private ComboBox<String> comboBox_size;
 
     public void setInstances(Main control) {
         this.control = control;
@@ -19,9 +20,9 @@ public class StartPaneController {
 
     @FXML
     private void initialize() {
-        choiceBox_size.getItems().add(acht);
-        choiceBox_size.getItems().add(zehn);
-        choiceBox_size.setValue(acht);
+        comboBox_size.getItems().add(acht);
+        comboBox_size.getItems().add(zehn);
+        comboBox_size.setValue(acht);
     }
 
     @FXML
@@ -35,7 +36,7 @@ public class StartPaneController {
     }
 
     public int getSize() {
-        return choiceBox_size.getValue() == acht ? 8 : 10;
+        return comboBox_size.getValue() == acht ? 8 : 10;
     }
 
 }
