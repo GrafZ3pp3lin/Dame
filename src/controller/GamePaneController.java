@@ -167,6 +167,14 @@ public class GamePaneController {
         tokens.add(c);
     }
 
+    public void visualizeSuperDame(Stone s) {
+        if (s.isSuperDame()) {
+            s.getcCirc().setStrokeWidth(2);
+            s.getcCirc().setStroke(Color.GREENYELLOW);
+        }
+        //visualize SuperDame
+    }
+
     @FXML
     private void onFieldKlick(MouseEvent e) {
         if (e.getSource() instanceof Rectangle || e.getSource() instanceof Circle) {

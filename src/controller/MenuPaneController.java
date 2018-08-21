@@ -16,7 +16,7 @@ public class MenuPaneController {
 
     @FXML
     private void onAbout() {
-
+        control.showAboutPane();
     }
 
     @FXML

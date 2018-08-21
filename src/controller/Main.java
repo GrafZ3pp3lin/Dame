@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -17,6 +18,7 @@ public class Main extends Application {
     private Parent startLayout;
     private Parent gameLayout;
     private BorderPane menuLayout;
+    private Stage aboutStage;
 
     //Model
     public PlayingField playingField;
@@ -40,6 +42,7 @@ public class Main extends Application {
         initRootLayout();
         loadStartLayout();
         loadGameLayout();
+        loadAboutPane();
         setStartLayout();
 //        sampleGame();
         primaryStage.show();
@@ -98,6 +101,27 @@ public class Main extends Application {
     private void setGameLayout() {
         menuLayout.setCenter(gameLayout);
         menuPaneController.disableReturnItem(false);
+    }
+
+    private void loadAboutPane() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("view/AboutPane.fxml"));
+            Parent aboutPane = loader.load();
+            aboutStage = new Stage(StageStyle.UTILITY);
+            aboutStage.setAlwaysOnTop(true);
+            aboutStage.setTitle("About Dame");
+            aboutStage.setResizable(false);
+            aboutStage.setScene(new Scene(aboutPane));
+            aboutStage.sizeToScene();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showAboutPane() {
+        aboutStage.show();
     }
 
     public void sampleGame() {
