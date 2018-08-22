@@ -28,6 +28,7 @@ public class Main extends Application {
     private StartPaneController startPaneController;
     private MenuPaneController menuPaneController;
     private PlayerController playerController;
+    private Game game;
 
     public static void main(String[] args) {
         launch(args);
@@ -129,11 +130,16 @@ public class Main extends Application {
         gamePaneController.buildPlayingField(startPaneController.getSize(), 500, playingField);
         playerController = new PlayerController(false, startPaneController.getSize());
         gamePaneController.createTokens(playerController.getPlayer1(), playerController.getPlayer2());
+        game = new Game(this, gamePaneController, playerController);
         setGameLayout();
     }
 
     public PlayerController getPlayerController() {
         return playerController;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
 }

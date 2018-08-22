@@ -32,17 +32,19 @@ public class PlayingField {
     }
 
     public Field getField(int x, int y) {
-        if (cField[x * FieldSize + y].getIndexX() == x && cField[x * FieldSize + y].getIndexY() == y) {
-            return cField[x * FieldSize + y];
-        }
-        else {
-            for (Field f : cField) {
-                if (f.getIndexX() == x && f.getIndexY() == y) {
-                    return f;
+        if (x * FieldSize + y >= 0 && x * FieldSize + y < FieldSize * FieldSize) {
+            if (cField[x * FieldSize + y].getIndexX() == x && cField[x * FieldSize + y].getIndexY() == y) {
+                return cField[x * FieldSize + y];
+            }
+            else {
+                for (Field f : cField) {
+                    if (f.getIndexX() == x && f.getIndexY() == y) {
+                        return f;
+                    }
                 }
             }
         }
-        System.err.println("There is no Stone at (" + x + "/" + y + ")");
+        System.err.println("Field (" + x + "/" + y + ") doesn't exist");
         return null;
     }
 

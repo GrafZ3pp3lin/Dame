@@ -12,6 +12,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,7 +20,8 @@ public class GamePaneController {
 
     private Main controll;
 
-    private int amount, size, tokenRadius;
+    public int size;
+    private int amount, tokenRadius;
     private boolean graphicAction;
 
     @FXML
@@ -149,7 +151,8 @@ public class GamePaneController {
         t.schedule(task, 0, 40);
     }
 
-    public void highlightFields(Field[] fields) {
+    public void highlightFields(List<Field> fields) {
+        colorField();
         for (Field f : fields) {
             f.getcRec().setFill(Color.DARKGREEN);
         }
@@ -192,6 +195,7 @@ public class GamePaneController {
                     System.err.println("Dieser Stein gehört nicht dir");
                     return;
                 }
+                controll.getGame().selectStone(s);
                 x = s.getIndexX();
                 y = s.getIndexY();
             }

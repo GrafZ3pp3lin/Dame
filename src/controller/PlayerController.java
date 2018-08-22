@@ -44,6 +44,15 @@ public class PlayerController {
         }
     }
 
+    public Player getOtherPlayer() {
+        if (!currentPlayer1) {
+            return player1;
+        }
+        else {
+            return player2;
+        }
+    }
+
     public void changePlayer() {
         currentPlayer1 = !currentPlayer1;
     }

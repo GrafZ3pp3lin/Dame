@@ -93,4 +93,13 @@ public class Player {
         return null;
     }
 
+    public boolean hasStoneAt(int x, int y) {
+        for (Stone s : cStone) {
+            if (s.getIndexX() == x && s.getIndexY() == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
