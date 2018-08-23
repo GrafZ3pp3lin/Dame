@@ -1,7 +1,6 @@
 package controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 
 public class StartPaneController {
@@ -27,12 +26,12 @@ public class StartPaneController {
 
     @FXML
     private void onSinglePlayerStart() {
-        control.sampleGame();
+        System.err.println("Oops. KI denied your request!");
     }
 
     @FXML
     private void onMultiPlayerStart() {
-        System.err.println("Oops. Somebody forgot to implement me!");
+        control.startGame();
     }
 
     public int getSize() {

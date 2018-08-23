@@ -30,10 +30,10 @@ public class Game {
     }
 
     //TODO SuperDame
-    private boolean testField(int x, int y, int indexX, int indexY) {
+    private boolean testField(int x, int y, int indexX, int indexY, boolean further) {
         Field field = control.playingField.getField(x + indexX, y + indexY);
         if (field != null) {
-            if (emptyField(field)) {
+            if (emptyField(field) && !further) {
                 possibleFields.add(field);
                 return true;
             }
@@ -49,14 +49,14 @@ public class Game {
     }
 
     //TODO SuperDame
-    private void testFieldScope(Field f, Color c) {
+    private void testFieldScope(Field f, Color c, boolean further) {
         if (c == Color.BLACK) {
-            testField(f.getIndexX(), f.getIndexY(), 1, 1);
-            testField(f.getIndexX(), f.getIndexY(), -1, 1);
+            testField(f.getIndexX(), f.getIndexY(), 1, 1, further);
+            testField(f.getIndexX(), f.getIndexY(), -1, 1, further);
         }
         else {
-            testField(f.getIndexX(), f.getIndexY(), 1, -1);
-            testField(f.getIndexX(), f.getIndexY(), -1, -1);
+            testField(f.getIndexX(), f.getIndexY(), 1, -1, further);
+            testField(f.getIndexX(), f.getIndexY(), -1, -1, further);
         }
     }
 
@@ -70,7 +70,7 @@ public class Game {
         Field f = control.playingField.getField(move.getStone().getIndexX(), move.getStone().getIndexY());
         move.addEnterField(f);
         possibleFields.clear();
-        testFieldScope(f, s.getColor());
+        testFieldScope(f, s.getColor(), false);
         gamePaneController.highlightFields(possibleFields, move);
     }
 
@@ -98,7 +98,7 @@ public class Game {
 
                             gamePaneController.colorField();
                             possibleFields.clear();
-                            testFieldScope(move.getEndField(), move.getStone().getColor());
+                            testFieldScope(move.getEndField(), move.getStone().getColor(), true);
                             if (!possibleFields.isEmpty()) {
                                 gamePaneController.highlightFields(possibleFields, move);
                                 return;
@@ -111,8 +111,10 @@ public class Game {
                 move.update();
                 move = null;
                 possibleFields.clear();
-                playerController.changePlayer();
             }
+        }
+        else if (playerController.getCurrentPlayer().hasStoneAt(f.getIndexX(), f.getIndexY())) {
+            selectStone(playerController.getCurrentPlayer().getStoneAt(f.getIndexX(), f.getIndexY()));
         }
     }
 

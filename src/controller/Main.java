@@ -45,7 +45,8 @@ public class Main extends Application {
         loadGameLayout();
         loadAboutPane();
         setStartLayout();
-//        sampleGame();
+
+        primaryStage.sizeToScene();
         primaryStage.show();
     }
 
@@ -125,9 +126,9 @@ public class Main extends Application {
         aboutStage.show();
     }
 
-    public void sampleGame() {
+    public void startGame() {
         playingField = new PlayingField(startPaneController.getSize());
-        gamePaneController.buildPlayingField(startPaneController.getSize(), 500, playingField);
+        gamePaneController.buildPlayingField(startPaneController.getSize(), (int)primaryStage.getHeight() - 200, playingField);
         playerController = new PlayerController(false, startPaneController.getSize());
         gamePaneController.createTokens(playerController.getPlayer1(), playerController.getPlayer2());
         game = new Game(this, gamePaneController, playerController);

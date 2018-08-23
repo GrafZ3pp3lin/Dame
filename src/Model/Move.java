@@ -62,6 +62,19 @@ public class Move {
         return skipedFields;
     }
 
+    public Field getFirstSkipedField() {
+        if (!skipedFields.isEmpty()) {
+            return skipedFields.get(0);
+        }
+        return null;
+    }
+
+    public void nextSkipedField() {
+        if (!skipedFields.isEmpty()) {
+            skipedFields.remove(0);
+        }
+    }
+
     public void update() {
         stone.setIndexX(getEndField().getIndexX());
         stone.setIndexY(getEndField().getIndexY());

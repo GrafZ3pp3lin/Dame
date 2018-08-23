@@ -95,7 +95,7 @@ public class Player {
 
     public boolean hasStoneAt(int x, int y) {
         for (Stone s : cStone) {
-            if (s.getIndexX() == x && s.getIndexY() == y) {
+            if (s.getIndexX() == x && s.getIndexY() == y && !s.isEliminated()) {
                 return true;
             }
         }
@@ -104,7 +104,7 @@ public class Player {
 
     public Stone getStoneAt(int x, int y) {
         for (Stone s : cStone) {
-            if (s.getIndexX() == x && s.getIndexY() == y) {
+            if (s.getIndexX() == x && s.getIndexY() == y && !s.isEliminated()) {
                 return s;
             }
         }
