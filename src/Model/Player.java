@@ -102,4 +102,13 @@ public class Player {
         return false;
     }
 
+    public Stone getStoneAt(int x, int y) {
+        for (Stone s : cStone) {
+            if (s.getIndexX() == x && s.getIndexY() == y) {
+                return s;
+            }
+        }
+        return null;
+    }
+
 }

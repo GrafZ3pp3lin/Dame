@@ -1,9 +1,6 @@
 package controller;
 
-import Model.Field;
-import Model.Player;
-import Model.PlayingField;
-import Model.Stone;
+import Model.*;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -70,7 +67,7 @@ public class GamePaneController {
         colorField();
     }
 
-    private void colorField() {
+    public void colorField() {
         int i = 0;
         for (Rectangle rec : field) {
             if (((int)(i / amount) + (i % amount)) % 2 == 0) {
@@ -124,37 +121,46 @@ public class GamePaneController {
         }
     }
 
-    public void moveToken(Stone stone, Field field) {
+    public void moveToken(Move move) {
         graphicAction = true;
         double value = size / amount;
-        int a = field.getIndexX() - stone.getIndexX();
-        int b = field.getIndexY() - stone.getIndexY();
-//        int index = 0;
         Timer t = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                //Tst ob Token in der Nähe vom richtigen Platz ist
-                if (!((field.getIndexX() + 0.25) * value <= stone.getcCirc().getLayoutX() && (field.getIndexX() + 0.75) * value >= stone.getcCirc().getLayoutX() &&
-                        (field.getIndexY() - 0.75) * value <= stone.getcCirc().getLayoutY() && (field.getIndexY() - 0.25) * value >= stone.getcCirc().getLayoutY())) {
-                    stone.getcCirc().setLayoutX(stone.getcCirc().getLayoutX() + (value / 15 * a));
-                    stone.getcCirc().setLayoutY(stone.getcCirc().getLayoutY() + (value / 15 * b));
+                //Test ob Token in der Nähe vom richtigen Platz ist
+                if (!isStoneNearField(move.getStone(), move.getNextField(), value)) {
+                    move.getStone().getcCirc().setLayoutX(move.getStone().getcCirc().getLayoutX() + (value / 12)
+                            * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1));
+                    move.getStone().getcCirc().setLayoutY(move.getStone().getcCirc().getLayoutY() + (value / 12)
+                            * (move.getNextField().getIndexY() >= move.getCurrentField().getIndexY() ? -1 : 1));
+                    //TODO Test if other stone has to be removed
                 }
                 else {
-                    stone.getcCirc().setLayoutX((field.getIndexX() + 0.5) * value);
-                    stone.getcCirc().setLayoutY((field.getIndexY() - 0.5) * value);
-                    t.cancel();
-                    graphicAction = false;
+                    move.getStone().getcCirc().setLayoutX((move.getNextField().getIndexX() + 0.5) * value);
+                    move.getStone().getcCirc().setLayoutY(size - (move.getNextField().getIndexY() + 0.5) * value);
+                    if (move.nextField()) {
+                        t.cancel();
+                        graphicAction = false;
+                    }
                 }
             }
         };
         t.schedule(task, 0, 40);
     }
 
-    public void highlightFields(List<Field> fields) {
+    private boolean isStoneNearField(Stone s, Field f, double value) {
+        return (f.getIndexX() + 0.4) * value <= s.getcCirc().getLayoutX() && (f.getIndexX() + 0.6) * value >= s.getcCirc().getLayoutX() &&
+                size - (f.getIndexY() + 0.6) * value <= s.getcCirc().getLayoutY() && size - (f.getIndexY() + 0.4) * value >= s.getcCirc().getLayoutY();
+    }
+
+    public void highlightFields(List<Field> fields, Move move) {
         colorField();
         for (Field f : fields) {
             f.getcRec().setFill(Color.DARKGREEN);
+        }
+        for (Field f : move.getEnteredFields()) {
+            f.getcRec().setFill(Color.BLUE);
         }
     }
 
@@ -180,28 +186,26 @@ public class GamePaneController {
 
     @FXML
     private void onFieldKlick(MouseEvent e) {
-        if (e.getSource() instanceof Rectangle || e.getSource() instanceof Circle) {
-            int x = 0, y = 0;
-            if (e.getSource() instanceof Rectangle) {
-                Rectangle temp = (Rectangle) e.getSource();
-                int index = field.indexOf(temp);
-                x = (int)(index / amount);
-                y = index % amount;
-            }
-            else {
-                Circle temp = (Circle) e.getSource();
-                Stone s = controll.getPlayerController().getCurrentPlayer().getStoneOfClickedCircle(temp);
-                if (s == null) {
-                    System.err.println("Dieser Stein gehört nicht dir");
-                    return;
+        if (!graphicAction) {
+            if (e.getSource() instanceof Rectangle || e.getSource() instanceof Circle) {
+                if (e.getSource() instanceof Rectangle) {
+                    Rectangle temp = (Rectangle) e.getSource();
+                    int index = field.indexOf(temp);
+                    int x = (int)(index / amount);
+                    int y = index % amount;
+                    Field pressedField = controll.playingField.getField(x, y);
+                    controll.getGame().selectField(pressedField);
                 }
-                controll.getGame().selectStone(s);
-                x = s.getIndexX();
-                y = s.getIndexY();
+                else {
+                    Circle temp = (Circle) e.getSource();
+                    Stone s = controll.getPlayerController().getCurrentPlayer().getStoneOfClickedCircle(temp);
+                    if (s == null) {
+                        System.err.println("Dieser Stein gehört nicht dir");
+                        return;
+                    }
+                    controll.getGame().selectStone(s);
+                }
             }
-            Field pressedField = controll.playingField.getField(x, y);
-            System.out.println(x + " " + y);
-            //TODO Datensatz fehlt / richtiges Feld ermitteln und an Steuerung übergeben
         }
     }
 
