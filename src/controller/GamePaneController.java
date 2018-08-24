@@ -147,7 +147,8 @@ public class GamePaneController {
     }
 
     /**
-     * update Player name visual
+     * update Player Name visual
+     * //TODO on start update
      */
     private void updatePlayer() {
         if (control.getPlayerController().isCurrentPlayer1()) {
