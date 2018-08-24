@@ -10,11 +10,11 @@ public class PlayerController {
     private boolean currentPlayer1;
     private boolean singlePlayerGame;
 
-    public PlayerController(boolean ki, int size) {
+    public PlayerController(boolean ki, int size, String name1, String name2) {
         singlePlayerGame = ki;
-        player1 = new Player(Color.BLACK, "Spieler 1", size);
+        player1 = new Player(Color.BLACK, name1.isEmpty() ? "Player 1" : name1, size);
         if (!ki) {
-            player2 = new Player(Color.WHITE, "Spieler 2", size);
+            player2 = new Player(Color.WHITE, name2.isEmpty() ? "Player 2" : name2, size);
         }
         currentPlayer1 = true;
     }

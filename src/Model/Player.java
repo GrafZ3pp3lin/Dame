@@ -9,7 +9,7 @@ public class Player {
     private Color cColor;
     private int eliminatedStones;
 
-    public Player(Color c, String name){
+    public Player(Color c, String name) {
         cName = name;
         cColor = c;
     }

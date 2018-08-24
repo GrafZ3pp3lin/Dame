@@ -129,6 +129,7 @@ public class GamePaneController {
                 setToken(s.getIndexX(), s.getIndexY(), s.getcCirc(), s.getColor() == Model.Color.BLACK ? Color.BLACK : Color.WHITE);
             }
         }
+        setNames(p[0].getName(), p[1].getName());
         updatePlayer();
     }
 
@@ -138,7 +139,7 @@ public class GamePaneController {
      * @param name1 Name Spieler1
      * @param name2 Name Spieler2
      */
-    public void setNames(String name1, String name2) {
+    private void setNames(String name1, String name2) {
         if (name1 != null && !name1.isEmpty()) {
             label_player1.setText(name1);
         }
@@ -312,6 +313,7 @@ public class GamePaneController {
     private void onFieldKlick(MouseEvent e) {
         if (!graphicAction && (!control.getPlayerController().isSinglePlayerGame() || control.getPlayerController().isCurrentPlayer1())) {
             if (e.getSource() instanceof Rectangle || e.getSource() instanceof Circle) {
+                setStatus("");
                 if (e.getSource() instanceof Rectangle) {
                     Rectangle temp = (Rectangle) e.getSource();
                     int index = field.indexOf(temp);
@@ -324,11 +326,11 @@ public class GamePaneController {
                     Circle temp = (Circle) e.getSource();
                     Stone s = control.getPlayerController().getCurrentPlayer().getStoneOfClickedCircle(temp);
                     if (s == null) {
-                        System.err.println("Dieser Stein gehört nicht dir");
+                        setStatus("Dieser Stein gehört nicht dir");
                         return;
                     }
                     else if (s.isEliminated()) {
-                        System.err.println("Dieser Stein ist bereits eliminiert!");
+                        setStatus("Dieser Stein ist bereits eliminiert");
                         return;
                     }
                     control.getGame().selectStone(s);

@@ -44,7 +44,7 @@ public class StartPaneController {
 
     @FXML
     private void onMultiPlayerStart() {
-        control.startGame();
+        control.startGame(textField_Player1.getText(), textField_Player2.getText());
     }
 
     public int getSize() {
