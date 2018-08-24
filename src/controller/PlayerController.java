@@ -8,8 +8,10 @@ public class PlayerController {
     private Player player1;
     private Player player2;
     private boolean currentPlayer1;
+    private boolean singlePlayerGame;
 
     public PlayerController(boolean ki, int size) {
+        singlePlayerGame = ki;
         player1 = new Player(Color.BLACK, "Spieler 1", size);
         if (!ki) {
             player2 = new Player(Color.WHITE, "Spieler 2", size);
@@ -55,6 +57,14 @@ public class PlayerController {
 
     public void changePlayer() {
         currentPlayer1 = !currentPlayer1;
+    }
+
+    public boolean isSinglePlayerGame() {
+        return singlePlayerGame;
+    }
+
+    public boolean isCurrentPlayer1() {
+        return currentPlayer1;
     }
 
 }

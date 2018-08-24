@@ -3,6 +3,12 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 
+/**
+ * Steuerung für das Start Fenster
+ *
+ * @author Johannes Gaiser
+ */
+
 public class StartPaneController {
 
     private final String acht = "8 * 8";

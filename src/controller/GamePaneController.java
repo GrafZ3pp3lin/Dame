@@ -11,6 +11,13 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.*;
 
+/**
+ * Diese Klasse verwaltet das SpielFeld und steuert
+ * Benutzereingaben innerhalb eines Spiels
+ *
+ * @author Johannes Gaiser
+ */
+
 public class GamePaneController {
 
     private Main control;
@@ -34,10 +41,22 @@ public class GamePaneController {
     private ArrayList<Rectangle> field;
     private ArrayList<Circle> tokens;
 
+    /**
+     * setzt alle notwendigen Instanzen
+     *
+     * @param control Instanz der Main Klasse
+     */
     public void setInstances(Main control) {
         this.control = control;
     }
 
+    /**
+     *stellt das Spielfelds grafisch dar
+     *
+     * @param amount Größe des Spielfelds (8/10)
+     * @param size Größe des Spielfelds in Pixel
+     * @param pf Instanz von PlayingField (Daten für das Spielfeld)
+     */
     public void buildPlayingField(int amount, int size, PlayingField pf) {
         this.amount = amount;
         this.size = size;
@@ -71,6 +90,9 @@ public class GamePaneController {
         colorField();
     }
 
+    /**
+     * färbt das Spielfeld in seiner Standardfarbe ein
+     */
     public void colorField() {
         int i = 0;
         for (Rectangle rec : field) {
@@ -83,12 +105,19 @@ public class GamePaneController {
         }
     }
 
+    /**
+     * entfernt alle grafischen Objekte von der Oberfläche
+     */
     public void clearField() {
         hbox_player1.getChildren().clear();
         hbox_player2.getChildren().clear();
         playingField.getChildren().clear();
     }
 
+    /**
+     * setzt die Spielsteine der Spieler auf das Spielfeld
+     * @param p alle Spieler
+     */
     public void createTokens(Player... p) {
         for (Player player : p) {
             for (Stone s : player.getArray()) {
@@ -97,6 +126,10 @@ public class GamePaneController {
         }
     }
 
+    /**
+     * entfernt einen einzigen Stein vom Spielfeld und setzt diesen an den Rand
+     * @param stone Stein der entfernt wird
+     */
     public void removeToken(Stone stone) {
         Player temp = control.getPlayerController().getPlayerByColor(stone.getColor());
         playingField.getChildren().remove(stone.getcCirc());
@@ -110,6 +143,12 @@ public class GamePaneController {
         }
     }
 
+    /**
+     * bewegt einen Stein entlang eines Moves
+     * während der Stein bewegt wird, sind weitere Benutzereingaben gesperrt.
+     *
+     * @param move Move, den der Stein macht
+     */
     public void moveToken(Move move) {
         graphicAction = true;
         double value = size / amount;
@@ -147,11 +186,25 @@ public class GamePaneController {
         t.schedule(task, 0, 40);
     }
 
+    /**
+     * testet ob ein Circle grafisch über einem Feld liegt
+     *
+     * @param s Stein
+     * @param f Feld
+     * @param value Abstand in dem der Stein bewegt wird
+     * @return true, falls der Stein über dem Feld liegt
+     */
     private boolean isStoneNearField(Stone s, Field f, double value) {
         return (f.getIndexX() + 0.4) * value <= s.getcCirc().getLayoutX() && (f.getIndexX() + 0.6) * value >= s.getcCirc().getLayoutX() &&
                 size - (f.getIndexY() + 0.6) * value <= s.getcCirc().getLayoutY() && size - (f.getIndexY() + 0.4) * value >= s.getcCirc().getLayoutY();
     }
 
+    /**
+     * hebt alle besuchten Felder und mögliche weitere Felder hervor
+     *
+     * @param fields mögliche Felder
+     * @param move Move (besuchte Felder)
+     */
     public void highlightFields(List<Field> fields, Move move) {
         colorField();
         for (Field f : fields) {
@@ -162,6 +215,14 @@ public class GamePaneController {
         }
     }
 
+    /**
+     * setzt einen Token(Circle) richtig aufs Spielfeld
+     *
+     * @param x X-Position
+     * @param y Y-Position
+     * @param c Kreis
+     * @param color Farbe
+     */
     private void setToken(int x, int y, Circle c, Color color) {
         double a = size / amount;
         c.setRadius(tokenRadius);
@@ -173,11 +234,22 @@ public class GamePaneController {
         tokens.add(c);
     }
 
+    /**
+     * updatet einen Token, sodass dieser ganz oben auf dem Feld liegt und sich
+     * über anderen Tokens befindet.
+     * Wichtig für moveToken
+     * @param c Kreis
+     */
     private void updateToken(Circle c) {
         playingField.getChildren().remove(c);
         playingField.getChildren().add(c);
     }
 
+    /**
+     * hebt einen Kreis grafisch hervor
+     *
+     * @param s Superdamen Stein
+     */
     public void visualizeSuperDame(Stone s) {
         if (s.isSuperDame()) {
             s.getcCirc().setStrokeWidth(2);
@@ -186,9 +258,14 @@ public class GamePaneController {
         //visualize SuperDame
     }
 
+    /**
+     * verarbeitet die Maus Klicks auf das Spielfeld
+     *
+     * @param e MouseEvent
+     */
     @FXML
     private void onFieldKlick(MouseEvent e) {
-        if (!graphicAction) {
+        if (!graphicAction && (!control.getPlayerController().isSinglePlayerGame() || control.getPlayerController().isCurrentPlayer1())) {
             if (e.getSource() instanceof Rectangle || e.getSource() instanceof Circle) {
                 if (e.getSource() instanceof Rectangle) {
                     Rectangle temp = (Rectangle) e.getSource();

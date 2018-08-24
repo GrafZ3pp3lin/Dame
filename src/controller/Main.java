@@ -12,6 +12,12 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
+/**
+ * Steuerung.
+ * lädt alle Oberflächen und verwaltet diese
+ *
+ * @author Johannes Gaiser
+ */
 public class Main extends Application {
 
     private Stage primaryStage;
@@ -50,6 +56,9 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    /**
+     * lädt das Menü
+     */
     private void initRootLayout() {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -64,6 +73,9 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * lädt die Start Oberfläche
+     */
     private void loadStartLayout() {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -87,6 +99,9 @@ public class Main extends Application {
         gamePaneController.clearField();
     }
 
+    /**
+     * lädt die Spiel Oberfläche
+     */
     private void loadGameLayout() {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -105,6 +120,9 @@ public class Main extends Application {
         menuPaneController.disableReturnItem(false);
     }
 
+    /**
+     * lädt die About Oberfläche
+     */
     private void loadAboutPane() {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -126,6 +144,9 @@ public class Main extends Application {
         aboutStage.show();
     }
 
+    /**
+     * startet ein Multiplayer Spiel
+     */
     public void startGame() {
         playingField = new PlayingField(startPaneController.getSize());
         gamePaneController.buildPlayingField(startPaneController.getSize(), (int)primaryStage.getHeight() - 200, playingField);

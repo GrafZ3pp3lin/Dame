@@ -3,6 +3,12 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 
+/**
+ * Steuerung für das Menü
+ *
+ * @author Johannes Gaiser
+ */
+
 public class MenuPaneController {
 
     private Main control;

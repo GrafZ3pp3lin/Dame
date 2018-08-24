@@ -3,6 +3,11 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+/**
+ * initialisiert das About Fenster
+ *
+ * @author Johannes Gaiser
+ */
 public class AboutPaneController {
 
     @FXML
