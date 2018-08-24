@@ -213,6 +213,10 @@ public class GamePaneController {
                 }
             }
         }
+
+        if (e.getSource() instanceof Rectangle && ((Rectangle) e.getSource()).getFill().equals(Color.DARKGREEN)){
+            System.out.println("ja");
+        }
     }
 
 }
