@@ -71,6 +71,13 @@ public class Player {
         return cColor;
     }
 
+    public Color getEnemyColor(){
+        if (cColor.equals(Color.BLACK)){
+            return Color.WHITE;
+        }
+        return Color.BLACK;
+    }
+
     public int getEliminatedStones() {
         return eliminatedStones;
     }
