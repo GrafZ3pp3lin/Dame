@@ -129,6 +129,7 @@ public class GamePaneController {
                 setToken(s.getIndexX(), s.getIndexY(), s.getcCirc(), s.getColor() == Model.Color.BLACK ? Color.BLACK : Color.WHITE);
             }
         }
+        updatePlayer();
     }
 
     /**
@@ -148,7 +149,6 @@ public class GamePaneController {
 
     /**
      * update Player Name visual
-     * //TODO on start update
      */
     private void updatePlayer() {
         if (control.getPlayerController().isCurrentPlayer1()) {
