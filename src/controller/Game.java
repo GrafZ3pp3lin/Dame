@@ -106,11 +106,10 @@ public class Game {
                         }
                     }
                 }
-                gamePaneController.colorField();
-                gamePaneController.moveToken(move);
-                move.update();
-                move = null;
-                possibleFields.clear();
+                makeMove(move);
+            }
+            else if (move.getEndField().equals(f)) {
+                makeMove(move);
             }
         }
         else if (playerController.getCurrentPlayer().hasStoneAt(f.getIndexX(), f.getIndexY())) {
@@ -118,6 +117,12 @@ public class Game {
         }
     }
 
-
+    private void makeMove(Move move) {
+        gamePaneController.colorField();
+        gamePaneController.moveToken(move);
+        move.update();
+        move = null;
+        possibleFields.clear();
+    }
 
 }
