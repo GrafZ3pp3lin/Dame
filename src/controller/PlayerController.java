@@ -1,7 +1,6 @@
 package controller;
 
-import Model.Color;
-import Model.Player;
+import Model.*;
 
 public class PlayerController {
 
@@ -9,12 +8,17 @@ public class PlayerController {
     private Player player2;
     private boolean currentPlayer1;
     private boolean singlePlayerGame;
+    private Main main;
 
-    public PlayerController(boolean ki, int size) {
+    public PlayerController(boolean ki, int size, Main main) {
         singlePlayerGame = ki;
+        this.main = main;
         player1 = new Player(Color.BLACK, "Spieler 1", size);
         if (!ki) {
             player2 = new Player(Color.WHITE, "Spieler 2", size);
+        }
+        else{
+            player2 = new KI(Color.WHITE, "Spieler 2", size, player1, main.playingField);
         }
         currentPlayer1 = true;
     }
@@ -56,7 +60,17 @@ public class PlayerController {
     }
 
     public void changePlayer() {
+
         currentPlayer1 = !currentPlayer1;
+        if(singlePlayerGame && !currentPlayer1){
+            Zugfolge z = ((KI) player2).KI();
+            System.out.println(z);
+            Move move = new Move(z.getStone());
+            move.addEnterField(main.playingField.getField(z.endX(), z.endY()));
+            main.getGamePaneController().moveToken(move);
+
+            changePlayer();
+        }
     }
 
     public boolean isSinglePlayerGame() {

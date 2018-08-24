@@ -147,10 +147,10 @@ public class Main extends Application {
     /**
      * startet ein Multiplayer Spiel
      */
-    public void startGame() {
+    public void startGame(boolean ki) {
         playingField = new PlayingField(startPaneController.getSize());
         gamePaneController.buildPlayingField(startPaneController.getSize(), (int)primaryStage.getHeight() - 200, playingField);
-        playerController = new PlayerController(false, startPaneController.getSize());
+        playerController = new PlayerController(ki, startPaneController.getSize(), this);
         gamePaneController.createTokens(playerController.getPlayer1(), playerController.getPlayer2());
         game = new Game(this, gamePaneController, playerController);
         setGameLayout();
@@ -158,6 +158,10 @@ public class Main extends Application {
 
     public PlayerController getPlayerController() {
         return playerController;
+    }
+
+    public GamePaneController getGamePaneController(){
+        return gamePaneController;
     }
 
     public Game getGame() {

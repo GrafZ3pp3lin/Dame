@@ -39,12 +39,12 @@ public class StartPaneController {
 
     @FXML
     private void onSinglePlayerStart() {
-        System.err.println("Oops. KI denied your request!");
+        control.startGame(true);
     }
 
     @FXML
     private void onMultiPlayerStart() {
-        control.startGame();
+        control.startGame(false);
     }
 
     public int getSize() {

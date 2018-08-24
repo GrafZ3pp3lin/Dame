@@ -52,4 +52,7 @@ public class PlayingField {
         return FieldSize;
     }
 
+    public boolean isPositionInsideField(int x, int y){
+        return x >= 0 && x < FieldSize && y >= 0 && y < FieldSize;
+    }
 }

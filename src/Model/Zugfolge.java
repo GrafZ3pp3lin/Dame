@@ -20,4 +20,20 @@ public class Zugfolge {
     }
 
     public int getZuglaenge(){return zuglaenge;}
+
+    public String toString(){
+        return "laenge: " + zuglaenge + "; vonPos: " + s.getIndexX() + ", " + s.getIndexY() + " nachPos: " + endX + ", " + endY;
+    }
+
+    public Stone getStone(){
+        return s;
+    }
+
+    public int endX(){
+        return endX;
+    }
+
+    public int endY(){
+        return endY;
+    }
 }
