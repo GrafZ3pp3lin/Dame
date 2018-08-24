@@ -5,6 +5,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
+<!--@author Johannes Gaiser-->
+
 <BorderPane prefHeight="800.0" prefWidth="1000.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenuPaneController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
