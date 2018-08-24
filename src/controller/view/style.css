@@ -153,3 +153,13 @@
     -fx-text-fill: #700000;
     -fx-effect: dropshadow(gaussian,white, 2, 0.0, 3, 3);
 }
+
+#nameOnTurn {
+    -fx-font-size: 30px;
+    -fx-font-weight: bolder;
+    -fx-text-fill: #700000;
+}
+
+#name {
+    -fx-font-size: 30px;
+}

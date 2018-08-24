@@ -2,6 +2,7 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 
 /**
  * Steuerung für das Start Fenster
@@ -18,6 +19,12 @@ public class StartPaneController {
 
     @FXML
     private ComboBox<String> comboBox_size;
+
+    @FXML
+    private TextField textField_Player1;
+
+    @FXML
+    private TextField textField_Player2;
 
     public void setInstances(Main control) {
         this.control = control;

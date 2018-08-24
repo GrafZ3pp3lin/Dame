@@ -3,6 +3,7 @@ package controller;
 import Model.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -33,10 +34,19 @@ public class GamePaneController {
     private BorderPane parent;
 
     @FXML
-    private HBox hbox_player1;
+    private VBox vbox_player1;
 
     @FXML
-    private HBox hbox_player2;
+    private VBox vbox_player2;
+
+    @FXML
+    private Label label_player1;
+
+    @FXML
+    private Label label_player2;
+
+    @FXML
+    private Label label_status;
 
     private ArrayList<Rectangle> field;
     private ArrayList<Circle> tokens;
@@ -61,11 +71,6 @@ public class GamePaneController {
         this.amount = amount;
         this.size = size;
         this.tokenRadius = size / amount / 3;
-
-        hbox_player1.setMinHeight(tokenRadius);
-        hbox_player1.setFillHeight(true);
-        hbox_player2.setMinHeight(tokenRadius);
-        hbox_player2.setFillHeight(true);
 
         field = new ArrayList<>();
         tokens = new ArrayList<>();
@@ -109,8 +114,8 @@ public class GamePaneController {
      * entfernt alle grafischen Objekte von der Oberfläche
      */
     public void clearField() {
-        hbox_player1.getChildren().clear();
-        hbox_player2.getChildren().clear();
+        vbox_player1.getChildren().clear();
+        vbox_player2.getChildren().clear();
         playingField.getChildren().clear();
     }
 
@@ -127,6 +132,44 @@ public class GamePaneController {
     }
 
     /**
+     * setzt die Namen der beiden Spieler
+     *
+     * @param name1 Name Spieler1
+     * @param name2 Name Spieler2
+     */
+    public void setNames(String name1, String name2) {
+        if (name1 != null && !name1.isEmpty()) {
+            label_player1.setText(name1);
+        }
+        if (name2 != null && !name2.isEmpty()) {
+            label_player2.setText(name2);
+        }
+    }
+
+    /**
+     * update Player name visual
+     */
+    private void updatePlayer() {
+        if (control.getPlayerController().isCurrentPlayer1()) {
+            label_player1.setId("nameOnTurn");
+            label_player2.setId("name");
+        }
+        else {
+            label_player1.setId("name");
+            label_player2.setId("nameOnTurn");
+        }
+    }
+
+    /**
+     * Message auf der Spieloberfläche
+     *
+     * @param message Message
+     */
+    public void setStatus(String message) {
+        label_status.setText(message);
+    }
+
+    /**
      * entfernt einen einzigen Stein vom Spielfeld und setzt diesen an den Rand
      * @param stone Stein der entfernt wird
      */
@@ -136,10 +179,10 @@ public class GamePaneController {
 //        stone.getcCirc().setLayoutX((temp.getEliminatedStones() + 1) * tokenRadius);
 //        stone.getcCirc().setLayoutY(tokenRadius);
         if (stone.getColor() == Model.Color.BLACK) {
-            hbox_player1.getChildren().add(stone.getcCirc());
+            vbox_player1.getChildren().add(stone.getcCirc());
         }
         else {
-            hbox_player2.getChildren().add(stone.getcCirc());
+            vbox_player2.getChildren().add(stone.getcCirc());
         }
     }
 
@@ -179,6 +222,7 @@ public class GamePaneController {
                         t.cancel();
                         graphicAction = false;
                         control.getPlayerController().changePlayer();
+                        updatePlayer();
                     }
                 }
             }

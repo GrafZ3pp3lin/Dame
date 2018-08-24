@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
 
 <!--@author Johannes Gaiser-->
 
@@ -14,10 +15,36 @@
             <Pane fx:id="playingField" />
          </children></VBox>
    </center>
+   <left>
+      <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label id="nameOnTurn" fx:id="label_player1" text="Player1" />
+            <VBox fx:id="vbox_player1" fillWidth="false" VBox.vgrow="ALWAYS" />
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets left="10.0" right="10.0" top="20.0" />
+         </padding>
+      </VBox>
+   </left>
+   <right>
+      <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label id="name" fx:id="label_player2" text="Player2" />
+            <VBox fx:id="vbox_player2" VBox.vgrow="ALWAYS" />
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" top="20.0" />
+         </padding>
+      </VBox>
+   </right>
    <top>
-      <HBox fx:id="hbox_player2" alignment="CENTER" BorderPane.alignment="CENTER" />
+      <Label fx:id="label_status" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets top="10.0" />
+         </BorderPane.margin>
+      </Label>
    </top>
-   <bottom>
-      <HBox fx:id="hbox_player1" alignment="CENTER" BorderPane.alignment="CENTER" />
-   </bottom>
 </BorderPane>
