@@ -39,12 +39,12 @@ public class StartPaneController {
 
     @FXML
     private void onSinglePlayerStart() {
-        control.startGame(true);
+        control.startGame(true, textField_Player1.getText(), textField_Player2.getText());
     }
 
     @FXML
     private void onMultiPlayerStart() {
-        control.startGame(false);
+        control.startGame(false, textField_Player1.getText(), textField_Player2.getText());
     }
 
     public int getSize() {

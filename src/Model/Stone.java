@@ -1,5 +1,6 @@
 package Model;
 
+import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 
 public class Stone {
@@ -8,7 +9,7 @@ public class Stone {
     private boolean eliminated;
     private Color cColor;
     private boolean superDame;
-    private Circle cCirc;
+    private Node cCirc;
 
     public Stone(Color c, int x, int y, boolean superD){
         cColor = c;
@@ -19,8 +20,11 @@ public class Stone {
         cCirc = new Circle();
     }
 
-    public Circle getcCirc(){
+    public Node getcCirc(){
         return cCirc;
+    }
+    public void changeNode(Node n) {
+        cCirc = n;
     }
     public Color getColor(){
         return cColor;

@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -37,14 +38,24 @@ public class Main extends Application {
     private PlayerController playerController;
     private Game game;
 
+    private Image logo;
+    private Image superDame;
+
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void init() {
+        logo = new Image(Main.class.getClassLoader().getResourceAsStream("resources/Dame-Logo.png"));
+        superDame = new Image(Main.class.getClassLoader().getResourceAsStream("resources/SuperDame.png"));
     }
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Dame");
+        primaryStage.getIcons().add(logo);
         primaryStage.setOnCloseRequest(e -> Platform.exit());
 
         initRootLayout();
@@ -148,10 +159,10 @@ public class Main extends Application {
     /**
      * startet ein Multiplayer Spiel
      */
-    public void startGame(boolean ki) {
+    public void startGame(boolean ki, String name1, String name2) {
         playingField = new PlayingField(startPaneController.getSize());
         gamePaneController.buildPlayingField(startPaneController.getSize(), (int)primaryStage.getHeight() - 200, playingField);
-        playerController = new PlayerController(ki, startPaneController.getSize(), this);
+        playerController = new PlayerController(false, startPaneController.getSize(), name1, name2);
         gamePaneController.createTokens(playerController.getPlayer1(), playerController.getPlayer2());
         game = new Game(this, gamePaneController, playerController);
         setGameLayout();
@@ -167,6 +178,10 @@ public class Main extends Application {
 
     public Game getGame() {
         return game;
+    }
+
+    public Image getSuperDameImage() {
+        return superDame;
     }
 
 }

@@ -16,7 +16,7 @@ public class AboutPaneController {
     @FXML
     private void initialize() {
         label_des.setText("Diese Software wurde im Rahmen eines Projekts an der DHBW Horb entwickelt.\n" +
-                "Entwickler:\n" +
+                "Entwickler:\n\n" +
                 "Alexander Hengsteler\n" +
                 "Joel Schmid\n" +
                 "Johannes Gaiser\n" +

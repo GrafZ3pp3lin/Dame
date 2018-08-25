@@ -106,7 +106,7 @@ public class Game {
                 }
                 makeMove(move);
             }
-            else if (move.getEndField().equals(f)) {
+            else if (move.getEndField().equals(f) && move.getEndField() != move.getFirstField()) {
                 makeMove(move);
             }
         }

@@ -1,5 +1,6 @@
 package Model;
 
+import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 
 public class Player {
@@ -9,7 +10,7 @@ public class Player {
     private Color cColor;
     private int eliminatedStones;
 
-    public Player(Color c, String name){
+    public Player(Color c, String name) {
         cName = name;
         cColor = c;
     }
@@ -90,10 +91,10 @@ public class Player {
         eliminatedStones = value;
     }
 
-    //returns the Stone Object to the clicked Circle
-    public Stone getStoneOfClickedCircle(Circle c) {
+    //returns the Stone Object to the clicked Node(Circle)
+    public Stone getStoneOfClickedCircle(Node n) {
         for (Stone s : cStone) {
-            if (s.getcCirc().equals(c)) {
+            if (s.getcCirc().equals(n)) {
                 return s;
             }
         }

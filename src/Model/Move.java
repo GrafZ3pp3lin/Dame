@@ -21,6 +21,13 @@ public class Move {
         return stone;
     }
 
+    public Field getFirstField() {
+        if (enteredFields != null && !enteredFields.isEmpty()) {
+            return enteredFields.get(0);
+        }
+        return null;
+    }
+
     public Field getEndField() {
         if (enteredFields != null && !enteredFields.isEmpty()) {
             return enteredFields.get(enteredFields.size() - 1);

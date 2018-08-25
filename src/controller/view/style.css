@@ -101,50 +101,12 @@
 	-fx-text-fill: black;
 }
 
-.scroll-bar .track {
-    -fx-background-color: transparent;
-    -fx-border-color:derive(gray,90%);
-    -fx-background-radius: 0em;
+.Superdame-white {
+    -fx-text-fill: black;
 }
 
-.scroll-bar .thumb {
-    -fx-background-color:derive(black,90%);
-    -fx-background-insets: 0, 0, 0;
-    -fx-background-radius: 0em;
-}
-
-.scroll-bar .thumb:hover,
-.scroll-bar .thumb:pressed {
-	-fx-background-color: derive(black,50%);
-}
-
-.increment-button:hover ,
-.decrement-button:hover {
-    -fx-background-color:derive(gray,100%);
-}
-
-.scroll-bar .increment-button,.scroll-bar .decrement-button  {
-	-fx-padding: 5px;
-}
-
-.scroll-bar .increment-arrow,.scroll-bar .decrement-arrow {
-	-fx-font-size: 15px;
-}
-
-.Fullscreen {
-	-fx-font-size: 30px;
-}
-
-.Fullscreen.menu .label {
-	-fx-font-size: 22px;
-}
-
-.Fullscreen.web-view {
-	-fx-font-scale: 1.6;
-}
-
-.circle {
-	-fx-fill: #004b95;
+.Superdame-black {
+    -fx-text-fill: white;
 }
 
 #title {
