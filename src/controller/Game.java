@@ -1,9 +1,6 @@
 package controller;
 
-import Model.Color;
-import Model.Field;
-import Model.Move;
-import Model.Stone;
+import Model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,6 +120,17 @@ public class Game {
         move.update();
         move = null;
         possibleFields.clear();
+    }
+
+    public void playKI(){
+        if(control.getPlayerController().isSinglePlayerGame() && !control.getPlayerController().isCurrentPlayer1()){
+            Zugfolge z = ((KI) control.getPlayerController().getPlayer2()).KI();
+            System.out.println(z);
+            control.getGamePaneController().moveToken(z);
+            z.update();
+
+            control.getPlayerController().changePlayer();
+        }
     }
 
 }

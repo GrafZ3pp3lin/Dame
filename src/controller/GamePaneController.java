@@ -223,6 +223,7 @@ public class GamePaneController {
                         graphicAction = false;
                         control.getPlayerController().changePlayer();
                         updatePlayer();
+                        control.getGame().playKI();
                     }
                 }
             }

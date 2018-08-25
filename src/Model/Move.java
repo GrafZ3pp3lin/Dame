@@ -50,6 +50,14 @@ public class Move {
         enteredFields.add(f);
     }
 
+    public void addSkipField(List<Field> f) {
+        skipedFields.addAll(f);
+    }
+
+    public void addEnterField(List<Field> f) {
+        enteredFields.addAll(f);
+    }
+
     public void addSkipField(Field f) {
         skipedFields.add(f);
     }

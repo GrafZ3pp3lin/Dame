@@ -29,7 +29,7 @@ public class KI extends Player{
         alleZuege = new ArrayList<>();
 
         for (Stone s : getArray()) {
-            KI(s, s.getIndexX(), s.getIndexY(), 0, true, new ArrayList<Stone>());
+            KI(s, s.getIndexX(), s.getIndexY(), 0, true, new ArrayList<Field>(), new ArrayList<Field>());
         }
 /*
         for(Zugfolge z: alleZuege){
@@ -41,10 +41,10 @@ public class KI extends Player{
     }
 
 
-    private int diagonalcheck(Direction d, int x, int y, boolean ersterDurchgang, List<Stone>rausgeschmissen){
+    private int diagonalcheck(Direction d, int x, int y, boolean ersterDurchgang, List<Field>skipped){
         if(d.equals(Direction.LEFT)) {
             if(enemy.hasStoneAt(x+1, y-1) && !(enemy.hasStoneAt(x+2, y-2) || hasStoneAt(x+2, y-2))){
-                rausgeschmissen.add(enemy.getStoneAt(x+1,y-1));
+                skipped.add(playingField.getField(x+1,y-1));
                 return 2;
             }
             if(ersterDurchgang && playingField.isPositionInsideField(x+1, y-1) && !(enemy.hasStoneAt(x+1, y-1) || hasStoneAt(x+1, y-1))){
@@ -55,7 +55,7 @@ public class KI extends Player{
 
         else if(d.equals(Direction.RIGHT)) {
             if(enemy.hasStoneAt(x-1, y-1) && !(enemy.hasStoneAt(x-2, y-2) || hasStoneAt(x-2, y-2))){
-                rausgeschmissen.add(enemy.getStoneAt(x-1,y-1));
+                skipped.add(playingField.getField(x-1,y-1));
                 return 2;
             }
             if(ersterDurchgang && playingField.isPositionInsideField(x-1, y-1) && !(enemy.hasStoneAt(x-1, y-1) || hasStoneAt(x-1, y-1))){
@@ -66,23 +66,33 @@ public class KI extends Player{
         return 0;
     }
 
-    private void KI(Stone s, int x, int y, int zuglaenge, boolean ersterDurchgang, List<Stone> rausgeschmissen){
+    private void KI(Stone s, int x, int y, int zuglaenge, boolean ersterDurchgang, List<Field> skipped, List<Field>entered){
         int a;
-        if((a = diagonalcheck(Direction.LEFT, x, y, ersterDurchgang, rausgeschmissen)) > 1){
-            KI(s,x+a, y-a, zuglaenge + a, false, new ArrayList<Stone>(rausgeschmissen));
+        if((a = diagonalcheck(Direction.LEFT, x, y, ersterDurchgang, skipped)) > 1){
+            entered.add(playingField.getField(x+a,y-a));
+            KI(s,x+a, y-a, zuglaenge + a, false, new ArrayList<Field>(skipped),new ArrayList<Field>(entered));
         }
         else{
             if(zuglaenge+a > 0){
-                alleZuege.add(new Zugfolge(rausgeschmissen, zuglaenge + a, s, x+a, y-a));
+                entered.add(playingField.getField(x+a,y-a));
+                Zugfolge z = new Zugfolge(zuglaenge + a, s);
+                z.addEnterField(entered);
+                z.addSkipField(skipped);
+                alleZuege.add(z);
             }
         }
 
-        if((a = diagonalcheck(Direction.RIGHT, x, y, ersterDurchgang, rausgeschmissen)) > 1){
-            KI(s,x-a, y-a, zuglaenge + a, false, new ArrayList<Stone>(rausgeschmissen));
+        if((a = diagonalcheck(Direction.RIGHT, x, y, ersterDurchgang, skipped)) > 1){
+            entered.add(playingField.getField(x+a,y-a));
+            KI(s,x-a, y-a, zuglaenge + a, false, new ArrayList<Field>(skipped),new ArrayList<Field>(entered));
         }
         else{
             if(zuglaenge+a > 0){
-                alleZuege.add(new Zugfolge(rausgeschmissen, zuglaenge + a, s, x-a, y-a));
+                entered.add(playingField.getField(x+a,y-a));
+                Zugfolge z = new Zugfolge(zuglaenge + a, s);
+                z.addEnterField(entered);
+                z.addSkipField(skipped);
+                alleZuege.add(z);
             }
         }
     }

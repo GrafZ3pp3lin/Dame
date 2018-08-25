@@ -60,17 +60,7 @@ public class PlayerController {
     }
 
     public void changePlayer() {
-
         currentPlayer1 = !currentPlayer1;
-        if(singlePlayerGame && !currentPlayer1){
-            Zugfolge z = ((KI) player2).KI();
-            System.out.println(z);
-            Move move = new Move(z.getStone());
-            move.addEnterField(main.playingField.getField(z.endX(), z.endY()));
-            main.getGamePaneController().moveToken(move);
-
-            changePlayer();
-        }
     }
 
     public boolean isSinglePlayerGame() {
