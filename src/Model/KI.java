@@ -4,7 +4,6 @@ import controller.Main;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -28,7 +27,7 @@ public class KI extends Player {
     public Zugfolge KI(){
         alleZuege = new ArrayList<>();
 
-        for (Stone s : getArray()) {
+        for (Stone s : getStones()) {
             KI(s, s.getIndexX(), s.getIndexY(), 0, true, new ArrayList<Field>(), new ArrayList<Field>());
         }
 /*

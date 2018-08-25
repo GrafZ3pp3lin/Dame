@@ -1,7 +1,6 @@
 package controller;
 
 import Model.*;
-import com.sun.xml.internal.bind.v2.TODO;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -127,7 +126,7 @@ public class GamePaneController {
      */
     public void createTokens(Player... p) {
         for (Player player : p) {
-            for (Stone s : player.getArray()) {
+            for (Stone s : player.getStones()) {
                 setToken(s.getIndexX(), s.getIndexY(), s.getcCirc(), s.getColor() == Model.Color.BLACK ? Color.BLACK : Color.WHITE);
             }
         }
@@ -153,7 +152,7 @@ public class GamePaneController {
     /**
      * update Player Name visual
      */
-    private void updatePlayer() {
+    public void updatePlayer() {
         if (control.getPlayerController().isCurrentPlayer1()) {
             label_player1.setId("nameOnTurn");
             label_player2.setId("name");
@@ -211,7 +210,9 @@ public class GamePaneController {
                     if (move.getFirstSkipedField() != null && isStoneNearField(move.getStone(), move.getFirstSkipedField(), value)) {
                         Stone s = control.getPlayerController().getOtherPlayer().getStoneAt(move.getFirstSkipedField().getIndexX(), move.getFirstSkipedField().getIndexY());
                         if (s != null) {
+                            //TODO muss eigentlich das Game übernehmen
                             s.setEliminated();
+
                             Platform.runLater(() -> removeToken(s));
                             move.nextSkipedField();
                         }
@@ -221,10 +222,14 @@ public class GamePaneController {
                     placeToken(move.getNextField().getIndexX(), move.getNextField().getIndexY(), move.getStone().getcCirc());
                     if (move.nextField()) {
                         t.cancel();
+                        if (move.getStone().isSuperDame()) {
+                            Platform.runLater(() -> visualizeSuperDame(move.getStone()));
+                        }
                         graphicAction = false;
-                        control.getPlayerController().changePlayer();
-                        updatePlayer();
-                        control.getGame().playKI();
+                        control.getGame().finishedMove();
+//                        control.getPlayerController().changePlayer();
+//                        updatePlayer();
+//                        control.getGame().playKI();
                     }
                 }
             }
@@ -318,7 +323,7 @@ public class GamePaneController {
      *
      * @param s Superdamen Stein
      */
-    public void visualizeSuperDame(Stone s) {
+    private void visualizeSuperDame(Stone s) {
         if (s.isSuperDame() && s.getcCirc() instanceof Circle) {
             Circle c = (Circle)s.getcCirc();
             c.setOnMouseClicked(null);

@@ -60,8 +60,18 @@ public class Player {
 //        cStone[indexStone] = null;
 //    }
 
-    public Stone[] getArray(){
+    public Stone[] getStones() {
         return cStone;
+    }
+
+    public int getActiveStones() {
+        int value = 0;
+        for (Stone s : getStones()) {
+            if (!s.isEliminated()) {
+                value++;
+            }
+        }
+        return value;
     }
 
     public String getName(){

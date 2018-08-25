@@ -28,6 +28,7 @@ public class Game {
     }
 
     //TODO SuperDame
+    //SuperDame kann beliebig viele Schritte gehen
     private boolean testField(int x, int y, int indexX, int indexY, boolean further) {
         Field field = control.playingField.getField(x + indexX, y + indexY);
         if (field != null) {
@@ -47,6 +48,7 @@ public class Game {
     }
 
     //TODO SuperDame
+    //SuperDame kann in alle vier richtungen gehen
     private void testFieldScope(Field f, Color c, boolean further) {
         if (c == Color.BLACK) {
             testField(f.getIndexX(), f.getIndexY(), 1, 1, further);
@@ -118,9 +120,38 @@ public class Game {
     private void makeMove(Move move) {
         gamePaneController.colorField();
         gamePaneController.moveToken(move);
+        //TODO alle übersprungenen Steine eliminieren (move.skippedFields)
         move.update();
-        move = null;
+        testForSuperDame(move.getStone());
+        //TODO test for winner (nur falls die übersprungenen Steine schon eliminiert wurden
         possibleFields.clear();
+    }
+
+    public void finishedMove() {
+        move = null;
+        playerController.changePlayer();
+        gamePaneController.updatePlayer();
+        playKI();
+    }
+
+    private void testForSuperDame(Stone s) {
+        if (s.getColor() == Color.BLACK) {
+            if (s.getIndexY() == 7) {
+                s.setSuperDame();
+            }
+        }
+        else if (s.getIndexY() == 0) {
+            s.setSuperDame();
+        }
+    }
+
+    private void testForWinner() {
+        if (playerController.getPlayer1().getActiveStones() == 0) {
+            //TODO Win Player2
+        }
+        else if (playerController.getPlayer2().getActiveStones() == 0) {
+            //TODO Win Player1
+        }
     }
 
     public void playKI(){
