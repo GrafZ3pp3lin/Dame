@@ -8,7 +8,7 @@
 
 <!--@author Johannes Gaiser-->
 
-<AnchorPane prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AboutPaneController">
+<AnchorPane prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AboutPaneController">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="10.0">
          <children>
@@ -19,6 +19,6 @@
             </ImageView>
          </children>
       </VBox>
-      <Label fx:id="label_des" layoutX="21.0" layoutY="156.0" prefHeight="236.0" prefWidth="272.0" wrapText="true" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="150.0" />
+      <Label fx:id="label_des" layoutX="21.0" layoutY="156.0" prefHeight="236.0" prefWidth="272.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="150.0" />
    </children>
 </AnchorPane>

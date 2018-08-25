@@ -8,7 +8,7 @@
 
 <!--@author Johannes Gaiser-->
 
-<BorderPane fx:id="parent" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GamePaneController">
+<BorderPane fx:id="parent" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GamePaneController">
    <center>
       <VBox fx:id="deck" alignment="CENTER" fillWidth="false" BorderPane.alignment="CENTER">
          <children>
@@ -19,7 +19,7 @@
       <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Label id="nameOnTurn" fx:id="label_player1" text="Player1" />
-            <VBox fx:id="vbox_player1" fillWidth="false" VBox.vgrow="ALWAYS" />
+            <VBox fx:id="vbox_player1" fillWidth="false" spacing="2.0" VBox.vgrow="ALWAYS" />
          </children>
          <BorderPane.margin>
             <Insets />
@@ -33,7 +33,7 @@
       <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Label id="name" fx:id="label_player2" text="Player2" />
-            <VBox fx:id="vbox_player2" VBox.vgrow="ALWAYS" />
+            <VBox fx:id="vbox_player2" spacing="2.0" VBox.vgrow="ALWAYS" />
          </children>
          <padding>
             <Insets left="10.0" right="10.0" top="20.0" />

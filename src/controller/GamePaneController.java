@@ -180,8 +180,6 @@ public class GamePaneController {
     public void removeToken(Stone stone) {
         Player temp = control.getPlayerController().getPlayerByColor(stone.getColor());
         playingField.getChildren().remove(stone.getcCirc());
-//        stone.getcCirc().setLayoutX((temp.getEliminatedStones() + 1) * tokenRadius);
-//        stone.getcCirc().setLayoutY(tokenRadius);
         if (stone.getColor() == Model.Color.BLACK) {
             vbox_player1.getChildren().add(stone.getcCirc());
         }
@@ -221,8 +219,6 @@ public class GamePaneController {
                 }
                 else {
                     placeToken(move.getNextField().getIndexX(), move.getNextField().getIndexY(), move.getStone().getcCirc());
-//                    move.getStone().getcCirc().setLayoutX((move.getNextField().getIndexX() + 0.5) * value);
-//                    move.getStone().getcCirc().setLayoutY(size - (move.getNextField().getIndexY() + 0.5) * value);
                     if (move.nextField()) {
                         t.cancel();
                         graphicAction = false;
@@ -236,7 +232,7 @@ public class GamePaneController {
     }
 
     /**
-     * testet ob ein Circle grafisch über einem Feld liegt
+     * testet ob eine Node grafisch über einem Feld liegt
      *
      * @param s Stein
      * @param f Feld
@@ -374,10 +370,6 @@ public class GamePaneController {
                     control.getGame().selectStone(s);
                 }
             }
-        }
-
-        if (e.getSource() instanceof Rectangle && ((Rectangle) e.getSource()).getFill().equals(Color.DARKGREEN)){
-            System.out.println("ja");
         }
     }
 
