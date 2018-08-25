@@ -9,6 +9,10 @@
     -fx-accent: #ffcc00;
 }
 
+.background-bright {
+    -fx-background-color: linear-gradient(#505050 80%, #808080 100%);
+}
+
 .ImageBackground {
     -fx-background-color: #808080;
     -fx-background-image: url("../../resources/Dame-Logo.png");
@@ -117,4 +121,9 @@
 
 #name {
     -fx-font-size: 30px;
+}
+
+#status {
+    -fx-font-size: 24px;
+    -fx-text-fill: #ffaa00;
 }
