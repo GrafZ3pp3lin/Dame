@@ -8,12 +8,13 @@ public class Move {
     private Stone stone;
     private List<Field> enteredFields;
     private List<Field> skipedFields;
-    private int index = 1;
+    private int index;
 
     public Move(Stone s) {
         stone = s;
         enteredFields = new ArrayList<>();
         skipedFields = new ArrayList<>();
+        index = 1;
     }
 
     public Stone getStone() {

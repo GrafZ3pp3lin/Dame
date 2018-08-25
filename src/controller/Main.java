@@ -27,6 +27,7 @@ public class Main extends Application {
     private Stage aboutStage;
 
     //Model
+    //TODO playingField static machen, für die KI?!
     public PlayingField playingField;
 
     //Controller

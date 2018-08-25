@@ -1,6 +1,7 @@
 package controller;
 
 import Model.*;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,10 +124,10 @@ public class Game {
     }
 
     public void playKI(){
-        if(control.getPlayerController().isSinglePlayerGame() && !control.getPlayerController().isCurrentPlayer1()){
+        if(control.getPlayerController().isSinglePlayerGame() && !control.getPlayerController().isCurrentPlayer1()) {
+            //TODO erstes Feld, auf dem der Stein sich schon befindet muss auch in die Liste 'enteredFields'
             Zugfolge z = ((KI) control.getPlayerController().getPlayer2()).KI();
-            System.out.println(z);
-            control.getGamePaneController().moveToken(z);
+            Platform.runLater(() -> control.getGamePaneController().moveToken(z));
             z.update();
 
             control.getPlayerController().changePlayer();

@@ -3,7 +3,7 @@ package Model;
 /**
  * Created by joels on 24.08.2018.
  */
-public class Zugfolge extends Move{
+public class Zugfolge extends Move {
     private int zuglaenge;
 
     public Zugfolge(int zuglaenge, Stone s){
