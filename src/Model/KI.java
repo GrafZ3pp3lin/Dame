@@ -31,34 +31,41 @@ public class KI extends Player {
         for (Stone s : getArray()) {
             KI(s, s.getIndexX(), s.getIndexY(), 0, true, new ArrayList<Field>(), new ArrayList<Field>());
         }
-/*
+
         for(Zugfolge z: alleZuege){
             System.out.println(z.toString());
         }
+        System.out.println("Anzahl aller Züge: " + alleZuege.size());
+        System.out.println("---------------------------------------------------------------------------");
+
         System.out.println(alleZuege.size());
-*/
         return alleZuege.get(new Random().nextInt(alleZuege.size()));
     }
 
 
-    private int diagonalcheck(Direction d, int x, int y, boolean ersterDurchgang, List<Field>skipped){
+    private int diagonalcheck(Direction d, int x, int y, boolean ersterDurchgang, List<Field>skipped, List<Field>entered){
+        // Überprüft die möglichen Schläge von KI seite aus links (von Spielerseite aus rechts)
         if(d.equals(Direction.LEFT)) {
-            if(enemy.hasStoneAt(x+1, y-1) && !(enemy.hasStoneAt(x+2, y-2) || hasStoneAt(x+2, y-2))){
+            if(Main.playingField.isPositionInsideField(x+2, y-2) && Main.playingField.isPositionInsideField(x+1, y-1) && enemy.hasStoneAt(x+1, y-1) && !(enemy.hasStoneAt(x+2, y-2) || hasStoneAt(x+2, y-2))){
                 skipped.add(Main.playingField.getField(x+1,y-1));
+                entered.add(Main.playingField.getField(x+2,y-2));
                 return 2;
             }
             if(ersterDurchgang && Main.playingField.isPositionInsideField(x+1, y-1) && !(enemy.hasStoneAt(x+1, y-1) || hasStoneAt(x+1, y-1))){
+                entered.add(Main.playingField.getField(x+1,y-1));
                 return 1;
             }
             return 0;
         }
 
         else if(d.equals(Direction.RIGHT)) {
-            if(enemy.hasStoneAt(x-1, y-1) && !(enemy.hasStoneAt(x-2, y-2) || hasStoneAt(x-2, y-2))){
+            if(Main.playingField.isPositionInsideField(x-2, y-2) && Main.playingField.isPositionInsideField(x-1, y-1) && enemy.hasStoneAt(x-1, y-1) && !(enemy.hasStoneAt(x-2, y-2) || hasStoneAt(x-2, y-2))){
                 skipped.add(Main.playingField.getField(x-1,y-1));
+                entered.add(Main.playingField.getField(x-2,y-2));
                 return 2;
             }
             if(ersterDurchgang && Main.playingField.isPositionInsideField(x-1, y-1) && !(enemy.hasStoneAt(x-1, y-1) || hasStoneAt(x-1, y-1))){
+                entered.add(Main.playingField.getField(x-1,y-1));
                 return 1;
             }
             return 0;
@@ -66,16 +73,16 @@ public class KI extends Player {
         return 0;
     }
 
-    //TODO entered muss auch das erste Feld beinhalten, auf dem der Stein anfangs liegt
     private void KI(Stone s, int x, int y, int zuglaenge, boolean ersterDurchgang, List<Field> skipped, List<Field> entered){
+        if (ersterDurchgang){
+            entered.add(Main.playingField.getField(x,y));
+        }
         int a;
-        if((a = diagonalcheck(Direction.LEFT, x, y, ersterDurchgang, skipped)) > 1){
-            entered.add(Main.playingField.getField(x+a,y-a));
+        if((a = diagonalcheck(Direction.LEFT, x, y, ersterDurchgang, skipped, entered)) > 1){
             KI(s,x+a, y-a, zuglaenge + a, false, new ArrayList<Field>(skipped),new ArrayList<Field>(entered));
         }
         else{
             if(zuglaenge+a > 0){
-                entered.add(Main.playingField.getField(x+a,y-a));
                 Zugfolge z = new Zugfolge(zuglaenge + a, s);
                 z.addEnterField(entered);
                 z.addSkipField(skipped);
@@ -83,13 +90,11 @@ public class KI extends Player {
             }
         }
 
-        if((a = diagonalcheck(Direction.RIGHT, x, y, ersterDurchgang, skipped)) > 1){
-            entered.add(Main.playingField.getField(x+a,y-a));
+        if((a = diagonalcheck(Direction.RIGHT, x, y, ersterDurchgang, skipped, entered)) > 1){
             KI(s,x-a, y-a, zuglaenge + a, false, new ArrayList<Field>(skipped),new ArrayList<Field>(entered));
         }
         else{
             if(zuglaenge+a > 0){
-                entered.add(Main.playingField.getField(x+a,y-a));
                 Zugfolge z = new Zugfolge(zuglaenge + a, s);
                 z.addEnterField(entered);
                 z.addSkipField(skipped);
