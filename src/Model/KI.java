@@ -29,14 +29,16 @@ public class KI extends Player {
         alleZuege = new ArrayList<>();
 
         for (Stone s : getArray()) {
-            KI(s, s.getIndexX(), s.getIndexY(), 0, true, new ArrayList<Field>(), new ArrayList<Field>());
+            if(!s.isEliminated()){
+                KI(s, s.getIndexX(), s.getIndexY(), 0, true, new ArrayList<Field>(), new ArrayList<Field>());
+            }
         }
 
         for(Zugfolge z: alleZuege){
             System.out.println(z.toString());
         }
         System.out.println("Anzahl aller Züge: " + alleZuege.size());
-        Zugfolge gewehlt = alleZuege.get(new Random().nextInt(alleZuege.size()));
+        Zugfolge gewehlt = Zugfolge.getRandomZug(alleZuege);
         System.out.println("Ausgewählter Zug: " + gewehlt.toString());
         System.out.println("---------------------------------------------------------------------------");
         gewehlt.print();
