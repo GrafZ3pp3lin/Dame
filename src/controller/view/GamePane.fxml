@@ -41,10 +41,20 @@
       </VBox>
    </right>
    <top>
-      <Label fx:id="label_status" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" styleClass="background-bright" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets top="10.0" />
+            <Insets />
          </BorderPane.margin>
-      </Label>
+         <children>
+            <Label id="status" fx:id="label_status">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </VBox>
    </top>
 </BorderPane>

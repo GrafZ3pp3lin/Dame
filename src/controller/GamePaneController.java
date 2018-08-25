@@ -201,36 +201,54 @@ public class GamePaneController {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                //Test ob Token in der Nähe vom richtigen Platz ist
-                if (!isStoneNearField(move.getStone(), move.getNextField(), value)) {
-                    move.getStone().getcCirc().setLayoutX(move.getStone().getcCirc().getLayoutX() + (value / 12)
-                            * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1));
-                    move.getStone().getcCirc().setLayoutY(move.getStone().getcCirc().getLayoutY() + (value / 12)
-                            * (move.getNextField().getIndexY() >= move.getCurrentField().getIndexY() ? -1 : 1));
-                    if (move.getFirstSkipedField() != null && isStoneNearField(move.getStone(), move.getFirstSkipedField(), value)) {
-                        Stone s = control.getPlayerController().getOtherPlayer().getStoneAt(move.getFirstSkipedField().getIndexX(), move.getFirstSkipedField().getIndexY());
-                        if (s != null) {
-                            //TODO muss eigentlich das Game übernehmen
-                            s.setEliminated();
+                try {
+                    //TODO ArrayIndexOutOfBoundsException
+                    if (!isStoneNearField(move.getStone(), move.getNextField(), value)) {
+                        move.getStone().getcCirc().setLayoutX(move.getStone().getcCirc().getLayoutX() + (value / 12)
+                                * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1));
+                        move.getStone().getcCirc().setLayoutY(move.getStone().getcCirc().getLayoutY() + (value / 12)
+                                * (move.getNextField().getIndexY() >= move.getCurrentField().getIndexY() ? -1 : 1));
+                        if (move.getFirstSkipedField() != null && isStoneNearField(move.getStone(), move.getFirstSkipedField(), value)) {
+                            Stone s = control.getPlayerController().getOtherPlayer().getStoneAt(move.getFirstSkipedField().getIndexX(), move.getFirstSkipedField().getIndexY());
+                            if (s != null) {
+                                //TODO muss eigentlich das Game übernehmen
+                                s.setEliminated();
 
-                            Platform.runLater(() -> removeToken(s));
-                            move.nextSkipedField();
+                                Platform.runLater(() -> removeToken(s));
+                                move.nextSkipedField();
+                            }
+                        }
+                    }
+                    else {
+                        placeToken(move.getNextField().getIndexX(), move.getNextField().getIndexY(), move.getStone().getcCirc());
+                        if (move.nextField()) {
+                            t.cancel();
+                            t.purge();
+                            if (move.getStone().isSuperDame()) {
+                                Platform.runLater(() -> visualizeSuperDame(move.getStone()));
+                            }
+                            graphicAction = false;
+                            control.getGame().finishedMove();
                         }
                     }
                 }
-                else {
-                    placeToken(move.getNextField().getIndexX(), move.getNextField().getIndexY(), move.getStone().getcCirc());
-                    if (move.nextField()) {
-                        t.cancel();
-                        if (move.getStone().isSuperDame()) {
-                            Platform.runLater(() -> visualizeSuperDame(move.getStone()));
-                        }
-                        graphicAction = false;
-                        control.getGame().finishedMove();
-//                        control.getPlayerController().changePlayer();
-//                        updatePlayer();
-//                        control.getGame().playKI();
+                catch (NullPointerException e) {
+                    System.err.println("Something went wrong / Move = " + move.toString());
+                    e.printStackTrace();
+                    if (move != null) {
+                        placeToken(move.getNextField().getIndexX(), move.getNextField().getIndexY(), move.getStone().getcCirc());
                     }
+                    t.cancel();
+                    t.purge();
+                }
+                catch (ArrayIndexOutOfBoundsException e) {
+                    System.err.println("Something went wrong / Move = " + move.toString());
+                    e.printStackTrace();
+                    if (move != null) {
+                        placeToken(move.getNextField().getIndexX(), move.getNextField().getIndexY(), move.getStone().getcCirc());
+                    }
+                    t.cancel();
+                    t.purge();
                 }
             }
         };
@@ -293,18 +311,13 @@ public class GamePaneController {
     }
 
     private void placeToken(int x, int y, Node c) {
-        if (c instanceof Circle) {
-            double a = (double)size / amount;
-            c.setLayoutX((x + 0.5) * a);
-            c.setLayoutY(size - (y + 0.5) * a);
+        double a = (double)size / amount;
+        double off = 0;
+        if (c instanceof StackPane) {
+            off = ((StackPane) c).getWidth() / 2;
         }
-        else if (c instanceof StackPane) {
-            double a = (double)size / amount;
-            double xoff = ((StackPane) c).getWidth() / 2;
-            double yoff = ((StackPane) c).getHeight() / 2;
-            c.setLayoutX((x + 0.5) * a - xoff);
-            c.setLayoutY(size - (y + 0.5) * a - yoff);
-        }
+        c.setLayoutX((x + 0.5) * a - off);
+        c.setLayoutY(size - (y + 0.5) * a - off);
     }
 
     /**

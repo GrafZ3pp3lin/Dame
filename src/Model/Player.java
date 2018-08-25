@@ -20,15 +20,14 @@ public class Player {
         createStones(size);
     }
 
-    public void createStones(int size){
-        cStone = new Stone[(int)(size * 1.5)];
+    protected void createStones(int size) {
         int x, y;
         if (cColor == Color.BLACK){
             x = 0;
             y = 0;
         }
         else {
-            y = size - 3;
+            y = size - (size / 2 - 1);
             if (y % 2 != 0) {
                 x = 1;
             }
@@ -36,8 +35,9 @@ public class Player {
                 x = 0;
             }
         }
-        int f = (int)(((size/4)-0.5)* size);            //Anzahl Spielsteine pro Spieler abhängig von Feldgröße
-        for (int i=0; i< f; i++){
+        int f = (int)((((double)size/4) - 0.5) * size);            //Anzahl Spielsteine pro Spieler abhängig von Feldgröße
+        cStone = new Stone[f];
+        for (int i = 0; i < f; i++){
             cStone[i] = new Stone(cColor, x, y, false);
             if (( x += 2) >= size){
                 y += 1;
