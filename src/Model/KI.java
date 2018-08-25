@@ -49,7 +49,10 @@ public class KI extends Player {
     private int diagonalcheck(Direction d, int x, int y, boolean ersterDurchgang, List<Field> skipped, List<Field> entered) {
         // Überprüft die möglichen Schläge von KI seite aus links (von Spielerseite aus rechts)
         if (d.equals(Direction.LEFTDOWN)) {
-            if (Main.playingField.isPositionInsideField(x + 2, y - 2) && Main.playingField.isPositionInsideField(x + 1, y - 1) && enemy.hasStoneAt(x + 1, y - 1) && !(enemy.hasStoneAt(x + 2, y - 2) || hasStoneAt(x + 2, y - 2))) {
+            if (Main.playingField.isPositionInsideField(x + 2, y - 2) && Main.playingField.isPositionInsideField(x + 1, y - 1)
+                    && !skipped.contains(Main.playingField.getField(x + 1, y - 1)) && !entered.contains(Main.playingField.getField(x + 2, y - 2))
+                    && enemy.hasStoneAt(x + 1, y - 1)
+                    && !(enemy.hasStoneAt(x + 2, y - 2) || hasStoneAt(x + 2, y - 2))) {
                 skipped.add(Main.playingField.getField(x + 1, y - 1));
                 entered.add(Main.playingField.getField(x + 2, y - 2));
                 return 2;
@@ -60,7 +63,10 @@ public class KI extends Player {
             }
             return 0;
         } else if (d.equals(Direction.RIGHTDOWN)) {
-            if (Main.playingField.isPositionInsideField(x - 2, y - 2) && Main.playingField.isPositionInsideField(x - 1, y - 1) && enemy.hasStoneAt(x - 1, y - 1) && !(enemy.hasStoneAt(x - 2, y - 2) || hasStoneAt(x - 2, y - 2))) {
+            if (Main.playingField.isPositionInsideField(x - 2, y - 2) && Main.playingField.isPositionInsideField(x - 1, y - 1)
+                    && !skipped.contains(Main.playingField.getField(x - 1, y - 1)) && !entered.contains(Main.playingField.getField(x - 2, y - 2))
+                    && enemy.hasStoneAt(x - 1, y - 1)
+                    && !(enemy.hasStoneAt(x - 2, y - 2) || hasStoneAt(x - 2, y - 2))) {
                 skipped.add(Main.playingField.getField(x - 1, y - 1));
                 entered.add(Main.playingField.getField(x - 2, y - 2));
                 return 2;
@@ -71,7 +77,10 @@ public class KI extends Player {
             }
             return 0;
         } else if (d.equals(Direction.LEFTUP)) {
-            if (Main.playingField.isPositionInsideField(x + 2, y + 2) && Main.playingField.isPositionInsideField(x + 1, y + 1) && enemy.hasStoneAt(x + 1, y + 1) && !(enemy.hasStoneAt(x + 2, y + 2) || hasStoneAt(x + 2, y + 2))) {
+            if (Main.playingField.isPositionInsideField(x + 2, y + 2) && Main.playingField.isPositionInsideField(x + 1, y + 1)
+                    && !skipped.contains(Main.playingField.getField(x + 1, y + 1)) && !entered.contains(Main.playingField.getField(x + 2, y + 2))
+                    && enemy.hasStoneAt(x + 1, y + 1)
+                    && !(enemy.hasStoneAt(x + 2, y + 2) || hasStoneAt(x + 2, y + 2))) {
                 skipped.add(Main.playingField.getField(x + 1, y + 1));
                 entered.add(Main.playingField.getField(x + 2, y + 2));
                 return 2;
@@ -82,7 +91,10 @@ public class KI extends Player {
             }
             return 0;
         } else if (d.equals(Direction.RIGHTUP)) {
-            if (Main.playingField.isPositionInsideField(x - 2, y + 2) && Main.playingField.isPositionInsideField(x - 1, y + 1) && enemy.hasStoneAt(x - 1, y + 1) && !(enemy.hasStoneAt(x - 2, y + 2) || hasStoneAt(x - 2, y + 2))) {
+            if (Main.playingField.isPositionInsideField(x - 2, y + 2) && Main.playingField.isPositionInsideField(x - 1, y + 1)
+                    && !skipped.contains(Main.playingField.getField(x - 1, y + 1)) && !entered.contains(Main.playingField.getField(x - 2, y + 2))
+                    && enemy.hasStoneAt(x - 1, y + 1)
+                    && !(enemy.hasStoneAt(x - 2, y + 2) || hasStoneAt(x - 2, y + 2))) {
                 skipped.add(Main.playingField.getField(x - 1, y + 1));
                 entered.add(Main.playingField.getField(x - 2, y + 2));
                 return 2;
@@ -141,7 +153,6 @@ public class KI extends Player {
 
         if (s.isSuperDame()) {
             if ((a = diagonalcheck(Direction.LEFTUP, x, y, ersterDurchgang, skippedLeftUp, enteredLeftUp)) > 1) {
-                //KI wird rekursiv aufgerufen, wenn ein gegnerischer Stein übersprungen werden kann
                 KI(s, x + a, y + a, zuglaenge + a, false, new ArrayList<Field>(skippedLeftUp), new ArrayList<Field>(enteredLeftUp));
             } else {
                 if (zuglaenge + a > 0) {

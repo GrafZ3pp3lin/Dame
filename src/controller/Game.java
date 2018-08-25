@@ -136,7 +136,7 @@ public class Game {
 
     private void testForSuperDame(Stone s) {
         if (s.getColor() == Color.BLACK) {
-            if (s.getIndexY() == 7) {
+            if (s.getIndexY() == Main.playingField.getSize()-1) {
                 s.setSuperDame();
             }
         }
