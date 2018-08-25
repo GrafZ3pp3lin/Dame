@@ -101,14 +101,6 @@
 	-fx-text-fill: black;
 }
 
-.Superdame-white {
-    -fx-text-fill: black;
-}
-
-.Superdame-black {
-    -fx-text-fill: white;
-}
-
 #title {
 	-fx-font-size: 70px;
 	-fx-font-weight: bolder;

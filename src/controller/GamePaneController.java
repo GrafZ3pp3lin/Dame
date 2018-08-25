@@ -201,7 +201,7 @@ public class GamePaneController {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                //Test ob Token in der Nähe vom richtigen Platz ist
+                //TODO ArrayIndexOutOfBoundsException
                 if (!isStoneNearField(move.getStone(), move.getNextField(), value)) {
                     move.getStone().getcCirc().setLayoutX(move.getStone().getcCirc().getLayoutX() + (value / 12)
                             * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1));
@@ -227,9 +227,6 @@ public class GamePaneController {
                         }
                         graphicAction = false;
                         control.getGame().finishedMove();
-//                        control.getPlayerController().changePlayer();
-//                        updatePlayer();
-//                        control.getGame().playKI();
                     }
                 }
             }
@@ -293,18 +290,13 @@ public class GamePaneController {
     }
 
     private void placeToken(int x, int y, Node c) {
-        if (c instanceof Circle) {
-            double a = (double)size / amount;
-            c.setLayoutX((x + 0.5) * a);
-            c.setLayoutY(size - (y + 0.5) * a);
+        double a = (double)size / amount;
+        double off = 0;
+        if (c instanceof StackPane) {
+            off = ((StackPane) c).getWidth() / 2;
         }
-        else if (c instanceof StackPane) {
-            double a = (double)size / amount;
-            double xoff = ((StackPane) c).getWidth() / 2;
-            double yoff = ((StackPane) c).getHeight() / 2;
-            c.setLayoutX((x + 0.5) * a - xoff);
-            c.setLayoutY(size - (y + 0.5) * a - yoff);
-        }
+        c.setLayoutX((x + 0.5) * a - off);
+        c.setLayoutY(size - (y + 0.5) * a - off);
     }
 
     /**
