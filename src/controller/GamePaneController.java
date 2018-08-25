@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -327,14 +328,12 @@ public class GamePaneController {
             StackPane sp = new StackPane();
             sp.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             sp.getChildren().add(c);
-            Label l = new Label("S");
-            if (s.getColor() == Model.Color.BLACK) {
-                l.getStyleClass().add("Superdame-black");
-            }
-            else {
-                l.getStyleClass().add("Superdame-white");
-            }
-            sp.getChildren().add(l);
+
+            ImageView iw = new ImageView(control.getSuperDameImage());
+            iw.setFitHeight(c.getRadius() * 1.5);
+            iw.setFitWidth(c.getRadius() * 1.5);
+
+            sp.getChildren().add(iw);
             sp.setLayoutX(c.getLayoutX() - c.getRadius());
             sp.setLayoutY(c.getLayoutY() - c.getRadius());
             sp.setOnMouseClicked(event -> onFieldKlick(event));

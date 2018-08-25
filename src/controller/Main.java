@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -36,14 +37,24 @@ public class Main extends Application {
     private PlayerController playerController;
     private Game game;
 
+    private Image logo;
+    private Image superDame;
+
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void init() {
+        logo = new Image(Main.class.getClassLoader().getResourceAsStream("resources/Dame-Logo.png"));
+        superDame = new Image(Main.class.getClassLoader().getResourceAsStream("resources/SuperDame.png"));
     }
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Dame");
+        primaryStage.getIcons().add(logo);
         primaryStage.setOnCloseRequest(e -> Platform.exit());
 
         initRootLayout();
@@ -162,6 +173,10 @@ public class Main extends Application {
 
     public Game getGame() {
         return game;
+    }
+
+    public Image getSuperDameImage() {
+        return superDame;
     }
 
 }
