@@ -156,12 +156,9 @@ public class Game {
 
     public void playKI(){
         if(control.getPlayerController().isSinglePlayerGame() && !control.getPlayerController().isCurrentPlayer1()) {
-            //TODO erstes Feld, auf dem der Stein sich schon befindet muss auch in die Liste 'enteredFields'
             Zugfolge z = ((KI) control.getPlayerController().getPlayer2()).KI();
             Platform.runLater(() -> control.getGamePaneController().moveToken(z));
             z.update();
-
-            control.getPlayerController().changePlayer();
         }
     }
 
