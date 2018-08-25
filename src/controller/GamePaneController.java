@@ -1,8 +1,11 @@
 package controller;
 
 import Model.*;
+import com.sun.xml.internal.bind.v2.TODO;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -49,7 +52,6 @@ public class GamePaneController {
     private Label label_status;
 
     private ArrayList<Rectangle> field;
-    private ArrayList<Circle> tokens;
 
     /**
      * setzt alle notwendigen Instanzen
@@ -73,10 +75,9 @@ public class GamePaneController {
         this.tokenRadius = size / amount / 3;
 
         field = new ArrayList<>();
-        tokens = new ArrayList<>();
         clearField();
         playingField.setPrefSize(size, size);
-        double a = size / amount;
+        double a = (double)size / amount;
         for (int i = 0; i < amount; i++) {
             for (int j = 0; j < amount; j++) {
                 Rectangle temp = new Rectangle();
@@ -196,7 +197,7 @@ public class GamePaneController {
      */
     public void moveToken(Move move) {
         graphicAction = true;
-        double value = size / amount;
+        double value = (double)size / amount;
         updateToken(move.getStone().getcCirc());
         Timer t = new Timer();
         TimerTask task = new TimerTask() {
@@ -218,8 +219,9 @@ public class GamePaneController {
                     }
                 }
                 else {
-                    move.getStone().getcCirc().setLayoutX((move.getNextField().getIndexX() + 0.5) * value);
-                    move.getStone().getcCirc().setLayoutY(size - (move.getNextField().getIndexY() + 0.5) * value);
+                    placeToken(move.getNextField().getIndexX(), move.getNextField().getIndexY(), move.getStone().getcCirc());
+//                    move.getStone().getcCirc().setLayoutX((move.getNextField().getIndexX() + 0.5) * value);
+//                    move.getStone().getcCirc().setLayoutY(size - (move.getNextField().getIndexY() + 0.5) * value);
                     if (move.nextField()) {
                         t.cancel();
                         graphicAction = false;
@@ -241,8 +243,13 @@ public class GamePaneController {
      * @return true, falls der Stein über dem Feld liegt
      */
     private boolean isStoneNearField(Stone s, Field f, double value) {
-        return (f.getIndexX() + 0.4) * value <= s.getcCirc().getLayoutX() && (f.getIndexX() + 0.6) * value >= s.getcCirc().getLayoutX() &&
-                size - (f.getIndexY() + 0.6) * value <= s.getcCirc().getLayoutY() && size - (f.getIndexY() + 0.4) * value >= s.getcCirc().getLayoutY();
+        double xoff = 0, yoff = 0;
+        if (s.getcCirc() instanceof StackPane) {
+            xoff = ((StackPane) s.getcCirc()).getWidth() / 2;
+            yoff = ((StackPane) s.getcCirc()).getHeight() / 2;
+        }
+        return (f.getIndexX() + 0.4) * value <= s.getcCirc().getLayoutX() + xoff && (f.getIndexX() + 0.6) * value >= s.getcCirc().getLayoutX() + xoff &&
+                size - (f.getIndexY() + 0.6) * value <= s.getcCirc().getLayoutY() + yoff && size - (f.getIndexY() + 0.4) * value >= s.getcCirc().getLayoutY() + yoff;
     }
 
     /**
@@ -269,15 +276,32 @@ public class GamePaneController {
      * @param c Kreis
      * @param color Farbe
      */
-    private void setToken(int x, int y, Circle c, Color color) {
-        double a = size / amount;
-        c.setRadius(tokenRadius);
-        c.setFill(color);
-        c.setLayoutX((x + 0.5) * a);
-        c.setLayoutY(size - (y + 0.5) * a);
-        c.setOnMouseClicked(event -> onFieldKlick(event));
-        playingField.getChildren().add(c);
-        tokens.add(c);
+    private void setToken(int x, int y, Node c, Color color) {
+        if (c instanceof Circle) {
+            ((Circle)c).setRadius(tokenRadius);
+            ((Circle)c).setFill(color);
+            placeToken(x, y, c);
+            c.setOnMouseClicked(event -> onFieldKlick(event));
+            playingField.getChildren().add(c);
+        }
+        else {
+            System.err.println("Something went wrong");
+        }
+    }
+
+    private void placeToken(int x, int y, Node c) {
+        if (c instanceof Circle) {
+            double a = (double)size / amount;
+            c.setLayoutX((x + 0.5) * a);
+            c.setLayoutY(size - (y + 0.5) * a);
+        }
+        else if (c instanceof StackPane) {
+            double a = (double)size / amount;
+            double xoff = ((StackPane) c).getWidth() / 2;
+            double yoff = ((StackPane) c).getHeight() / 2;
+            c.setLayoutX((x + 0.5) * a - xoff);
+            c.setLayoutY(size - (y + 0.5) * a - yoff);
+        }
     }
 
     /**
@@ -286,7 +310,7 @@ public class GamePaneController {
      * Wichtig für moveToken
      * @param c Kreis
      */
-    private void updateToken(Circle c) {
+    private void updateToken(Node c) {
         playingField.getChildren().remove(c);
         playingField.getChildren().add(c);
     }
@@ -297,11 +321,27 @@ public class GamePaneController {
      * @param s Superdamen Stein
      */
     public void visualizeSuperDame(Stone s) {
-        if (s.isSuperDame()) {
-            s.getcCirc().setStrokeWidth(2);
-            s.getcCirc().setStroke(Color.GREENYELLOW);
+        if (s.isSuperDame() && s.getcCirc() instanceof Circle) {
+            Circle c = (Circle)s.getcCirc();
+            c.setOnMouseClicked(null);
+            StackPane sp = new StackPane();
+            sp.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+            sp.getChildren().add(c);
+            Label l = new Label("S");
+            if (s.getColor() == Model.Color.BLACK) {
+                l.getStyleClass().add("Superdame-black");
+            }
+            else {
+                l.getStyleClass().add("Superdame-white");
+            }
+            sp.getChildren().add(l);
+            sp.setLayoutX(c.getLayoutX() - c.getRadius());
+            sp.setLayoutY(c.getLayoutY() - c.getRadius());
+            sp.setOnMouseClicked(event -> onFieldKlick(event));
+            playingField.getChildren().remove(c);
+            playingField.getChildren().add(sp);
+            s.changeNode(sp);
         }
-        //visualize SuperDame
     }
 
     /**
@@ -312,7 +352,7 @@ public class GamePaneController {
     @FXML
     private void onFieldKlick(MouseEvent e) {
         if (!graphicAction && (!control.getPlayerController().isSinglePlayerGame() || control.getPlayerController().isCurrentPlayer1())) {
-            if (e.getSource() instanceof Rectangle || e.getSource() instanceof Circle) {
+            if (e.getSource() instanceof Rectangle || e.getSource() instanceof Circle || e.getSource() instanceof StackPane) {
                 setStatus("");
                 if (e.getSource() instanceof Rectangle) {
                     Rectangle temp = (Rectangle) e.getSource();
@@ -323,8 +363,7 @@ public class GamePaneController {
                     control.getGame().selectField(pressedField);
                 }
                 else {
-                    Circle temp = (Circle) e.getSource();
-                    Stone s = control.getPlayerController().getCurrentPlayer().getStoneOfClickedCircle(temp);
+                    Stone s = control.getPlayerController().getCurrentPlayer().getStoneOfClickedCircle((Node)e.getSource());
                     if (s == null) {
                         setStatus("Dieser Stein gehört nicht dir");
                         return;
