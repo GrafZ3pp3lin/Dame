@@ -14,7 +14,19 @@ public class Zugfolge extends Move {
     public int getZuglaenge(){return zuglaenge;}
 
     public String toString(){
-        return "laenge: " + zuglaenge + "; vonPos: " + super.getFirstField().getIndexX() + ", " + super.getFirstField().getIndexY() + " nachPos: " + super.getLastField().getIndexX() + ", " + super.getLastField().getIndexY();
+        return "laenge: " + zuglaenge + "; vonPos: " + super.getFirstField().getIndexX() + ", " + super.getFirstField().getIndexY() + " nachPos: " + super.getEndField().getIndexX() + ", " + super.getEndField().getIndexY();
+    }
+
+    public void print(){
+        System.out.println("Entered Fields:");
+        for(Field f : getEnteredFields()){
+            System.out.println(f.getIndexX() + ", " + f.getIndexY());
+        }
+        System.out.println("Skipped Fields:");
+        for(Field f : getSkipedFields()){
+            System.out.println(f.getIndexX() + ", " + f.getIndexY());
+        }
+        System.out.println(toString());
     }
 
 

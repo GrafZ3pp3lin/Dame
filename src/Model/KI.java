@@ -36,10 +36,11 @@ public class KI extends Player {
             System.out.println(z.toString());
         }
         System.out.println("Anzahl aller Züge: " + alleZuege.size());
+        Zugfolge gewehlt = alleZuege.get(new Random().nextInt(alleZuege.size()));
+        System.out.println("Ausgewählter Zug: " + gewehlt.toString());
         System.out.println("---------------------------------------------------------------------------");
-
-        System.out.println(alleZuege.size());
-        return alleZuege.get(new Random().nextInt(alleZuege.size()));
+        gewehlt.print();
+        return gewehlt;
     }
 
 
@@ -74,30 +75,40 @@ public class KI extends Player {
     }
 
     private void KI(Stone s, int x, int y, int zuglaenge, boolean ersterDurchgang, List<Field> skipped, List<Field> entered){
+
         if (ersterDurchgang){
             entered.add(Main.playingField.getField(x,y));
         }
+
+        // kopien für schläge nach rechts und links werden erstellt, damit sich diese nicht durcheinandermischen
+        List<Field> skippedLeft = new ArrayList<>(skipped);
+        List<Field> enteredLeft = new ArrayList<>(entered);
+
+        List<Field> skippedRight = new ArrayList<>(skipped);
+        List<Field> enteredRight = new ArrayList<>(entered);
+
         int a;
-        if((a = diagonalcheck(Direction.LEFT, x, y, ersterDurchgang, skipped, entered)) > 1){
-            KI(s,x+a, y-a, zuglaenge + a, false, new ArrayList<Field>(skipped),new ArrayList<Field>(entered));
+        if((a = diagonalcheck(Direction.LEFT, x, y, ersterDurchgang, skippedLeft, enteredLeft)) > 1){
+            //KI wird rekursiv aufgerufen, wenn ein gegnerischer Stein übersprungen werden kann
+            KI(s,x+a, y-a, zuglaenge + a, false, new ArrayList<Field>(skippedLeft),new ArrayList<Field>(enteredLeft));
         }
         else{
             if(zuglaenge+a > 0){
                 Zugfolge z = new Zugfolge(zuglaenge + a, s);
-                z.addEnterField(entered);
-                z.addSkipField(skipped);
+                z.addEnterField(enteredLeft);
+                z.addSkipField(skippedLeft);
                 alleZuege.add(z);
             }
         }
 
-        if((a = diagonalcheck(Direction.RIGHT, x, y, ersterDurchgang, skipped, entered)) > 1){
-            KI(s,x-a, y-a, zuglaenge + a, false, new ArrayList<Field>(skipped),new ArrayList<Field>(entered));
+        if((a = diagonalcheck(Direction.RIGHT, x, y, ersterDurchgang, skippedRight, enteredRight)) > 1){
+            KI(s,x-a, y-a, zuglaenge + a, false, new ArrayList<Field>(skippedRight),new ArrayList<Field>(enteredRight));
         }
         else{
             if(zuglaenge+a > 0){
                 Zugfolge z = new Zugfolge(zuglaenge + a, s);
-                z.addEnterField(entered);
-                z.addSkipField(skipped);
+                z.addEnterField(enteredRight);
+                z.addSkipField(skippedRight);
                 alleZuege.add(z);
             }
         }
