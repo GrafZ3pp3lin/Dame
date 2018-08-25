@@ -64,6 +64,8 @@ public class Main extends Application {
         setStartLayout();
 
         primaryStage.sizeToScene();
+        primaryStage.setMinHeight(menuLayout.getPrefHeight());
+        primaryStage.setMinWidth(menuLayout.getPrefWidth());
         primaryStage.show();
     }
 
