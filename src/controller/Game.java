@@ -120,14 +120,14 @@ public class Game {
     private void makeMove(Move move) {
         gamePaneController.colorField();
         gamePaneController.moveToken(move);
-        //TODO alle übersprungenen Steine eliminieren (move.skippedFields)
+        //TODO alle übersprungenen Steine eliminieren (move.skippedFields) - wird bisher in GamePaneController gemacht - muss nicht zwingend geändert werden
         move.update();
         testForSuperDame(move.getStone());
-        //TODO test for winner (nur falls die übersprungenen Steine schon eliminiert wurden
         possibleFields.clear();
     }
 
     public void finishedMove() {
+        testForWinner();
         move = null;
         playerController.changePlayer();
         gamePaneController.updatePlayer();
