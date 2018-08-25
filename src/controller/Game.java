@@ -157,8 +157,7 @@ public class Game {
     public void playKI(){
         if(control.getPlayerController().isSinglePlayerGame() && !control.getPlayerController().isCurrentPlayer1()) {
             Zugfolge z = ((KI) control.getPlayerController().getPlayer2()).KI();
-            Platform.runLater(() -> control.getGamePaneController().moveToken(z));
-            z.update();
+            Platform.runLater(() -> makeMove(z));
         }
     }
 
