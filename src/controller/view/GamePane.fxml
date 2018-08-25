@@ -16,10 +16,10 @@
          </children></VBox>
    </center>
    <left>
-      <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" minWidth="131.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Label id="nameOnTurn" fx:id="label_player1" text="Player1" />
-            <VBox fx:id="vbox_player1" fillWidth="false" spacing="2.0" VBox.vgrow="ALWAYS" />
+            <Label id="nameOnTurn" fx:id="label_player1" text="Player 1" />
+            <VBox fx:id="vbox_player1" alignment="TOP_CENTER" fillWidth="false" spacing="2.0" VBox.vgrow="ALWAYS" />
          </children>
          <BorderPane.margin>
             <Insets />
@@ -30,10 +30,10 @@
       </VBox>
    </left>
    <right>
-      <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" minWidth="131.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Label id="name" fx:id="label_player2" text="Player2" />
-            <VBox fx:id="vbox_player2" spacing="2.0" VBox.vgrow="ALWAYS" />
+            <Label id="name" fx:id="label_player2" text="Player 2" />
+            <VBox fx:id="vbox_player2" alignment="TOP_CENTER" spacing="2.0" VBox.vgrow="ALWAYS" />
          </children>
          <padding>
             <Insets left="10.0" right="10.0" top="20.0" />

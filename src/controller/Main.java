@@ -28,8 +28,7 @@ public class Main extends Application {
     private Stage aboutStage;
 
     //Model
-    //TODO playingField static machen, für die KI?!
-    public PlayingField playingField;
+    public static PlayingField playingField;
 
     //Controller
     private GamePaneController gamePaneController;
@@ -162,7 +161,7 @@ public class Main extends Application {
     public void startGame(boolean ki, String name1, String name2) {
         playingField = new PlayingField(startPaneController.getSize());
         gamePaneController.buildPlayingField(startPaneController.getSize(), (int)primaryStage.getHeight() - 200, playingField);
-        playerController = new PlayerController(false, startPaneController.getSize(), name1, name2);
+        playerController = new PlayerController(ki, startPaneController.getSize(), name1, name2);
         gamePaneController.createTokens(playerController.getPlayer1(), playerController.getPlayer2());
         game = new Game(this, gamePaneController, playerController);
         setGameLayout();

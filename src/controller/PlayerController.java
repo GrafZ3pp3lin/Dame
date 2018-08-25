@@ -16,7 +16,7 @@ public class PlayerController {
             player2 = new Player(Color.WHITE, name2.isEmpty() ? "Player 2" : name2, size);
         }
         else{
-            player2 = new KI(Color.WHITE, "Spieler 2", size, player1, main.playingField);
+            player2 = new KI(Color.WHITE, name2.isEmpty() ? "KI" : name2, size, player1);
         }
         currentPlayer1 = true;
     }
