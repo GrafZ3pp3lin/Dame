@@ -220,8 +220,9 @@ public class GamePaneController {
                         }
                     }
                     else {
-                        placeToken(move.getNextField().getIndexX(), move.getNextField().getIndexY(), move.getStone().getcCirc());
-                        if (move.nextField()) {
+                        //TODO Stein korrekt platzieren, mögliche Fehlerquelle (aufpassen mit Index)
+//                        Platform.runLater(() -> placeToken(move.getNextField().getIndexX(), move.getNextField().getIndexY(), move.getStone().getcCirc()));
+                        if (!move.nextField()) {
                             t.cancel();
                             t.purge();
                             if (move.getStone().isSuperDame()) {
@@ -269,8 +270,8 @@ public class GamePaneController {
             xoff = ((StackPane) s.getcCirc()).getWidth() / 2;
             yoff = ((StackPane) s.getcCirc()).getHeight() / 2;
         }
-        return (f.getIndexX() + 0.4) * value <= s.getcCirc().getLayoutX() + xoff && (f.getIndexX() + 0.6) * value >= s.getcCirc().getLayoutX() + xoff &&
-                size - (f.getIndexY() + 0.6) * value <= s.getcCirc().getLayoutY() + yoff && size - (f.getIndexY() + 0.4) * value >= s.getcCirc().getLayoutY() + yoff;
+        return (f.getIndexX() + 0.48) * value <= s.getcCirc().getLayoutX() + xoff && (f.getIndexX() + 0.52) * value >= s.getcCirc().getLayoutX() + xoff &&
+                size - (f.getIndexY() + 0.52) * value <= s.getcCirc().getLayoutY() + yoff && size - (f.getIndexY() + 0.48) * value >= s.getcCirc().getLayoutY() + yoff;
     }
 
     /**

@@ -51,7 +51,11 @@ public class Move {
     }
 
     public boolean nextField() {
-        return ++index >= enteredFields.size();
+        if (index < enteredFields.size() - 1) {
+            index++;
+            return true;
+        }
+        return false;
     }
 
     public void addEnterField(Field f) {
