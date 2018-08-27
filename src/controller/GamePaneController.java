@@ -221,32 +221,33 @@ public class GamePaneController {
                     }
                     else {
                         //TODO Stein korrekt platzieren, mögliche Fehlerquelle (aufpassen mit Index)
-//                        Platform.runLater(() -> placeToken(move.getNextField().getIndexX(), move.getNextField().getIndexY(), move.getStone().getcCirc()));
                         if (!move.nextField()) {
+                            Platform.runLater(() -> placeToken(move.getEndField().getIndexX(), move.getEndField().getIndexY(), move.getStone().getcCirc()));
                             t.cancel();
                             t.purge();
                             if (move.getStone().isSuperDame()) {
                                 Platform.runLater(() -> visualizeSuperDame(move.getStone()));
                             }
+
                             graphicAction = false;
                             control.getGame().finishedMove();
                         }
                     }
                 }
                 catch (NullPointerException e) {
-                    System.err.println("Something went wrong / Move = " + move.toString());
+                    System.err.println("Something went wrong");
                     e.printStackTrace();
                     if (move != null) {
-                        placeToken(move.getNextField().getIndexX(), move.getNextField().getIndexY(), move.getStone().getcCirc());
+                        placeToken(move.getEndField().getIndexX(), move.getEndField().getIndexY(), move.getStone().getcCirc());
                     }
                     t.cancel();
                     t.purge();
                 }
                 catch (ArrayIndexOutOfBoundsException e) {
-                    System.err.println("Something went wrong / Move = " + move.toString());
+                    System.err.println("Something went wrong");
                     e.printStackTrace();
                     if (move != null) {
-                        placeToken(move.getNextField().getIndexX(), move.getNextField().getIndexY(), move.getStone().getcCirc());
+                        placeToken(move.getEndField().getIndexX(), move.getEndField().getIndexY(), move.getStone().getcCirc());
                     }
                     t.cancel();
                     t.purge();
