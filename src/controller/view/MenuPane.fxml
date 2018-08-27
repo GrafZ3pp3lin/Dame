@@ -11,7 +11,7 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="Options">
             <items>
               <MenuItem fx:id="menuItem_return" disable="true" mnemonicParsing="false" onAction="#onReturn" text="Return" />
             </items>

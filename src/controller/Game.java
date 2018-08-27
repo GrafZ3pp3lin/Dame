@@ -136,7 +136,7 @@ public class Game {
 
     private void testForSuperDame(Stone s) {
         if (s.getColor() == Color.BLACK) {
-            if (s.getIndexY() == Main.playingField.getSize()-1) {
+            if (s.getIndexY() == Main.playingField.getSize() - 1) {
                 s.setSuperDame();
             }
         }
@@ -146,12 +146,27 @@ public class Game {
     }
 
     private void testForWinner() {
-        if (playerController.getPlayer1().getActiveStones() == 0) {
+        if (playerController.getPlayer1().getActiveStones() == 0 || !isMovePossible(playerController.getPlayer1())) {
+            System.out.println("Player2 Win");
             //TODO Win Player2
         }
-        else if (playerController.getPlayer2().getActiveStones() == 0) {
+        else if (playerController.getPlayer2().getActiveStones() == 0 || !isMovePossible(playerController.getPlayer2())) {
+            System.out.println("Player1 Win");
             //TODO Win Player1
         }
+    }
+
+    private boolean isMovePossible(Player p) {
+        for (Stone s : p.getStones()) {
+            if (!s.isEliminated()) {
+                testFieldScope(Main.playingField.getField(s.getIndexX(), s.getIndexY()), s.getColor(), false);
+                if (!possibleFields.isEmpty()) {
+                    possibleFields.clear();
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void playKI(){
