@@ -26,6 +26,7 @@ public class Main extends Application {
     private Parent gameLayout;
     private BorderPane menuLayout;
     private Stage aboutStage;
+    private Stage rulesStage;
 
     //Model
     public static PlayingField playingField;
@@ -61,6 +62,7 @@ public class Main extends Application {
         loadStartLayout();
         loadGameLayout();
         loadAboutPane();
+        loadRulesPane();
         setStartLayout();
 
         primaryStage.sizeToScene();
@@ -153,8 +155,33 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * lädt die Rules Oberfläche
+     */
+    private void loadRulesPane() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("view/RulesPane.fxml"));
+            Parent aboutPane = loader.load();
+            rulesStage = new Stage(StageStyle.UTILITY);
+            rulesStage.setAlwaysOnTop(true);
+            rulesStage.setTitle("Rules Dame");
+            rulesStage.setResizable(false);
+            rulesStage.setScene(new Scene(aboutPane));
+            rulesStage.sizeToScene();
+            ((RulesPaneController)loader.getController()).setInstances(rulesStage);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void showAboutPane() {
         aboutStage.show();
+    }
+
+    public void showRulesPane() {
+        rulesStage.show();
     }
 
     /**

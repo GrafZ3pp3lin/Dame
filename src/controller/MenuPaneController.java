@@ -26,6 +26,11 @@ public class MenuPaneController {
     }
 
     @FXML
+    private void onRules() {
+        control.showRulesPane();
+    }
+
+    @FXML
     private void onReturn() {
         control.returnToStart();
     }
