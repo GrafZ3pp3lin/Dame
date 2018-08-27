@@ -20,7 +20,7 @@ public class Player {
         createStones(size);
     }
 
-    protected void createStones(int size) {
+    public void createStones(int size) {
         int x, y;
         if (cColor == Color.BLACK){
             x = 0;

@@ -44,7 +44,7 @@ public class PlayingField {
                 }
             }
         }
-        System.err.println("Field (" + x + "/" + y + ") doesn't exist");
+//        System.err.println("Field (" + x + "/" + y + ") doesn't exist");
         return null;
     }
 

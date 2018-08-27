@@ -279,13 +279,13 @@ public class GamePaneController {
      * @return true, falls der Stein über dem Feld liegt
      */
     private boolean isStoneNearField(Stone s, Field f, double value) {
-        double xoff = 0, yoff = 0;
+        double off = 0;
         if (s.getcCirc() instanceof StackPane) {
-            xoff = ((StackPane) s.getcCirc()).getWidth() / 2;
-            yoff = ((StackPane) s.getcCirc()).getHeight() / 2;
+//            off = ((StackPane) s.getcCirc()).getWidth() / 2;
+            off = tokenRadius;
         }
-        return (f.getIndexX() + 0.48) * value <= s.getcCirc().getLayoutX() + xoff && (f.getIndexX() + 0.52) * value >= s.getcCirc().getLayoutX() + xoff &&
-                size - (f.getIndexY() + 0.52) * value <= s.getcCirc().getLayoutY() + yoff && size - (f.getIndexY() + 0.48) * value >= s.getcCirc().getLayoutY() + yoff;
+        return (f.getIndexX() + 0.48) * value <= s.getcCirc().getLayoutX() + off && (f.getIndexX() + 0.52) * value >= s.getcCirc().getLayoutX() + off &&
+                size - (f.getIndexY() + 0.52) * value <= s.getcCirc().getLayoutY() + off && size - (f.getIndexY() + 0.48) * value >= s.getcCirc().getLayoutY() + off;
     }
 
     /**
