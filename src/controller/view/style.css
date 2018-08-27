@@ -106,6 +106,10 @@
 	-fx-text-fill: black;
 }
 
+.text-area .context-menu .menu-item .label {
+    -fx-text-fill: black;
+}
+
 #title {
 	-fx-font-size: 150px;
 	-fx-font-weight: bolder;

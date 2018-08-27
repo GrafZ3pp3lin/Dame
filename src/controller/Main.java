@@ -149,6 +149,7 @@ public class Main extends Application {
             aboutStage.setResizable(false);
             aboutStage.setScene(new Scene(aboutPane));
             aboutStage.sizeToScene();
+            ((AboutPaneController)loader.getController()).setInstances(aboutStage);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -164,7 +165,6 @@ public class Main extends Application {
             loader.setLocation(Main.class.getResource("view/RulesPane.fxml"));
             Parent aboutPane = loader.load();
             rulesStage = new Stage(StageStyle.UTILITY);
-            rulesStage.setAlwaysOnTop(true);
             rulesStage.setTitle("Rules Dame");
             rulesStage.setResizable(false);
             rulesStage.setScene(new Scene(aboutPane));
