@@ -37,10 +37,10 @@ public class GamePaneController {
     private BorderPane parent;
 
     @FXML
-    private VBox vbox_player1;
+    private Pane pane_player1;
 
     @FXML
-    private VBox vbox_player2;
+    private Pane pane_player2;
 
     @FXML
     private Label label_player1;
@@ -94,6 +94,7 @@ public class GamePaneController {
             }
         }
         colorField();
+        setStatus("");
     }
 
     /**
@@ -115,8 +116,8 @@ public class GamePaneController {
      * entfernt alle grafischen Objekte von der Oberfläche
      */
     public void clearField() {
-        vbox_player1.getChildren().clear();
-        vbox_player2.getChildren().clear();
+        pane_player1.getChildren().clear();
+        pane_player2.getChildren().clear();
         playingField.getChildren().clear();
     }
 
@@ -180,10 +181,22 @@ public class GamePaneController {
         Player temp = control.getPlayerController().getPlayerByColor(stone.getColor());
         playingField.getChildren().remove(stone.getcCirc());
         if (stone.getColor() == Model.Color.BLACK) {
-            vbox_player1.getChildren().add(stone.getcCirc());
+            pane_player1.getChildren().add(stone.getcCirc());
+            double off = 0;
+            if (stone.getcCirc() instanceof StackPane) {
+                off = tokenRadius;
+            }
+            stone.getcCirc().setLayoutX(pane_player1.getWidth() / 2 - off);
+            stone.getcCirc().setLayoutY(pane_player1.getChildren().size() * tokenRadius - off);
         }
         else {
-            vbox_player2.getChildren().add(stone.getcCirc());
+            pane_player2.getChildren().add(stone.getcCirc());
+            double off = 0;
+            if (stone.getcCirc() instanceof StackPane) {
+                off = tokenRadius;
+            }
+            stone.getcCirc().setLayoutX(pane_player2.getWidth() / 2 - off);
+            stone.getcCirc().setLayoutY(pane_player2.getChildren().size() * tokenRadius - off);
         }
     }
 
@@ -303,6 +316,8 @@ public class GamePaneController {
         if (c instanceof Circle) {
             ((Circle)c).setRadius(tokenRadius);
             ((Circle)c).setFill(color);
+            ((Circle)c).setStroke(Color.GRAY);
+            ((Circle)c).setStrokeWidth(1);
             placeToken(x, y, c);
             c.setOnMouseClicked(event -> onFieldKlick(event));
             playingField.getChildren().add(c);

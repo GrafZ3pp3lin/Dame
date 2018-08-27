@@ -12,7 +12,7 @@ Es gilt kein Schlagzwang, wenn du aus taktischen Gründen, auf einen Schlag verz
 
 In Dame umwandeln:
 Du bekommst eine Dame, wenn einer deiner Steine auf der gegnerischen Grundlinie stehen bleibt, egal ob durch einen normalen Zug oder durch ein Schlagen. Der Stein wird dann markiert (Du erkennst eine Superdame, wenn du sie siehst ;D)
-Eine Dame kannst Du nun sowohl schräg vorwärts als auch rückwärts beweget werden und genauso darfst du mit ihr auch schlagen. Beim Schlagen kann die Dame mehrere leere Felder bis zum gegnerischen Stein überwinden, aber muss nach dem Schlagen direkt hinter dem geschlagenen Stein landen.
+Eine Dame kannst nun sowohl schräg vorwärts als auch rückwärts beweget werden und genauso darfst du mit ihr auch schlagen. Beim Schlagen kann die Dame mehrere leere Felder bis zum gegnerischen Stein überwinden, aber muss nach dem Schlagen direkt hinter dem geschlagenen Stein landen.
 
 Spielende:
 Du hast verloren, wenn du keinen Stein mehr hast oder wenn du mit deinen Steinen keinen Zug mehr machen kannst, weil deine Steine durch deinen Gegner blockiert sind.

@@ -19,7 +19,7 @@
       <VBox alignment="TOP_CENTER" minWidth="131.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Label id="nameOnTurn" fx:id="label_player1" text="Player 1" />
-            <VBox fx:id="vbox_player1" alignment="TOP_CENTER" fillWidth="false" spacing="2.0" VBox.vgrow="ALWAYS" />
+            <Pane fx:id="pane_player1" />
          </children>
          <BorderPane.margin>
             <Insets />
@@ -33,7 +33,7 @@
       <VBox alignment="TOP_CENTER" minWidth="131.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Label id="name" fx:id="label_player2" text="Player 2" />
-            <VBox fx:id="vbox_player2" alignment="TOP_CENTER" spacing="2.0" VBox.vgrow="ALWAYS" />
+            <Pane fx:id="pane_player2" />
          </children>
          <padding>
             <Insets left="10.0" right="10.0" top="20.0" />
