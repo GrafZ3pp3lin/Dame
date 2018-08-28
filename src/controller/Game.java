@@ -145,15 +145,13 @@ public class Game {
         }
     }
 
-    private void testForWinner() {
-        if (playerController.getPlayer1().getActiveStones() == 0 || !isMovePossible(playerController.getPlayer1())) {
-            System.out.println("Player2 Win");
+    private boolean testForWinner() {
+        if (!isMovePossible(playerController.getOtherPlayer())) {
+            System.out.println(playerController.getCurrentPlayer().getName() + " Win");
             //TODO Win Player2
+            return true;
         }
-        else if (playerController.getPlayer2().getActiveStones() == 0 || !isMovePossible(playerController.getPlayer2())) {
-            System.out.println("Player1 Win");
-            //TODO Win Player1
-        }
+        return false;
     }
 
     private boolean isMovePossible(Player p) {

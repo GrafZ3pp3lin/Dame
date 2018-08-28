@@ -128,7 +128,7 @@ public class GamePaneController {
     public void createTokens(Player... p) {
         for (Player player : p) {
             for (Stone s : player.getStones()) {
-                setToken(s.getIndexX(), s.getIndexY(), s.getcCirc(), s.getColor() == Model.Color.BLACK ? Color.BLACK : Color.WHITE);
+                initToken(s.getIndexX(), s.getIndexY(), s.getcCirc(), s.getColor() == Model.Color.BLACK ? Color.BLACK : Color.WHITE);
             }
         }
         setNames(p[0].getName(), p[1].getName());
@@ -217,10 +217,15 @@ public class GamePaneController {
                 try {
                     //TODO ArrayIndexOutOfBoundsException
                     if (!isStoneNearField(move.getStone(), move.getNextField(), value)) {
-                        move.getStone().getcCirc().setLayoutX(move.getStone().getcCirc().getLayoutX() + (value / 12)
-                                * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1));
-                        move.getStone().getcCirc().setLayoutY(move.getStone().getcCirc().getLayoutY() + (value / 12)
-                                * (move.getNextField().getIndexY() >= move.getCurrentField().getIndexY() ? -1 : 1));
+//                        move.getStone().getcCirc().setLayoutX(move.getStone().getcCirc().getLayoutX() + (value / 12)
+//                                * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1));
+//                        move.getStone().getcCirc().setLayoutY(move.getStone().getcCirc().getLayoutY() + (value / 12)
+//                                * (move.getNextField().getIndexY() >= move.getCurrentField().getIndexY() ? -1 : 1));
+                        Platform.runLater(() -> setToken(move.getStone().getcCirc(),
+                                move.getStone().getcCirc().getLayoutX() + (value / 12)
+                                        * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1),
+                                move.getStone().getcCirc().getLayoutY() + (value / 12)
+                                        * (move.getNextField().getIndexY() >= move.getCurrentField().getIndexY() ? -1 : 1)));
                         if (move.getFirstSkipedField() != null && isStoneNearField(move.getStone(), move.getFirstSkipedField(), value)) {
                             Stone s = control.getPlayerController().getOtherPlayer().getStoneAt(move.getFirstSkipedField().getIndexX(), move.getFirstSkipedField().getIndexY());
                             if (s != null) {
@@ -270,6 +275,11 @@ public class GamePaneController {
         t.schedule(task, 0, 40);
     }
 
+    private void setToken(Node n, double x, double y) {
+        n.setLayoutX(x);
+        n.setLayoutY(y);
+    }
+
     /**
      * testet ob eine Node grafisch über einem Feld liegt
      *
@@ -312,7 +322,7 @@ public class GamePaneController {
      * @param c Kreis
      * @param color Farbe
      */
-    private void setToken(int x, int y, Node c, Color color) {
+    private void initToken(int x, int y, Node c, Color color) {
         if (c instanceof Circle) {
             ((Circle)c).setRadius(tokenRadius);
             ((Circle)c).setFill(color);
@@ -333,8 +343,7 @@ public class GamePaneController {
         if (c instanceof StackPane) {
             off = ((StackPane) c).getWidth() / 2;
         }
-        c.setLayoutX((x + 0.5) * a - off);
-        c.setLayoutY(size - (y + 0.5) * a - off);
+        setToken(c, (x + 0.5) * a - off, size - (y + 0.5) * a - off);
     }
 
     /**
