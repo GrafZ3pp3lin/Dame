@@ -64,7 +64,7 @@ public class KI extends Player {
                         && !(enemy.hasStoneAt(x + a + 2, y - a - 2) || hasStoneAt(x + a + 2, y - a - 2))) {
                     skipped.add(Main.playingField.getField(x + a + 1, y - a - 1));
                     entered.add(Main.playingField.getField(x + a + 2, y - a - 2));
-                    return 2;
+                    return 2+a;
                 }
 
             }
@@ -84,7 +84,7 @@ public class KI extends Player {
                         && !(enemy.hasStoneAt(x - a - 2, y - a - 2) || hasStoneAt(x - a - 2, y - a - 2))) {
                     skipped.add(Main.playingField.getField(x - a - 1, y - a - 1));
                     entered.add(Main.playingField.getField(x - a - 2, y - a - 2));
-                    return 2;
+                    return 2+a;
                 }
 
             }
@@ -102,7 +102,7 @@ public class KI extends Player {
                         && !(enemy.hasStoneAt(x + a + 2, y + a + 2) || hasStoneAt(x + a + 2, y + a + 2))) {
                     skipped.add(Main.playingField.getField(x + a + 1, y + a + 1));
                     entered.add(Main.playingField.getField(x + a + 2, y + a + 2));
-                    return 2;
+                    return 2+a;
                 }
 
             }
@@ -120,7 +120,7 @@ public class KI extends Player {
                         && !(enemy.hasStoneAt(x - a - 2, y + a + 2) || hasStoneAt(x - a - 2, y + a + 2))) {
                     skipped.add(Main.playingField.getField(x - a - 1, y + a + 1));
                     entered.add(Main.playingField.getField(x - a - 2, y + a + 2));
-                    return 2;
+                    return 2+a;
                 }
 
             }
