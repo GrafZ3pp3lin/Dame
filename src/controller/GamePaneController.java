@@ -217,19 +217,13 @@ public class GamePaneController {
                 try {
                     //TODO ArrayIndexOutOfBoundsException
                     if (!isStoneNearField(move.getStone(), move.getNextField(), value)) {
-//                        move.getStone().getcCirc().setLayoutX(move.getStone().getcCirc().getLayoutX() + (value / 12)
-//                                * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1));
-//                        move.getStone().getcCirc().setLayoutY(move.getStone().getcCirc().getLayoutY() + (value / 12)
-//                                * (move.getNextField().getIndexY() >= move.getCurrentField().getIndexY() ? -1 : 1));
-                        Platform.runLater(() -> setToken(move.getStone().getcCirc(),
-                                move.getStone().getcCirc().getLayoutX() + (value / 12)
-                                        * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1),
-                                move.getStone().getcCirc().getLayoutY() + (value / 12)
-                                        * (move.getNextField().getIndexY() >= move.getCurrentField().getIndexY() ? -1 : 1)));
+                        move.getStone().getcCirc().setLayoutX(move.getStone().getcCirc().getLayoutX() + (value / 12)
+                                * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1));
+                        move.getStone().getcCirc().setLayoutY(move.getStone().getcCirc().getLayoutY() + (value / 12)
+                                * (move.getNextField().getIndexY() >= move.getCurrentField().getIndexY() ? -1 : 1));
                         if (move.getFirstSkipedField() != null && isStoneNearField(move.getStone(), move.getFirstSkipedField(), value)) {
                             Stone s = control.getPlayerController().getOtherPlayer().getStoneAt(move.getFirstSkipedField().getIndexX(), move.getFirstSkipedField().getIndexY());
                             if (s != null) {
-                                //TODO muss eigentlich das Game übernehmen
                                 s.setEliminated();
 
                                 Platform.runLater(() -> removeToken(s));
@@ -238,7 +232,6 @@ public class GamePaneController {
                         }
                     }
                     else {
-                        //TODO Stein korrekt platzieren, mögliche Fehlerquelle (aufpassen mit Index)
                         if (!move.nextField()) {
                             Platform.runLater(() -> placeToken(move.getEndField().getIndexX(), move.getEndField().getIndexY(), move.getStone().getcCirc()));
                             t.cancel();
@@ -246,7 +239,6 @@ public class GamePaneController {
                             if (move.getStone().isSuperDame()) {
                                 Platform.runLater(() -> visualizeSuperDame(move.getStone()));
                             }
-
                             graphicAction = false;
                             control.getGame().finishedMove();
                         }
@@ -273,11 +265,6 @@ public class GamePaneController {
             }
         };
         t.schedule(task, 0, 40);
-    }
-
-    private void setToken(Node n, double x, double y) {
-        n.setLayoutX(x);
-        n.setLayoutY(y);
     }
 
     /**
@@ -337,13 +324,14 @@ public class GamePaneController {
         }
     }
 
-    private void placeToken(int x, int y, Node c) {
+    private void placeToken(int x, int y, Node node) {
         double a = (double)size / amount;
         double off = 0;
-        if (c instanceof StackPane) {
-            off = ((StackPane) c).getWidth() / 2;
+        if (node instanceof StackPane) {
+            off = tokenRadius;
         }
-        setToken(c, (x + 0.5) * a - off, size - (y + 0.5) * a - off);
+        node.setLayoutX((x + 0.5) * a - off);
+        node.setLayoutY(size - (y + 0.5) * a - off);
     }
 
     /**

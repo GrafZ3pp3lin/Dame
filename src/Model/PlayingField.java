@@ -7,6 +7,8 @@ public class PlayingField {
     private int FieldSize;
     private Field cField[];
 
+    public PlayingField() {}
+
     public PlayingField(int size){
         FieldSize = size;
         createField();
@@ -28,6 +30,11 @@ public class PlayingField {
                 black = !black;
             }
         }
+    }
+
+    public void rebuild(int fieldSize) {
+        this.FieldSize = fieldSize;
+        createField();
     }
 
     public Field[] getcField(){

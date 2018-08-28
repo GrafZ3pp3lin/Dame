@@ -20,6 +20,12 @@ public class Game {
         this.gamePaneController = gamePaneController;
         this.playerController = playerController;
         possibleFields = new ArrayList<>();
+        move = new Move();
+    }
+
+    public void reset() {
+        possibleFields.clear();
+        move.setOutdated(true);
     }
 
     private boolean emptyField(Field f) {
@@ -61,12 +67,12 @@ public class Game {
     }
 
     public void selectStone(Stone s) {
-        if (move != null && move.getStone() == s) {
+        if (move != null && move.getStone() == s && !move.isOutdated()) {
             gamePaneController.colorField();
-            move = null;
+            move.setOutdated(true);
             return;
         }
-        move = new Move(s);
+        move.init(s);
         Field f = control.playingField.getField(move.getStone().getIndexX(), move.getStone().getIndexY());
         move.addEnterField(f);
         possibleFields.clear();
@@ -75,7 +81,7 @@ public class Game {
     }
 
     public void selectField(Field f) {
-        if (move != null) {
+        if (move != null && !move.isOutdated()) {
             if (!possibleFields.isEmpty() && possibleFields.contains(f)) {
                 move.addEnterField(f);
                 if (Math.abs(move.getLastField().getIndexX() - f.getIndexX()) >= 2) {
@@ -120,7 +126,6 @@ public class Game {
     private void makeMove(Move move) {
         gamePaneController.colorField();
         gamePaneController.moveToken(move);
-        //TODO alle übersprungenen Steine eliminieren (move.skippedFields) - wird bisher in GamePaneController gemacht - muss nicht zwingend geändert werden
         move.update();
         testForSuperDame(move.getStone());
         possibleFields.clear();
@@ -128,7 +133,7 @@ public class Game {
 
     public void finishedMove() {
         testForWinner();
-        move = null;
+        move.setOutdated(true);
         playerController.changePlayer();
         gamePaneController.updatePlayer();
         playKI();
@@ -168,8 +173,8 @@ public class Game {
     }
 
     public void playKI(){
-        if(control.getPlayerController().isSinglePlayerGame() && !control.getPlayerController().isCurrentPlayer1()) {
-            Zugfolge z = ((KI) control.getPlayerController().getPlayer2()).KI();
+        if(playerController.isSinglePlayerGame() && !playerController.isCurrentPlayer1()) {
+            Zugfolge z = ((KI) playerController.getPlayer2()).KI();
             Platform.runLater(() -> makeMove(z));
         }
     }

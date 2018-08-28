@@ -75,6 +75,10 @@ public class Main extends Application {
         loadRulesPane();
         setStartLayout();
 
+        playingField = new PlayingField();
+        playerController = new PlayerController();
+        game = new Game(this, gamePaneController, playerController);
+
         primaryStage.sizeToScene();
         primaryStage.setMinHeight(menuLayout.getPrefHeight());
         primaryStage.setMinWidth(menuLayout.getPrefWidth());
@@ -129,6 +133,7 @@ public class Main extends Application {
     public void returnToStart() {
         setStartLayout();
         gamePaneController.clearField();
+        game.reset();
     }
 
     /**
@@ -214,11 +219,10 @@ public class Main extends Application {
      * startet ein Multiplayer Spiel
      */
     public void startGame(boolean ki, String name1, String name2) {
-        playingField = new PlayingField(startPaneController.getSize());
+        playingField.rebuild(startPaneController.getSize());
         gamePaneController.buildPlayingField(startPaneController.getSize(), (int)primaryStage.getHeight() - 200, playingField);
-        playerController = new PlayerController(ki, startPaneController.getSize(), name1, name2);
+        playerController.init(ki, startPaneController.getSize(), name1, name2);
         gamePaneController.createTokens(playerController.getPlayer1(), playerController.getPlayer2());
-        game = new Game(this, gamePaneController, playerController);
         setGameLayout();
     }
 

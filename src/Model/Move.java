@@ -9,12 +9,34 @@ public class Move {
     private Vector<Field> enteredFields;
     private Vector<Field> skipedFields;
     private int index;
+    private boolean outdated;
 
-    public Move(Stone s) {
-        stone = s;
+    public Move() {
         enteredFields = new Vector<>();
         skipedFields = new Vector<>();
+    }
+
+    public Move(Stone s) {
+        this();
+        stone = s;
         index = 1;
+        outdated = false;
+    }
+
+    public void init(Stone s) {
+        stone = s;
+        enteredFields.clear();
+        skipedFields.clear();
+        index = 1;
+        outdated = false;
+    }
+
+    public void setOutdated(boolean outdated) {
+        this.outdated = outdated;
+    }
+
+    public boolean isOutdated() {
+        return outdated;
     }
 
     public Stone getStone() {

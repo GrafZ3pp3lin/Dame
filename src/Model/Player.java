@@ -5,6 +5,8 @@ import javafx.scene.shape.Circle;
 
 /**
  * speichert Daten eines Spielers
+ * Dazu gehören alle Steine des Spielers, die Farbe der Steine und den Namen
+ *
  * @author Mareike Giek
  */
 public class Player {
@@ -12,7 +14,8 @@ public class Player {
     private Stone cStone[];
     private String cName;
     private Color cColor;
-    private int eliminatedStones;
+
+    public Player() {}
 
     public Player(Color c, String name) {
         cName = name;
@@ -21,6 +24,12 @@ public class Player {
 
     public Player(Color c, String name, int size) {
         this(c, name);
+        createStones(size);
+    }
+
+    private void init(String name, int size, Color c) {
+        cName = name;
+        cColor = c;
         createStones(size);
     }
 
@@ -60,10 +69,6 @@ public class Player {
         cStone[indexStone].setIndexY(y);
     }
 
-//    public void deleteStone (int indexStone){
-//        cStone[indexStone] = null;
-//    }
-
     public Stone[] getStones() {
         return cStone;
     }
@@ -91,18 +96,6 @@ public class Player {
             return Color.WHITE;
         }
         return Color.BLACK;
-    }
-
-    public int getEliminatedStones() {
-        return eliminatedStones;
-    }
-
-    public void increaseEliminatedStones() {
-        eliminatedStones++;
-    }
-
-    public void setEliminatedStones(int value) {
-        eliminatedStones = value;
     }
 
     //returns the Stone Object to the clicked Node(Circle)
