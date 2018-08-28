@@ -35,21 +35,24 @@ public class Zugfolge extends Move{
 
 
     public static Zugfolge getRandomZug(List<Zugfolge> zuege){
-        if(zuege.size() > 0){
-            int max = zuege.get(0).getZuglaenge();
-            List<Zugfolge> longZuege = new ArrayList<>();
+        if(zuege != null) {
+            if (zuege.size() > 0) {
+                //die längsten Zugmöglichkeiten werden herausgesucht und davon ein zufälliger Zug gewählt
+                int max = zuege.get(0).getZuglaenge();
+                List<Zugfolge> longZuege = new ArrayList<>();
 
-            for(Zugfolge z : zuege){
-                if(max < z.getZuglaenge()){
-                    max = z.getZuglaenge();
+                for (Zugfolge z : zuege) {
+                    if (max < z.getZuglaenge()) {
+                        max = z.getZuglaenge();
+                    }
                 }
-            }
-            for(Zugfolge z : zuege){
-                if(max == z.getZuglaenge()){
-                    longZuege.add(z);
+                for (Zugfolge z : zuege) {
+                    if (max == z.getZuglaenge()) {
+                        longZuege.add(z);
+                    }
                 }
+                return longZuege.get(new Random().nextInt(longZuege.size()));
             }
-            return longZuege.get(new Random().nextInt(longZuege.size()));
         }
         return null;
     }

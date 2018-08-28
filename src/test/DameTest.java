@@ -1,7 +1,7 @@
 package test;
 
 import Model.Color;
-import Model.Player;
+import Model.Player;/*
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -20,5 +20,4 @@ public class DameTest {
         //Gesamtmenge
         assertEquals(12, p.getStones().length);
     }
-
-}
+}*/
