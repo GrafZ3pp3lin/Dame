@@ -1,5 +1,8 @@
 package Model;
 
+/**
+ * speichert Daten für das ganze Spielfeld
+ */
 public class PlayingField {
     private int FieldSize;
     private Field cField[];

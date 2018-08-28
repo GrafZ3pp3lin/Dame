@@ -1,19 +1,19 @@
 package Model;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class Move {
 
     private Stone stone;
-    private List<Field> enteredFields;
-    private List<Field> skipedFields;
+    private Vector<Field> enteredFields;
+    private Vector<Field> skipedFields;
     private int index;
 
     public Move(Stone s) {
         stone = s;
-        enteredFields = new ArrayList<>();
-        skipedFields = new ArrayList<>();
+        enteredFields = new Vector<>();
+        skipedFields = new Vector<>();
         index = 1;
     }
 

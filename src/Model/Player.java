@@ -3,6 +3,10 @@ package Model;
 import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 
+/**
+ * speichert Daten eines Spielers
+ * @author Mareike Giek
+ */
 public class Player {
 
     private Stone cStone[];

@@ -29,6 +29,9 @@ public class Main extends Application {
     private Stage rulesStage;
 
     //Model
+    /**
+     * Datensatz für das Spielfeld
+     */
     public static PlayingField playingField;
 
     //Controller
@@ -45,12 +48,19 @@ public class Main extends Application {
         launch(args);
     }
 
+    /**
+     * wird vor start aufgerufen (lädt alle benötigten Bilder)
+     */
     @Override
     public void init() {
         logo = new Image(Main.class.getClassLoader().getResourceAsStream("resources/Dame-Logo.png"));
         superDame = new Image(Main.class.getClassLoader().getResourceAsStream("resources/SuperDame.png"));
     }
 
+    /**
+     * lädt alle Oberflächen und richtet das fenster ein
+     * @param primaryStage Oberflächen Fenster
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -104,11 +114,18 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * setzt das Start Layout
+     */
     private void setStartLayout() {
         menuLayout.setCenter(startLayout);
         menuPaneController.disableReturnItem(true);
     }
 
+    /**
+     * kehrt auf das Start Layout zurück und bricht das aktuelle Spiel ab
+     * //TODO better clear (Game etc.)
+     */
     public void returnToStart() {
         setStartLayout();
         gamePaneController.clearField();
@@ -130,6 +147,9 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * setzt die Spiel Oberfläche
+     */
     private void setGameLayout() {
         menuLayout.setCenter(gameLayout);
         menuPaneController.disableReturnItem(false);
@@ -176,10 +196,16 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * öffnet das About Fenster
+     */
     public void showAboutPane() {
         aboutStage.show();
     }
 
+    /**
+     * öffnet das regeln Fenster
+     */
     public void showRulesPane() {
         rulesStage.show();
     }
@@ -196,18 +222,34 @@ public class Main extends Application {
         setGameLayout();
     }
 
+    /**
+     * gibt eine Instanz des PlayerControllers zurück
+     * @return PlayerController
+     */
     public PlayerController getPlayerController() {
         return playerController;
     }
 
+    /**
+     * gibt eine Instanz des GamePaneControllers zurück
+     * @return GamePaneController
+     */
     public GamePaneController getGamePaneController(){
         return gamePaneController;
     }
 
+    /**
+     * gibt eine Instanz des Game zurück
+     * @return Game
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * gibt das Image für die SuperDame
+     * @return Image SuperDame
+     */
     public Image getSuperDameImage() {
         return superDame;
     }

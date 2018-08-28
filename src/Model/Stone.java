@@ -3,6 +3,9 @@ package Model;
 import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 
+/**
+ * speichert Daten für einen Stein
+ */
 public class Stone {
 
     private int indexX , indexY;
