@@ -95,7 +95,7 @@ public class Main extends Application {
             menuLayout = loader.load();
             primaryStage.setScene(new Scene(menuLayout));
             menuPaneController = loader.getController();
-            menuPaneController.setInstances(this);
+            menuPaneController.setObjects(this);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -111,7 +111,7 @@ public class Main extends Application {
             loader.setLocation(Main.class.getResource("view/StartPane.fxml"));
             startLayout = loader.load();
             startPaneController = loader.getController();
-            startPaneController.setInstances(this);
+            startPaneController.setObjects(this);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -145,7 +145,7 @@ public class Main extends Application {
             loader.setLocation(Main.class.getResource("view/GamePane.fxml"));
             gameLayout = loader.load();
             gamePaneController = loader.getController();
-            gamePaneController.setInstances(this);
+            gamePaneController.setObjects(this);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -174,7 +174,7 @@ public class Main extends Application {
             aboutStage.setResizable(false);
             aboutStage.setScene(new Scene(aboutPane));
             aboutStage.sizeToScene();
-            ((AboutPaneController)loader.getController()).setInstances(aboutStage);
+            ((AboutPaneController)loader.getController()).setObjects(aboutStage);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -194,7 +194,7 @@ public class Main extends Application {
             rulesStage.setResizable(false);
             rulesStage.setScene(new Scene(aboutPane));
             rulesStage.sizeToScene();
-            ((RulesPaneController)loader.getController()).setInstances(rulesStage);
+            ((RulesPaneController)loader.getController()).setObjects(rulesStage);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -227,7 +227,7 @@ public class Main extends Application {
     }
 
     /**
-     * gibt eine Instanz des PlayerControllers zurück
+     * gibt ein Objekt des PlayerControllers zurück
      * @return PlayerController
      */
     public PlayerController getPlayerController() {
@@ -235,7 +235,7 @@ public class Main extends Application {
     }
 
     /**
-     * gibt eine Instanz des GamePaneControllers zurück
+     * gibt ein Objekt des GamePaneControllers zurück
      * @return GamePaneController
      */
     public GamePaneController getGamePaneController(){
@@ -243,7 +243,7 @@ public class Main extends Application {
     }
 
     /**
-     * gibt eine Instanz des Game zurück
+     * gibt ein Objekt von Game zurück
      * @return Game
      */
     public Game getGame() {

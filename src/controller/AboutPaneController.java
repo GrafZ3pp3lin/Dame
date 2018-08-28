@@ -16,7 +16,7 @@ public class AboutPaneController {
     @FXML
     private Label label_des;
 
-    public void setInstances(Stage stage) {
+    public void setObjects(Stage stage) {
         aboutStage = stage;
     }
 

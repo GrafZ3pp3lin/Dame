@@ -58,7 +58,7 @@ public class GamePaneController {
      *
      * @param control Instanz der Main Klasse
      */
-    public void setInstances(Main control) {
+    public void setObjects(Main control) {
         this.control = control;
     }
 
@@ -151,7 +151,8 @@ public class GamePaneController {
     }
 
     /**
-     * update Player Name visual
+     * färbt die Spieler Namen richtig ein.
+     * Der Spieler der am Zug ist, bekommt einen orangenen Namen
      */
     public void updatePlayer() {
         if (control.getPlayerController().isCurrentPlayer1()) {
@@ -166,6 +167,7 @@ public class GamePaneController {
 
     /**
      * Message auf der Spieloberfläche
+     * ein leerer String resetet die Message
      *
      * @param message Message
      */
@@ -175,6 +177,8 @@ public class GamePaneController {
 
     /**
      * entfernt einen einzigen Stein vom Spielfeld und setzt diesen an den Rand
+     * die eliminierten Steine werden "gestapelt" dargestellt Jeder Stein überagt seinen Vorgänger zur Hälfte
+     *
      * @param stone Stein der entfernt wird
      */
     public void removeToken(Stone stone) {
@@ -202,6 +206,8 @@ public class GamePaneController {
 
     /**
      * bewegt einen Stein entlang eines Moves
+     * alle Felder (enterFields) von Move werden der Reihe nach angefahren
+     * während des Zugs werden, sobald beide Steine übereinander sind, die übersprungenen Steine (skippedFields) entfernt
      * während der Stein bewegt wird, sind weitere Benutzereingaben gesperrt.
      *
      * @param move Move, den der Stein macht
@@ -269,6 +275,7 @@ public class GamePaneController {
 
     /**
      * testet ob eine Node grafisch über einem Feld liegt
+     * ein leichter Versatz von +/- 2% wird beachtet
      *
      * @param s Stein
      * @param f Feld
@@ -287,6 +294,7 @@ public class GamePaneController {
 
     /**
      * hebt alle besuchten Felder und mögliche weitere Felder hervor
+     * besuchte Felder werden blau hervorgehoben und mögliche grün
      *
      * @param fields mögliche Felder
      * @param move Move (besuchte Felder)
@@ -302,7 +310,7 @@ public class GamePaneController {
     }
 
     /**
-     * setzt einen Token(Circle) richtig aufs Spielfeld
+     * initialisiert einen Token(Circle) und setzt ihn richtig aufs Spielfeld
      *
      * @param x X-Position
      * @param y Y-Position
@@ -324,6 +332,16 @@ public class GamePaneController {
         }
     }
 
+    /**
+     * setzt die x- und y-Koordinaten einer Node, unter Beachtung der Superdame
+     * einfache Steine sind Kreise und haben ihren Nullpunkt in der Mitte.
+     * eine Superdame ist ein Stackpane, mit einem Circle und einem Image. Diese hat ihren Nullpunkt links oben.
+     *
+     * @param x
+     * @param y
+     * @param node
+     * @see Circle
+     */
     private void placeToken(int x, int y, Node node) {
         double a = (double)size / amount;
         double off = 0;
@@ -336,8 +354,9 @@ public class GamePaneController {
 
     /**
      * updatet einen Token, sodass dieser ganz oben auf dem Feld liegt und sich
-     * über anderen Tokens befindet.
+     * über anderen Tokens befindet. Die Node wird kurz von der Oberfläche entfernt und wieder hinzugefügt
      * Wichtig für moveToken
+     *
      * @param c Kreis
      */
     private void updateToken(Node c) {
@@ -346,7 +365,8 @@ public class GamePaneController {
     }
 
     /**
-     * hebt einen Kreis grafisch hervor
+     * verwandelt einen einfachen Stein in eine Superdame. Dazu wird ein Stackpane erzeugt,
+     * in welches der Circle und ein Image platziert werden. Das Image hat 75% der Größe des Circles
      *
      * @param s Superdamen Stein
      */
@@ -374,8 +394,11 @@ public class GamePaneController {
 
     /**
      * verarbeitet die Maus Klicks auf das Spielfeld
+     * Geglickt werden kann auf ein Feld (Rectangle) ein Stein (Circle) oder ein Stackpane(Superdame)
+     * Zu der geglickten Node wird das entsprechende Feld, bzw. der Stein ermittelt und an das Game übergeben
      *
      * @param e MouseEvent
+     * @see Game
      */
     @FXML
     private void onFieldKlick(MouseEvent e) {

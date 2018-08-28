@@ -17,7 +17,7 @@ public class RulesPaneController {
     @FXML
     private TextArea rules;
 
-    public void setInstances(Stage rules) {
+    public void setObjects(Stage rules) {
         this.rulesStage = rules;
     }
 
