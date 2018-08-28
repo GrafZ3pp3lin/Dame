@@ -117,6 +117,9 @@ public class Game {
             else if (move.getEndField().equals(f) && move.getEndField() != move.getFirstField()) {
                 makeMove(move);
             }
+            else if (playerController.getCurrentPlayer().hasStoneAt(f.getIndexX(), f.getIndexY())) {
+                selectStone(playerController.getCurrentPlayer().getStoneAt(f.getIndexX(), f.getIndexY()));
+            }
         }
         else if (playerController.getCurrentPlayer().hasStoneAt(f.getIndexX(), f.getIndexY())) {
             selectStone(playerController.getCurrentPlayer().getStoneAt(f.getIndexX(), f.getIndexY()));

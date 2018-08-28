@@ -14,6 +14,7 @@ public class Move {
     public Move() {
         enteredFields = new Vector<>();
         skipedFields = new Vector<>();
+        outdated = true;
     }
 
     public Move(Stone s) {
