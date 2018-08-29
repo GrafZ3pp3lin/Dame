@@ -59,6 +59,8 @@ public class Main extends Application {
 
     /**
      * lädt alle Oberflächen und richtet das fenster ein
+     * initialisiert alle Spielobjekte
+     *
      * @param primaryStage Oberflächen Fenster
      */
     @Override
@@ -86,7 +88,11 @@ public class Main extends Application {
     }
 
     /**
-     * lädt das Menü
+     * lädt das Menü (MenuPane.fxml)
+     * das Menü ist auf einem BorderPane platziert. Im oberen Teil, ist eine Menü-Leiste, bestehend aus Optionen
+     * und Hilfe.
+     * Der mittlere Teil ist leer, sodass hier andere Oberflächen eingefügt werden können. Das Menü bleibt also immer
+     * sichtbar.
      */
     private void initRootLayout() {
         try {
@@ -103,7 +109,8 @@ public class Main extends Application {
     }
 
     /**
-     * lädt die Start Oberfläche
+     * lädt die Start Oberfläche. Auf der Startoberfläche können die Spieleinstellungen verändert werden und
+     * zwischen Single- und Multiplayer-Spiel gewählt werden.
      */
     private void loadStartLayout() {
         try {
@@ -119,7 +126,7 @@ public class Main extends Application {
     }
 
     /**
-     * setzt das Start Layout
+     * Das StartLayout wird in das "Center" der Menü Oberfläche gesetzt
      */
     private void setStartLayout() {
         menuLayout.setCenter(startLayout);
@@ -137,7 +144,7 @@ public class Main extends Application {
     }
 
     /**
-     * lädt die Spiel Oberfläche
+     * lädt die Spiel Oberfläche. Auf der Spieloberfläche wird später das Spielfeld angezeigt
      */
     private void loadGameLayout() {
         try {
@@ -153,7 +160,7 @@ public class Main extends Application {
     }
 
     /**
-     * setzt die Spiel Oberfläche
+     * setzt die Spiel Oberfläche. Dazu wird die das SpielLayout in das "Center" des Menü gesetzt
      */
     private void setGameLayout() {
         menuLayout.setCenter(gameLayout);
@@ -161,7 +168,10 @@ public class Main extends Application {
     }
 
     /**
-     * lädt die About Oberfläche
+     * lädt die About Oberfläche. Die About Oberfläche wird in einem seperaten Fenster (Stage) angezeigt.
+     * Das seperate Fenster ist ein Utility-Fenster, nicht Größen-veränderbar und immer im Vordergrund.
+     *
+     * @see StageStyle
      */
     private void loadAboutPane() {
         try {
@@ -182,7 +192,10 @@ public class Main extends Application {
     }
 
     /**
-     * lädt die Rules Oberfläche
+     * lädt die Rules Oberfläche. Die Regeln werden in einem seperaten Fenster angezeigt, sodass sowohl Regeln,
+     * als auch Spiel sichtbar sein können. Das Regeln Fenster ist ein Utility-Fenster.
+     *
+     * @see StageStyle
      */
     private void loadRulesPane() {
         try {
@@ -209,14 +222,22 @@ public class Main extends Application {
     }
 
     /**
-     * öffnet das regeln Fenster
+     * öffnet das Regeln Fenster
      */
     public void showRulesPane() {
         rulesStage.show();
     }
 
     /**
-     * startet ein Multiplayer Spiel
+     * startet ein Spiel. Dazu wird das Spielfeld neu generiert und an den GamePaneController übergeben, der
+     * dieses Spielfeld grafisch darstellt. Der PlayerController wird neu initialisiert und generiert die neuen Spieler
+     * Die neuen Spieler werden wieder an den gamePaneController übergeben, sodasss die Steine der Spieler garfisch dargestellt
+     * werden können.
+     *
+     * @param ki gibt an, ob es sich um ein Single- (ki = true) oder Multiplayer-Spiel handelt
+     * @param name1 Der Name von Spieler 1
+     * @param name2 Der Name von Spieler 2
+     * @see GamePaneController
      */
     public void startGame(boolean ki, String name1, String name2) {
         playingField.rebuild(startPaneController.getSize());
@@ -251,7 +272,7 @@ public class Main extends Application {
     }
 
     /**
-     * gibt das Image für die SuperDame
+     * gibt das Image für die SuperDame zurück
      * @return Image SuperDame
      */
     public Image getSuperDameImage() {

@@ -20,6 +20,10 @@ public class AboutPaneController {
         aboutStage = stage;
     }
 
+    /**
+     * wird automatisch bei der Initialisierung aufgerufen. Hier wird der Text für das Label gesetzt.
+     * Wichtig ist, dass alle Entwickler gennant werden.
+     */
     @FXML
     private void initialize() {
         label_des.setText("Diese Software wurde im Rahmen eines Projekts an der DHBW Horb entwickelt.\n" +

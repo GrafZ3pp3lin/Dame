@@ -21,6 +21,10 @@ public class RulesPaneController {
         this.rulesStage = rules;
     }
 
+    /**
+     * Wird automatisch bei der Initialisierung aufgerufen. Hier werden die Regeln aus der Text datei aus den resourcen
+     * ausgelesen und in die TextArea übertragen.
+     */
     @FXML
     private void initialize() {
         try {
