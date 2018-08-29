@@ -184,7 +184,7 @@ public class Game {
     private boolean testForWinner() {
         if (!isMovePossible(playerController.getOtherPlayer())) {
             System.out.println(playerController.getCurrentPlayer().getName() + " Win");
-            //TODO Win Player2
+            //TODO Win Player
             return true;
         }
         return false;

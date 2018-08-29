@@ -135,7 +135,6 @@ public class Main extends Application {
 
     /**
      * kehrt auf das Start Layout zurück und bricht das aktuelle Spiel ab
-     * //TODO better clear (Game etc.)
      */
     public void returnToStart() {
         setStartLayout();

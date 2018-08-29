@@ -216,34 +216,34 @@ public class GamePaneController {
         graphicAction = true;
         double value = (double)size / amount;
         updateToken(move.getStone().getcCirc());
+        Stone s = move.getStone();
         Timer t = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 try {
                     //TODO ArrayIndexOutOfBoundsException
-                    if (!isStoneNearField(move.getStone(), move.getNextField(), value)) {
-                        move.getStone().getcCirc().setLayoutX(move.getStone().getcCirc().getLayoutX() + (value / 12)
+                    if (!isStoneNearField(s, move.getNextField(), value)) {
+                        s.getcCirc().setLayoutX(s.getcCirc().getLayoutX() + (value / 12)
                                 * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1));
-                        move.getStone().getcCirc().setLayoutY(move.getStone().getcCirc().getLayoutY() + (value / 12)
+                        s.getcCirc().setLayoutY(s.getcCirc().getLayoutY() + (value / 12)
                                 * (move.getNextField().getIndexY() >= move.getCurrentField().getIndexY() ? -1 : 1));
-                        if (move.getFirstSkipedField() != null && isStoneNearField(move.getStone(), move.getFirstSkipedField(), value)) {
-                            Stone s = control.getPlayerController().getOtherPlayer().getStoneAt(move.getFirstSkipedField().getIndexX(), move.getFirstSkipedField().getIndexY());
-                            if (s != null) {
-                                s.setEliminated();
-
-                                Platform.runLater(() -> removeToken(s));
+                        if (move.getFirstSkipedField() != null && isStoneNearField(s, move.getFirstSkipedField(), value)) {
+                            Stone stone = control.getPlayerController().getOtherPlayer().getStoneAt(move.getFirstSkipedField().getIndexX(), move.getFirstSkipedField().getIndexY());
+                            if (stone != null) {
+                                stone.setEliminated();
+                                Platform.runLater(() -> removeToken(stone));
                                 move.nextSkipedField();
                             }
                         }
                     }
                     else {
                         if (!move.nextField()) {
-                            Platform.runLater(() -> placeToken(move.getEndField().getIndexX(), move.getEndField().getIndexY(), move.getStone().getcCirc()));
+                            Platform.runLater(() -> placeToken(move.getEndField().getIndexX(), move.getEndField().getIndexY(), s.getcCirc()));
                             t.cancel();
                             t.purge();
-                            if (move.getStone().isSuperDame()) {
-                                Platform.runLater(() -> visualizeSuperDame(move.getStone()));
+                            if (s.isSuperDame()) {
+                                Platform.runLater(() -> visualizeSuperDame(s));
                             }
                             graphicAction = false;
                             control.getGame().finishedMove();
@@ -253,20 +253,10 @@ public class GamePaneController {
                 catch (NullPointerException e) {
                     System.err.println("Something went wrong");
                     e.printStackTrace();
-                    if (move != null) {
-                        placeToken(move.getEndField().getIndexX(), move.getEndField().getIndexY(), move.getStone().getcCirc());
-                    }
-                    t.cancel();
-                    t.purge();
                 }
                 catch (ArrayIndexOutOfBoundsException e) {
                     System.err.println("Something went wrong");
                     e.printStackTrace();
-                    if (move != null) {
-                        placeToken(move.getEndField().getIndexX(), move.getEndField().getIndexY(), move.getStone().getcCirc());
-                    }
-                    t.cancel();
-                    t.purge();
                 }
             }
         };
