@@ -13,6 +13,7 @@ public class Game {
     private PlayerController playerController;
 
     private List<Field> possibleFields;
+    private List<Field> visitedFields;
     private Move move;
 
     public Game(Main control, GamePaneController gamePaneController, PlayerController playerController) {
@@ -20,6 +21,7 @@ public class Game {
         this.gamePaneController = gamePaneController;
         this.playerController = playerController;
         possibleFields = new ArrayList<>();
+        visitedFields = new ArrayList<>();
         move = new Move();
     }
 
@@ -33,36 +35,59 @@ public class Game {
                 !playerController.getOtherPlayer().hasStoneAt(f.getIndexX(), f.getIndexY());
     }
 
-    //TODO SuperDame
     //SuperDame kann beliebig viele Schritte gehen
-    private boolean testField(int x, int y, int indexX, int indexY, boolean further) {
+    private boolean testField(int x, int y, int indexX, int indexY, int indexX2, int indexY2, boolean further) {
         Field field = control.playingField.getField(x + indexX, y + indexY);
+        Field field2;
         if (field != null) {
             if (emptyField(field) && !further) {
                 possibleFields.add(field);
                 return true;
             }
             else if (playerController.getOtherPlayer().hasStoneAt(field.getIndexX(), field.getIndexY())) {
-                field = control.playingField.getField(x + indexX * 2, y + indexY * 2);
-                if (field != null && emptyField(field)) {
-                    possibleFields.add(field);
-                    return true;
+                field2 = control.playingField.getField(x + indexX2, y + indexY2);
+                if(!visitedFields.contains(field)) {
+                    if (field2 != null && emptyField(field2)) {
+                        possibleFields.add(field2);
+                        return false;
+                    }
                 }
             }
         }
         return false;
     }
 
-    //TODO SuperDame
     //SuperDame kann in alle vier richtungen gehen
-    private void testFieldScope(Field f, Color c, boolean further) {
-        if (c == Color.BLACK) {
-            testField(f.getIndexX(), f.getIndexY(), 1, 1, further);
-            testField(f.getIndexX(), f.getIndexY(), -1, 1, further);
-        }
-        else {
-            testField(f.getIndexX(), f.getIndexY(), 1, -1, further);
-            testField(f.getIndexX(), f.getIndexY(), -1, -1, further);
+    private void testFieldScope(Field f, Color c, boolean further, boolean superDame) {
+        if(superDame){
+            for(int i = 1; i < Main.playingField.getSize(); i++) {
+                if(!testField(f.getIndexX(), f.getIndexY(), i, i, i+1,i+1, further)){
+                    break;
+                }
+            }
+            for(int i = 1; i < Main.playingField.getSize(); i++) {
+                if(!testField(f.getIndexX(), f.getIndexY(), i, -i,i+1,-i-1, further)){
+                    break;
+                }
+            }
+            for(int i = 1; i < Main.playingField.getSize(); i++) {
+                if(!testField(f.getIndexX(), f.getIndexY(), -i, i,-i-1, i+1, further)){
+                    break;
+                }
+            }
+            for(int i = 1; i < Main.playingField.getSize(); i++) {
+                if(!testField(f.getIndexX(), f.getIndexY(), -i, -i, -i-1, -i-1, further)){
+                    break;
+                }
+            }
+        }else {
+            if (c == Color.BLACK) {
+                testField(f.getIndexX(), f.getIndexY(), 1, 1,2,2, further);
+                testField(f.getIndexX(), f.getIndexY(), -1, 1,-2,2, further);
+            } else {
+                testField(f.getIndexX(), f.getIndexY(), 1, -1,2,-2, further);
+                testField(f.getIndexX(), f.getIndexY(), -1, -1,-2,-2, further);
+            }
         }
     }
 
@@ -76,8 +101,8 @@ public class Game {
         Field f = control.playingField.getField(move.getStone().getIndexX(), move.getStone().getIndexY());
         move.addEnterField(f);
         possibleFields.clear();
-        testFieldScope(f, s.getColor(), false);
-        gamePaneController.highlightFields(possibleFields, move);
+        testFieldScope(f, s.getColor(), false, s.isSuperDame());
+        gamePaneController.highlightFields(possibleFields, visitedFields, move);
     }
 
     public void selectField(Field f) {
@@ -102,16 +127,19 @@ public class Game {
                         if (playerController.getOtherPlayer().hasStoneAt(x, y)) {
                             move.addSkipField(control.playingField.getField(x, y));
 
+                            visitedFields.add(control.playingField.getField(x, y));
                             gamePaneController.colorField();
                             possibleFields.clear();
-                            testFieldScope(move.getEndField(), move.getStone().getColor(), true);
+
+                            testFieldScope(move.getEndField(), move.getStone().getColor(), true, move.getStone().isSuperDame());
                             if (!possibleFields.isEmpty()) {
-                                gamePaneController.highlightFields(possibleFields, move);
+                                gamePaneController.highlightFields(possibleFields, visitedFields, move);
                                 return;
                             }
                         }
                     }
                 }
+                visitedFields.clear();
                 makeMove(move);
             }
             else if (move.getEndField().equals(f) && move.getEndField() != move.getFirstField()) {
@@ -165,7 +193,7 @@ public class Game {
     private boolean isMovePossible(Player p) {
         for (Stone s : p.getStones()) {
             if (!s.isEliminated()) {
-                testFieldScope(Main.playingField.getField(s.getIndexX(), s.getIndexY()), s.getColor(), false);
+                testFieldScope(Main.playingField.getField(s.getIndexX(), s.getIndexY()), s.getColor(), false, s.isSuperDame());
                 if (!possibleFields.isEmpty()) {
                     possibleFields.clear();
                     return true;

@@ -299,10 +299,12 @@ public class GamePaneController {
      * @param fields mögliche Felder
      * @param move Move (besuchte Felder)
      */
-    public void highlightFields(List<Field> fields, Move move) {
+    public void highlightFields(List<Field> fields, List<Field> visitedFields, Move move) {
         colorField();
         for (Field f : fields) {
-            f.getcRec().setFill(Color.DARKGREEN);
+            if(!visitedFields.contains(f)) {
+                f.getcRec().setFill(Color.DARKGREEN);
+            }
         }
         for (Field f : move.getEnteredFields()) {
             f.getcRec().setFill(Color.BLUE);

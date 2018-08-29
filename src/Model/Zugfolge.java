@@ -3,7 +3,7 @@ package Model;
 import java.util.*;
 
 /**
- * Created by joels on 24.08.2018.
+ * @author Joel Schmid
  */
 public class Zugfolge extends Move{
     private int zuglaenge;
