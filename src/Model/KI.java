@@ -6,125 +6,153 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by joel schmid on 10.08.2018.
+ * Diese Klasse beinhaltet die KI für den Einzelspielermodus
+ * @author Joel Schmid
  */
 public class KI extends Player {
 
     private Player enemy;
     private List<Zugfolge> alleZuege;
 
-    public KI(Color c, String name) {
-        super(c, name);
-    }
-
     public KI(Color c, String name, int size, Player enemy) {
-        this(c, name);
-        createStones(size);
+        super(c, name, size);   //Konstruktoruafruf in Player
         this.enemy = enemy;
     }
 
-    public Zugfolge KI() {
+    /**
+     * Wird von der KI ein Zug erwartet, wird diese Methode aufgerufen, sie ermittelt einen möglichst langen Zug
+     * @return Zugfolge
+     */
+    public Move getBestMove() throws NoPossibleMoveException{
         alleZuege = new ArrayList<>();
 
         //Für alle noch nicht eliminierten Steine werden alle möglichen Züge ermittelt (KI ist eine rekursive Methode)
         for (Stone s : getStones()) {
             if (!s.isEliminated()) {
-                System.out.println(s.isSuperDame());
-                KI(s, s.getIndexX(), s.getIndexY(), 0, true, new ArrayList<Field>(), new ArrayList<Field>());
+                calculatePossibleMoves(s, s.getIndexX(), s.getIndexY(), 0, true, new ArrayList<Field>(), new ArrayList<Field>());
             }
         }
 
+        if(alleZuege.size() == 0){
+            throw new NoPossibleMoveException();
+        }
+/*
         for (Zugfolge z : alleZuege) {
             System.out.println(z.toString());
         }
-        System.out.println("Anzahl aller Züge: " + alleZuege.size());
-        Zugfolge gewehlt = Zugfolge.getRandomZug(alleZuege);
+        System.out.println("Anzahl aller Züge: " + alleZuege.size());*/
+        Zugfolge gewehlt = Zugfolge.getBestZug(alleZuege);/*
         System.out.println("Ausgewählter Zug: " + gewehlt.toString());
         System.out.println("---------------------------------------------------------------------------");
-        gewehlt.print();
+        gewehlt.print();*/
         return gewehlt;
     }
 
-
+    /**
+     * Hier wird ausgehend von X und Y Koordinaten geschaut, welcher Zug möglich ist.
+     * normale Steine können nur nach unten (RIGHTDOWN, LEFTDOWN) die superdame kann in alle vier diagonalen Richtungen
+     * (RIGHTDOWN, LEFTDOWN, RIGHTUP, LEFTUP)
+     * @param s Stein, für den der Zug ermittelt wird
+     * @param d Richtung, in die gefahren werden soll
+     * @param x aktuelle X-Koordinate
+     * @param y aktuelle Y-Koordinate
+     * @param ersterDurchgang ist dies der erste Aufruf (noch nicht rekursiv aufgerufen)
+     * @param skipped enthält alle gegnerischen Felder, die in diesem Zug bereits rausgeworfen wurden
+     * @param entered enthält alle Felder, auf denen der eigene Stein kurz aufkommt
+     * @return Zuglänge ausgehend von X und Y (Anzahl überquerte Felder)
+     */
     private int diagonalcheck(Stone s, Direction d, int x, int y, boolean ersterDurchgang, List<Field> skipped, List<Field> entered) {
-        // Überprüft die möglichen Schläge von KI seite aus links (von Spielerseite aus rechts)
 
-        //System.out.println(s.isSuperDame() ?  (Main.playingField.getSize()-2) : 1);
+        // Ermittelt möglichen Spielzug nach Rechts unten
+        if (d.equals(Direction.RIGHTDOWN)) {
+            /*  Wenn s eine superdame ist, wird die for-Schleife mehrmals durchlaufen um auch einen weiter entfernten Stein zu finden,
+                ansonsten nur einmal, um zu schauen, ob beim nächsten Feld bereits ein gegnerischer Stein ist. */
+            for(int i = 0; i < (s.isSuperDame() ?  (Main.playingField.getSize()-2) : 1); i++) {
 
-        if (d.equals(Direction.LEFTDOWN)) {
-            //sind die nächsten zwei diagonalen Felder innerhalb des Spielfeldes
-            //der zu überspringende Stein nicht bereits im gleichen zug schonmal besucht(Zyklus)
-            //Gegnerischer Stein auf nächstem Feld und übernächstes Feld frei
-            for(int a = 0; a < (s.isSuperDame() ?  (Main.playingField.getSize()-2) : 1); a++) {
-                if(Main.playingField.isPositionInsideField(x + a + 1, y - a - 1) && hasStoneAt(x + a + 1, y - a - 1) ||
-                        enemy.hasStoneAt(x + a + 1, y - a - 1) && enemy.hasStoneAt(x + a + 2, y - a - 2)) return 0;
-                if (Main.playingField.isPositionInsideField(x + a + 2, y - a - 2) && Main.playingField.isPositionInsideField(x + a + 1, y - a - 1)
-                        && !skipped.contains(Main.playingField.getField(x + a + 1, y - a - 1)) && !entered.contains(Main.playingField.getField(x + a + 2, y - a - 2))
-                        && enemy.hasStoneAt(x + a + 1, y - a - 1)
-                        && !(enemy.hasStoneAt(x + a + 2, y - a - 2) || hasStoneAt(x + a + 2, y - a - 2))) {
-                    skipped.add(Main.playingField.getField(x + a + 1, y - a - 1));
-                    entered.add(Main.playingField.getField(x + a + 2, y - a - 2));
-                    return 2+a;
+                // Sobald ein eigener Stein im Weg ist wird abgebrochen oder sobald ein gegnerische Stein, hinter dem das Feld nicht frei ist.
+                if(Main.playingField.isPositionInsideField(x + i + 1, y - i - 1) && hasStoneAt(x + i + 1, y - i - 1) ||
+                        enemy.hasStoneAt(x + i + 1, y - i - 1) && (enemy.hasStoneAt(x + i + 2, y - i - 2) || hasStoneAt(x + i + 2, y - i - 2))) {
+                    return 0;
+                }
+
+                /*  sind die nächsten zwei diagonalen Felder innerhalb des Spielfeldes,
+                    ist der zu überspringende gegnerische Stein nicht bereits im gleichen zug schonmal besucht(Zyklus)
+                    Gegnerischer Stein auf nächstem Feld, übernächstes muss aufgrund der Abbruchbedingung von oben leer sein*/
+                if (Main.playingField.isPositionInsideField(x + i + 2, y - i - 2) && Main.playingField.isPositionInsideField(x + i + 1, y - i - 1)
+                        && !skipped.contains(Main.playingField.getField(x + i + 1, y - i - 1))
+                        && enemy.hasStoneAt(x + i + 1, y - i - 1)) {
+                    //Übersprungener Stein
+                    skipped.add(Main.playingField.getField(x + i + 1, y - i - 1));
+                    //landepunkt, von dem ausgehend dann erneut geschaut wird, ob es weitere Zugmöglichkeiten gibt
+                    entered.add(Main.playingField.getField(x + i + 2, y - i - 2));
+                    //diese Punkte werden gespeichert, um später die Bewegungsanimation zu ermöglichen
+                    return 2+i;
                 }
 
             }
-            //ist nächstes diagonales Feld innerhalb des Spielfeldes, und nicht von einem Spielstein besetzt, einfacher Zug, ist deshalb nur bei erstem
-            // Aufruf möglich, nicht im rekursionsfall
-            if (!s.isSuperDame() && ersterDurchgang && Main.playingField.isPositionInsideField(x + 1, y - 1) && !(enemy.hasStoneAt(x + 1, y - 1) || hasStoneAt(x + 1, y - 1))) {
+            /*  ist nächstes diagonales Feld innerhalb des Spielfeldes, und nicht von einem Spielstein besetzt, einfacher Zug, ist deshalb nur bei erstem
+                Aufruf möglich, nicht im rekursionsfall */
+            if (ersterDurchgang && Main.playingField.isPositionInsideField(x + 1, y - 1) && !(enemy.hasStoneAt(x + 1, y - 1) || hasStoneAt(x + 1, y - 1))) {
                 entered.add(Main.playingField.getField(x + 1, y - 1));
                 return 1;
             }
-        } else if (d.equals(Direction.RIGHTDOWN)) {
-            for(int a = 0; a < (s.isSuperDame() ?  (Main.playingField.getSize()-2) : 1); a++) {
-                if(Main.playingField.isPositionInsideField(x - a - 1, y - a - 1) && hasStoneAt(x - a + 1, y - a - 1)||
-                        enemy.hasStoneAt(x - a - 1, y - a - 1) && enemy.hasStoneAt(x - a - 2, y - a - 2)) return 0;
-                if (Main.playingField.isPositionInsideField(x - a - 2, y - a - 2) && Main.playingField.isPositionInsideField(x - a - 1, y - a - 1)
-                        && !skipped.contains(Main.playingField.getField(x - a - 1, y - a - 1)) && !entered.contains(Main.playingField.getField(x - a - 2, y - a - 2))
-                        && enemy.hasStoneAt(x - a - 1, y - a - 1)
-                        && !(enemy.hasStoneAt(x - a - 2, y - a - 2) || hasStoneAt(x - a - 2, y - a - 2))) {
-                    skipped.add(Main.playingField.getField(x - a - 1, y - a - 1));
-                    entered.add(Main.playingField.getField(x - a - 2, y - a - 2));
-                    return 2+a;
+        }
+        /*  In den folgenden else if- Fällen ist alles gleich wie im ersten Fall, es unterscheidet sich nur in der Richtung,
+            die Überprüft wird. */
+        else if (d.equals(Direction.LEFTDOWN)) {
+            for(int i = 0; i < (s.isSuperDame() ?  (Main.playingField.getSize()-2) : 1); i++) {
+                if(Main.playingField.isPositionInsideField(x - i - 1, y - i - 1) && hasStoneAt(x - i - 1, y - i - 1) ||
+                        enemy.hasStoneAt(x - i - 1, y - i - 1) && (enemy.hasStoneAt(x - i - 2, y - i - 2) || hasStoneAt(x - i - 2, y - i - 2))) {
+                    return 0;
+                }
+                if (Main.playingField.isPositionInsideField(x - i - 2, y - i - 2) && Main.playingField.isPositionInsideField(x - i - 1, y - i - 1)
+                        && !skipped.contains(Main.playingField.getField(x - i - 1, y - i - 1))
+                        && enemy.hasStoneAt(x - i - 1, y - i - 1)) {
+                    skipped.add(Main.playingField.getField(x - i - 1, y - i - 1));
+                    entered.add(Main.playingField.getField(x - i - 2, y - i - 2));
+                    return 2+i;
                 }
 
             }
-            if (!s.isSuperDame() &&ersterDurchgang && Main.playingField.isPositionInsideField(x - 1, y - 1) && !(enemy.hasStoneAt(x - 1, y - 1) || hasStoneAt(x - 1, y - 1))) {
+            if (ersterDurchgang && Main.playingField.isPositionInsideField(x - 1, y - 1) && !(enemy.hasStoneAt(x - 1, y - 1) || hasStoneAt(x - 1, y - 1))) {
                 entered.add(Main.playingField.getField(x - 1, y - 1));
                 return 1;
             }
-        } else if (s.isSuperDame() && d.equals(Direction.LEFTUP)) {
-            for(int a = 0; a < (s.isSuperDame() ?  (Main.playingField.getSize()-2) : 1); a++) {
-                if(Main.playingField.isPositionInsideField(x + a + 1, y + a + 1) && hasStoneAt(x + a + 1, y + a + 1)||
-                        enemy.hasStoneAt(x + a + 1, y + a + 1) && enemy.hasStoneAt(x + a + 2, y + a + 2)) return 0;
-                if (Main.playingField.isPositionInsideField(x + a + 2, y + a + 2) && Main.playingField.isPositionInsideField(x + a + 1, y + a + 1)
-                        && !skipped.contains(Main.playingField.getField(x + a + 1, y + a + 1)) && !entered.contains(Main.playingField.getField(x + a + 2, y + a + 2))
-                        && enemy.hasStoneAt(x + a + 1, y + a + 1)
-                        && !(enemy.hasStoneAt(x + a + 2, y + a + 2) || hasStoneAt(x + a + 2, y + a + 2))) {
-                    skipped.add(Main.playingField.getField(x + a + 1, y + a + 1));
-                    entered.add(Main.playingField.getField(x + a + 2, y + a + 2));
-                    return 2+a;
+        } else if (s.isSuperDame() && d.equals(Direction.RIGHTUP)) {
+            for(int i = 0; i < (s.isSuperDame() ?  (Main.playingField.getSize()-2) : 1); i++) {
+                if(Main.playingField.isPositionInsideField(x + i + 1, y + i + 1) && hasStoneAt(x + i + 1, y + i + 1) ||
+                        enemy.hasStoneAt(x + i + 1, y + i + 1) && (enemy.hasStoneAt(x + i + 2, y + i + 2) || hasStoneAt(x + i + 2, y + i + 2))) {
+                    return 0;
+                }
+                if (Main.playingField.isPositionInsideField(x + i + 2, y + i + 2) && Main.playingField.isPositionInsideField(x + i + 1, y + i + 1)
+                        && !skipped.contains(Main.playingField.getField(x + i + 1, y + i + 1))
+                        && enemy.hasStoneAt(x + i + 1, y + i + 1)) {
+                    skipped.add(Main.playingField.getField(x + i + 1, y + i + 1));
+                    entered.add(Main.playingField.getField(x + i + 2, y + i + 2));
+                    return 2+i;
                 }
 
             }
-            if (!s.isSuperDame() &&ersterDurchgang && Main.playingField.isPositionInsideField(x + 1, y + 1) && !(enemy.hasStoneAt(x + 1, y + 1) || hasStoneAt(x + 1, y + 1))) {
+            if (ersterDurchgang && Main.playingField.isPositionInsideField(x + 1, y + 1) && !(enemy.hasStoneAt(x + 1, y + 1) || hasStoneAt(x + 1, y + 1))) {
                 entered.add(Main.playingField.getField(x + 1, y + 1));
                 return 1;
             }
-        } else if (s.isSuperDame() && d.equals(Direction.RIGHTUP)) {
-            for(int a = 0; a < (s.isSuperDame() ?  (Main.playingField.getSize()-2) : 1); a++) {
-                if(Main.playingField.isPositionInsideField(x - a - 1, y - a - 1) && hasStoneAt(x - a - 1, y - a - 1)||
-                        enemy.hasStoneAt(x - a - 1, y - a - 1) && enemy.hasStoneAt(x - a - 2, y - a - 2)) return 0;
-                if (Main.playingField.isPositionInsideField(x - a - 2, y + a + 2) && Main.playingField.isPositionInsideField(x - a - 1, y + a + 1)
-                        && !skipped.contains(Main.playingField.getField(x - a - 1, y + a + 1)) && !entered.contains(Main.playingField.getField(x - a - 2, y + a + 2))
-                        && enemy.hasStoneAt(x - a - 1, y + a + 1)
-                        && !(enemy.hasStoneAt(x - a - 2, y + a + 2) || hasStoneAt(x - a - 2, y + a + 2))) {
-                    skipped.add(Main.playingField.getField(x - a - 1, y + a + 1));
-                    entered.add(Main.playingField.getField(x - a - 2, y + a + 2));
-                    return 2+a;
+        } else if (s.isSuperDame() && d.equals(Direction.LEFTUP)) {
+            for(int i = 0; i < (s.isSuperDame() ?  (Main.playingField.getSize()-2) : 1); i++) {
+                if(Main.playingField.isPositionInsideField(x - i - 1, y + i + 1) && hasStoneAt(x - i - 1, y + i + 1) ||
+                        enemy.hasStoneAt(x - i - 1, y + i + 1) && (enemy.hasStoneAt(x - i - 2, y + i + 2) || hasStoneAt(x - i - 2, y + i + 2))) {
+                    return 0;
+                }
+                if (Main.playingField.isPositionInsideField(x - i - 2, y + i + 2) && Main.playingField.isPositionInsideField(x - i - 1, y + i + 1)
+                        && !skipped.contains(Main.playingField.getField(x - i - 1, y + i + 1))
+                        && enemy.hasStoneAt(x - i - 1, y + i + 1)) {
+                    skipped.add(Main.playingField.getField(x - i - 1, y + i + 1));
+                    entered.add(Main.playingField.getField(x - i - 2, y + i + 2));
+                    return 2+i;
                 }
 
             }
-            if (!s.isSuperDame() &&ersterDurchgang && Main.playingField.isPositionInsideField(x - 1, y + 1) && !(enemy.hasStoneAt(x - 1, y + 1) || hasStoneAt(x - 1, y + 1))) {
+            if (ersterDurchgang && Main.playingField.isPositionInsideField(x - 1, y + 1) && !(enemy.hasStoneAt(x - 1, y + 1) || hasStoneAt(x - 1, y + 1))) {
                 entered.add(Main.playingField.getField(x - 1, y + 1));
                 return 1;
             }
@@ -132,13 +160,25 @@ public class KI extends Player {
         return 0;
     }
 
-    private void KI(Stone s, int x, int y, int zuglaenge, boolean ersterDurchgang, List<Field> skipped, List<Field> entered) {
+    /**
+     * Die KI Methode ermittelt mit hilfe von diagonalcheck, ob ein gegnerischer Stein geschlagen werden kann und ruft sich dann mit der
+     * neuen Position (X,Y) wieder Rekursiv auf. Dann wird ausgehen von der neuen Position wieder Diagonalchecks durchgeführt
+     * @param s aktueller Stein
+     * @param x aktuelle X-Koordinate
+     * @param y aktuelle Y-Koordinate
+     * @param zuglaenge bisherige Zuglänge des Zuges
+     * @param ersterDurchgang ist dies der erste Aufruf (nicht Rekursionsfall)
+     * @param skipped enthält alle gegnerischen Felder, die in diesem Zug bereits rausgeworfen wurden
+     * @param entered enthält alle Felder, auf denen der eigene Stein kurz aufkommt
+     */
+    private void calculatePossibleMoves(Stone s, int x, int y, int zuglaenge, boolean ersterDurchgang, List<Field> skipped, List<Field> entered) {
 
+        // ist dies der erste Durchgang, wird das Startfeld hinzugefügt
         if (ersterDurchgang) {
             entered.add(Main.playingField.getField(x, y));
         }
 
-        // kopien für schläge nach rechts und links werden erstellt, damit sich diese nicht durcheinandermischen
+        // skipped und entered Listen werden für die jeweiligen Richtungen kopiert
         List<Field> skippedLeftDown = new ArrayList<>(skipped);
         List<Field> enteredLeftDown = new ArrayList<>(entered);
 
@@ -152,9 +192,10 @@ public class KI extends Player {
         List<Field> enteredRightUp = new ArrayList<>(entered);
 
         int a;
-        if ((a = diagonalcheck(s, Direction.LEFTDOWN, x, y, ersterDurchgang, skippedLeftDown, enteredLeftDown)) > 1) {
-            //KI wird rekursiv aufgerufen, wenn ein gegnerischer Stein übersprungen werden kann
-            KI(s, x + a, y - a, zuglaenge + a, false, new ArrayList<Field>(skippedLeftDown), new ArrayList<Field>(enteredLeftDown));
+        if ((a = diagonalcheck(s, Direction.RIGHTDOWN, x, y, ersterDurchgang, skippedLeftDown, enteredLeftDown)) > 1) {
+            /*  KI wird rekursiv aufgerufen, wenn ein gegnerischer Stein übersprungen werden kann, um zu schauen ob ein weiterer
+                gegnerischer Stein von der neuen Position aus erreichbar ist */
+            calculatePossibleMoves(s, x + a, y - a, zuglaenge + a, false, new ArrayList<Field>(skippedLeftDown), new ArrayList<Field>(enteredLeftDown));
         } else {
             if (zuglaenge + a > 0) {
                 Zugfolge z = new Zugfolge(zuglaenge + a, s);
@@ -164,8 +205,8 @@ public class KI extends Player {
             }
         }
 
-        if ((a = diagonalcheck(s, Direction.RIGHTDOWN, x, y, ersterDurchgang, skippedRightDown, enteredRightDown)) > 1) {
-            KI(s, x - a, y - a, zuglaenge + a, false, new ArrayList<Field>(skippedRightDown), new ArrayList<Field>(enteredRightDown));
+        if ((a = diagonalcheck(s, Direction.LEFTDOWN, x, y, ersterDurchgang, skippedRightDown, enteredRightDown)) > 1) {
+            calculatePossibleMoves(s, x - a, y - a, zuglaenge + a, false, new ArrayList<Field>(skippedRightDown), new ArrayList<Field>(enteredRightDown));
         } else {
             if (zuglaenge + a > 0) {
                 Zugfolge z = new Zugfolge(zuglaenge + a, s);
@@ -175,8 +216,8 @@ public class KI extends Player {
             }
         }
 
-        if ((a = diagonalcheck(s, Direction.LEFTUP, x, y, ersterDurchgang, skippedLeftUp, enteredLeftUp)) > 1) {
-            KI(s, x + a, y + a, zuglaenge + a, false, new ArrayList<Field>(skippedLeftUp), new ArrayList<Field>(enteredLeftUp));
+        if ((a = diagonalcheck(s, Direction.RIGHTUP, x, y, ersterDurchgang, skippedLeftUp, enteredLeftUp)) > 1) {
+            calculatePossibleMoves(s, x + a, y + a, zuglaenge + a, false, new ArrayList<Field>(skippedLeftUp), new ArrayList<Field>(enteredLeftUp));
         } else {
             if (zuglaenge + a > 0) {
                 Zugfolge z = new Zugfolge(zuglaenge + a, s);
@@ -186,8 +227,8 @@ public class KI extends Player {
             }
         }
 
-        if ((a = diagonalcheck(s, Direction.RIGHTUP, x, y, ersterDurchgang, skippedRightUp, enteredRightUp)) > 1) {
-            KI(s, x - a, y + a, zuglaenge + a, false, new ArrayList<Field>(skippedRightUp), new ArrayList<Field>(enteredRightUp));
+        if ((a = diagonalcheck(s, Direction.LEFTUP, x, y, ersterDurchgang, skippedRightUp, enteredRightUp)) > 1) {
+            calculatePossibleMoves(s, x - a, y + a, zuglaenge + a, false, new ArrayList<Field>(skippedRightUp), new ArrayList<Field>(enteredRightUp));
         } else {
             if (zuglaenge + a > 0) {
                 Zugfolge z = new Zugfolge(zuglaenge + a, s);

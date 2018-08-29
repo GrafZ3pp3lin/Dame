@@ -175,10 +175,16 @@ public class Game {
         return false;
     }
 
-    public void playKI(){
+    public void playKI() {
         if(playerController.isSinglePlayerGame() && !playerController.isCurrentPlayer1()) {
-            Zugfolge z = ((KI) playerController.getPlayer2()).KI();
-            Platform.runLater(() -> makeMove(z));
+
+            try {
+                Move m = ((KI) playerController.getPlayer2()).getBestMove();
+                Platform.runLater(() -> makeMove(m));
+            } catch (NoPossibleMoveException e) {
+                //TODO KI hat verloren, da sie keine Züge mehr machen kann
+            }
+
         }
     }
 

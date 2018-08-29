@@ -34,7 +34,7 @@ public class Zugfolge extends Move{
 
 
 
-    public static Zugfolge getRandomZug(List<Zugfolge> zuege){
+    public static Zugfolge getBestZug(List<Zugfolge> zuege){
         if(zuege != null) {
             if (zuege.size() > 0) {
                 //die längsten Zugmöglichkeiten werden herausgesucht und davon ein zufälliger Zug gewählt
