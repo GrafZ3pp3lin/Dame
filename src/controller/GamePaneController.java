@@ -224,10 +224,11 @@ public class GamePaneController {
                 try {
                     //TODO ArrayIndexOutOfBoundsException
                     if (!isStoneNearField(s, move.getNextField(), value)) {
-                        s.getcCirc().setLayoutX(s.getcCirc().getLayoutX() + (value / 12)
-                                * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1));
-                        s.getcCirc().setLayoutY(s.getcCirc().getLayoutY() + (value / 12)
-                                * (move.getNextField().getIndexY() >= move.getCurrentField().getIndexY() ? -1 : 1));
+                        Platform.runLater(() -> calculateTokenLocation(s.getcCirc(), value, move));
+//                        s.getcCirc().setLayoutX(s.getcCirc().getLayoutX() + (value / 12)
+//                                * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1));
+//                        s.getcCirc().setLayoutY(s.getcCirc().getLayoutY() + (value / 12)
+//                                * (move.getNextField().getIndexY() >= move.getCurrentField().getIndexY() ? -1 : 1));
                         if (move.getFirstSkipedField() != null && isStoneNearField(s, move.getFirstSkipedField(), value)) {
                             Stone stone = control.getPlayerController().getOtherPlayer().getStoneAt(move.getFirstSkipedField().getIndexX(), move.getFirstSkipedField().getIndexY());
                             if (stone != null) {
@@ -261,6 +262,21 @@ public class GamePaneController {
             }
         };
         t.schedule(task, 0, 40);
+    }
+
+    /**
+     * setzt die Node um einen kleinen Wert näher in Richtung Ziel
+     * Die Node wird jedes mal um einen Bruchteil (1/12) eines Feldes weiter gesetzt
+     *
+     * @param n Node n
+     * @param value Größe eines Feldes
+     * @param move Der aktuelle Zug. Notwendig um die Richtung zu bestimmen
+     */
+    private void calculateTokenLocation(Node n, double value, Move move) {
+        n.setLayoutX(n.getLayoutX() + (value / 12)
+                * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1));
+        n.setLayoutY(n.getLayoutY() + (value / 12)
+                * (move.getNextField().getIndexY() >= move.getCurrentField().getIndexY() ? -1 : 1));
     }
 
     /**
