@@ -32,15 +32,37 @@ public class Game {
     private boolean testField(int x, int y, int indexX, int indexY, boolean further) {
         Field field = control.playingField.getField(x + indexX, y + indexY);
         if (field != null) {
-            if (emptyField(field) && !further) {
-                possibleFields.add(field);
-                return true;
-            }
-            else if (playerController.getOtherPlayer().hasStoneAt(field.getIndexX(), field.getIndexY())) {
-                field = control.playingField.getField(x + indexX * 2, y + indexY * 2);
-                if (field != null && emptyField(field)) {
+            if (Math.abs(indexX) == 1 || further) {
+                if (emptyField(field) && !further) {
                     possibleFields.add(field);
                     return true;
+                } else {
+                    if (playerController.getOtherPlayer().hasStoneAt(field.getIndexX(), field.getIndexY())) {
+                        Field nextField = control.playingField.getField(x + indexX * 2, y + indexY * 2);
+                        if (nextField != null && (emptyField(nextField) || (nextField == move.getFirstField() && further))) {
+                            possibleFields.add(nextField);
+                            return true;
+                        }
+                    }
+                }
+            } else {
+                if(emptyField(field)) {
+                    for (int prev = 1; prev < Math.abs(indexX); prev++) {
+                        if (playerController.getCurrentPlayer().hasStoneAt(x + prev * (indexX / Math.abs(indexX)), y + prev * (indexY / Math.abs(indexY)))) {
+                            return false;
+                        }
+                    }
+                    possibleFields.add(field);
+                    return true;
+                } else if (playerController.getOtherPlayer().hasStoneAt(field.getIndexX(), field.getIndexY())) {
+                    Field nextField = control.playingField.getField(x + indexX + (indexX / Math.abs(indexX)), y + indexY + (indexY / Math.abs(indexY)));
+                    Field prevField = control.playingField.getField(x + indexX - (indexX / Math.abs(indexX)), y + indexY - (indexY / Math.abs(indexY)));
+                    if (playerController.getOtherPlayer().hasStoneAt(prevField.getIndexX(), prevField.getIndexY())) {
+                        return false;
+                    } else if (nextField != null && emptyField(nextField)) {
+                        possibleFields.add(nextField);
+                        return true;
+                    }
                 }
             }
         }
@@ -49,14 +71,46 @@ public class Game {
 
     //TODO SuperDame
     //SuperDame kann in alle vier richtungen gehen
-    private void testFieldScope(Field f, Color c, boolean further) {
-        if (c == Color.BLACK) {
-            testField(f.getIndexX(), f.getIndexY(), 1, 1, further);
-            testField(f.getIndexX(), f.getIndexY(), -1, 1, further);
-        }
-        else {
-            testField(f.getIndexX(), f.getIndexY(), 1, -1, further);
-            testField(f.getIndexX(), f.getIndexY(), -1, -1, further);
+    private void testFieldScope(Stone s, Field f, boolean further) {
+        if (s.isSuperDame() == false) {
+            if (s.getColor() == Color.BLACK) {
+                testField(f.getIndexX(), f.getIndexY(), 1, 1, further);
+                testField(f.getIndexX(), f.getIndexY(), -1, 1, further);
+            } else {
+                testField(f.getIndexX(), f.getIndexY(), 1, -1, further);
+                testField(f.getIndexX(), f.getIndexY(), -1, -1, further);
+            }
+        } else{
+            for(int i = 1; i < control.playingField.getSize(); i++) {
+                if (further == false) {
+                    testField(f.getIndexX(), f.getIndexY(), i, i, further);
+                    testField(f.getIndexX(), f.getIndexY(), i, -i, further);
+                    testField(f.getIndexX(), f.getIndexY(), -i, i, further);
+                    testField(f.getIndexX(), f.getIndexY(), -i, -i, further);
+                } else {
+                    if(f.getIndexX() - move.getLastField().getIndexX() > 0){
+                        if(f.getIndexY() - move.getLastField().getIndexY() > 0){
+                            testField(f.getIndexX(), f.getIndexY(), i, i, further);
+                            testField(f.getIndexX(), f.getIndexY(), i, -i, further);
+                            testField(f.getIndexX(), f.getIndexY(), -i, i, further);
+                        } else {
+                            testField(f.getIndexX(), f.getIndexY(), i, i, further);
+                            testField(f.getIndexX(), f.getIndexY(), i, -i, further);
+                            testField(f.getIndexX(), f.getIndexY(), -i, -i, further);
+                        }
+                    } else {
+                        if(f.getIndexY() - move.getLastField().getIndexY() > 0){
+                            testField(f.getIndexX(), f.getIndexY(), i, i, further);
+                            testField(f.getIndexX(), f.getIndexY(), -i, i, further);
+                            testField(f.getIndexX(), f.getIndexY(), -i, -i, further);
+                        } else {
+                            testField(f.getIndexX(), f.getIndexY(), i, -i, further);
+                            testField(f.getIndexX(), f.getIndexY(), -i, i, further);
+                            testField(f.getIndexX(), f.getIndexY(), -i, -i, further);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -70,7 +124,7 @@ public class Game {
         Field f = control.playingField.getField(move.getStone().getIndexX(), move.getStone().getIndexY());
         move.addEnterField(f);
         possibleFields.clear();
-        testFieldScope(f, s.getColor(), false);
+        testFieldScope(s, f, false);
         gamePaneController.highlightFields(possibleFields, move);
     }
 
@@ -98,7 +152,7 @@ public class Game {
 
                             gamePaneController.colorField();
                             possibleFields.clear();
-                            testFieldScope(move.getEndField(), move.getStone().getColor(), true);
+                            testFieldScope(move.getStone(), move.getEndField(), true);
                             if (!possibleFields.isEmpty()) {
                                 gamePaneController.highlightFields(possibleFields, move);
                                 return;
@@ -148,18 +202,29 @@ public class Game {
     private void testForWinner() {
         if (playerController.getPlayer1().getActiveStones() == 0 || !isMovePossible(playerController.getPlayer1())) {
             System.out.println("Player2 Win");
-            //TODO Win Player2
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    control.winDialog(playerController.getPlayer2().getName());
+                }
+            });
         }
         else if (playerController.getPlayer2().getActiveStones() == 0 || !isMovePossible(playerController.getPlayer2())) {
             System.out.println("Player1 Win");
-            //TODO Win Player1
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    control.winDialog(playerController.getPlayer1().getName());
+
+                }
+            });
         }
     }
 
     private boolean isMovePossible(Player p) {
         for (Stone s : p.getStones()) {
             if (!s.isEliminated()) {
-                testFieldScope(Main.playingField.getField(s.getIndexX(), s.getIndexY()), s.getColor(), false);
+                testFieldScope(s, Main.playingField.getField(s.getIndexX(), s.getIndexY()), false);
                 if (!possibleFields.isEmpty()) {
                     possibleFields.clear();
                     return true;

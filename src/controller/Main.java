@@ -6,12 +6,15 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Steuerung.
@@ -167,6 +170,30 @@ public class Main extends Application {
         gamePaneController.createTokens(playerController.getPlayer1(), playerController.getPlayer2());
         game = new Game(this, gamePaneController, playerController);
         setGameLayout();
+    }
+
+    public void winDialog(String name){
+
+        Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
+        dialog.initStyle(StageStyle.UTILITY);
+        dialog.setTitle(name + " gewinnt");
+        dialog.setHeaderText(name + " hat das Spiel gewonnen! Wähle nun, ob du eine neue Runde spielen, ins Hauptmenü zurückkehren oder das Spiel beenden möchtest.");
+
+        ButtonType restartButton = new ButtonType("Neustart");
+        ButtonType menuButton = new ButtonType("Hauptmenü");
+        ButtonType closeButton = new ButtonType("Beenden");
+
+        dialog.getButtonTypes().setAll(restartButton, menuButton, closeButton);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.get() == restartButton){
+            startGame(playerController.isSinglePlayerGame(), playerController.getPlayer1().getName(), playerController.getPlayer2().getName());
+        } else if (result.get() == menuButton) {
+            returnToStart();
+        } else {
+            System.exit(0);
+        }
+
     }
 
     public PlayerController getPlayerController() {
