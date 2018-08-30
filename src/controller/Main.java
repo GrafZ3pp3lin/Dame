@@ -88,8 +88,6 @@ public class Main extends Application {
         primaryStage.setMinHeight(menuLayout.getPrefHeight());
         primaryStage.setMinWidth(menuLayout.getPrefWidth());
         primaryStage.show();
-
-        winDialog("Olaf");
     }
 
     /**
@@ -260,11 +258,10 @@ public class Main extends Application {
      * @param name Name des Spielers, der gewonnen hat.
      */
     public void winDialog(String name){
-
         Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
         dialog.initStyle(StageStyle.UNDECORATED);
         dialog.getDialogPane().getStylesheets().add(Main.class.getResource("view/style.css").toExternalForm());
-        dialog.setHeaderText(name + " hat das Spiel gewonnen! Wähle nun, ob du eine neue Runde spielen, ins Hauptmenü zurückkehren oder das Spiel beenden möchtest.");
+        dialog.setHeaderText(name + " hat das Spiel gewonnen! Wähle nun, ob du eine neue Runde spielen,\nins Hauptmenü zurückkehren oder das Spiel beenden möchtest.");
 
         ButtonType restartButton = new ButtonType("Neustart");
         ButtonType menuButton = new ButtonType("Hauptmenü");

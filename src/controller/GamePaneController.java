@@ -242,8 +242,8 @@ public class GamePaneController {
                             if (s.isSuperDame()) {
                                 Platform.runLater(() -> visualizeSuperDame(s));
                             }
-                            graphicAction = false;
                             control.getGame().finishedMove();
+                            graphicAction = false;
                         }
                     }
                 }

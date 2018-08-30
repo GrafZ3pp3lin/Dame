@@ -156,7 +156,7 @@ public class Game {
 
     private void makeMove(Move move) {
         gamePaneController.colorField();
-        gamePaneController.moveToken(move);
+        Platform.runLater(() -> gamePaneController.moveToken(move));
         move.update();
         testForSuperDame(move.getStone());
         possibleFields.clear();
@@ -208,7 +208,7 @@ public class Game {
 
             try {
                 Move m = ((KI) playerController.getPlayer2()).getBestMove();
-                Platform.runLater(() -> makeMove(m));
+                makeMove(m);
             } catch (NoPossibleMoveException e) {
                 //TODO KI hat verloren, da sie keine Züge mehr machen kann
             }

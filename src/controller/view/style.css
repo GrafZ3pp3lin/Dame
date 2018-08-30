@@ -146,6 +146,17 @@
 	-fx-font-size: 15px;
 }
 
+.dialog-pane {
+    -fx-background-color: linear-gradient(derive(-fx-background, 30%), derive(-fx-background, 70%));
+}
+
+.alert.confirmation.dialog-pane {
+    -fx-graphic: url("../../resources/Dame-Logo.png");
+}
+
+.dialog-pane:header .header-panel .label {
+    -fx-font-size: 24px;
+}
 #title {
 	-fx-font-size: 150px;
 	-fx-font-weight: bolder;
