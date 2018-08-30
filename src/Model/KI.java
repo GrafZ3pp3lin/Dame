@@ -41,11 +41,7 @@ public class KI extends Player {
             System.out.println(z.toString());
         }
         System.out.println("Anzahl aller Züge: " + alleZuege.size());*/
-        Zugfolge gewehlt = Zugfolge.getBestZug(alleZuege);/*
-        System.out.println("Ausgewählter Zug: " + gewehlt.toString());
-        System.out.println("---------------------------------------------------------------------------");
-        gewehlt.print();*/
-        return gewehlt;
+        return Zugfolge.getBestZug(alleZuege);
     }
 
     /**

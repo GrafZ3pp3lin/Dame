@@ -33,7 +33,7 @@ public class Player {
         createStones(size);
     }
 
-    public void createStones(int size) {
+    private void createStones(int size) {
         int x, y;
         if (cColor == Color.BLACK){
             x = 0;

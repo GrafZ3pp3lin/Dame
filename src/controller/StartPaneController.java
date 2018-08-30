@@ -48,7 +48,7 @@ public class StartPaneController {
     }
 
     public int getSize() {
-        return comboBox_size.getValue() == acht ? 8 : 10;
+        return comboBox_size.getValue().equals(acht) ? 8 : 10;
     }
 
 }

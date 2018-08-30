@@ -26,15 +26,12 @@ public class GamePaneController {
 
     private Main control;
 
-    public int size;
+    private int size;
     private int amount, tokenRadius;
     private boolean graphicAction;
 
     @FXML
     private Pane playingField;
-
-    @FXML
-    private BorderPane parent;
 
     @FXML
     private Pane pane_player1;
@@ -87,7 +84,7 @@ public class GamePaneController {
                 temp.setWidth(a);
                 temp.setLayoutX(i * a);
                 temp.setLayoutY(size - j * a - a);
-                temp.setOnMouseClicked(e -> onFieldKlick(e));
+                temp.setOnMouseClicked(this::onFieldKlick);
                 field.add(temp);
                 playingField.getChildren().add(temp);
                 pf.getField(i, j).setcRec(temp);
@@ -103,7 +100,7 @@ public class GamePaneController {
     public void colorField() {
         int i = 0;
         for (Rectangle rec : field) {
-            if (((int)(i / amount) + (i % amount)) % 2 == 0) {
+            if (((i / amount) + (i % amount)) % 2 == 0) {
                 rec.setFill(Color.BROWN);
             } else {
                 rec.setFill(Color.WHEAT);
@@ -171,7 +168,7 @@ public class GamePaneController {
      *
      * @param message Message
      */
-    public void setStatus(String message) {
+    private void setStatus(String message) {
         label_status.setText(message);
     }
 
@@ -181,8 +178,7 @@ public class GamePaneController {
      *
      * @param stone Stein der entfernt wird
      */
-    public void removeToken(Stone stone) {
-        Player temp = control.getPlayerController().getPlayerByColor(stone.getColor());
+    private void removeToken(Stone stone) {
         playingField.getChildren().remove(stone.getcCirc());
         if (stone.getColor() == Model.Color.BLACK) {
             pane_player1.getChildren().add(stone.getcCirc());
@@ -223,37 +219,32 @@ public class GamePaneController {
             public void run() {
                 Platform.runLater(() -> {
                     try {
-                        //TODO ArrayIndexOutOfBoundsException
                         if (!isStoneNearField(s, move.getNextField(), value)) {
-                            Platform.runLater(() -> calculateTokenLocation(s.getcCirc(), value, move));
+                            calculateTokenLocation(s.getcCirc(), value, move);
                             if (move.getFirstSkipedField() != null && isStoneNearField(s, move.getFirstSkipedField(), value)) {
                                 Stone stone = control.getPlayerController().getOtherPlayer().getStoneAt(move.getFirstSkipedField().getIndexX(), move.getFirstSkipedField().getIndexY());
                                 if (stone != null) {
                                     stone.setEliminated();
-                                    Platform.runLater(() -> removeToken(stone));
+                                    removeToken(stone);
                                     move.nextSkipedField();
                                 }
                             }
                         }
                         else {
                             if (!move.nextField()) {
-                                Platform.runLater(() -> placeToken(move.getEndField().getIndexX(), move.getEndField().getIndexY(), s.getcCirc()));
+                                placeToken(move.getEndField().getIndexX(), move.getEndField().getIndexY(), s.getcCirc());
                                 t.cancel();
                                 t.purge();
                                 if (s.isSuperDame()) {
-                                    Platform.runLater(() -> visualizeSuperDame(s));
+                                    visualizeSuperDame(s);
                                 }
                                 control.getGame().finishedMove();
                                 graphicAction = false;
                             }
                         }
                     }
-                    catch (NullPointerException e) {
-                        System.err.println("Something went wrong");
-                        e.printStackTrace();
-                    }
-                    catch (ArrayIndexOutOfBoundsException e) {
-                        System.err.println("Something went wrong");
+                    catch (Exception e) {
+                        System.err.println("Something went wrong: " + e.getClass().getName());
                         e.printStackTrace();
                     }
                 });
@@ -329,7 +320,7 @@ public class GamePaneController {
             ((Circle)c).setStroke(Color.GRAY);
             ((Circle)c).setStrokeWidth(1);
             placeToken(x, y, c);
-            c.setOnMouseClicked(event -> onFieldKlick(event));
+            c.setOnMouseClicked(this::onFieldKlick);
             playingField.getChildren().add(c);
         }
         else {
@@ -342,9 +333,9 @@ public class GamePaneController {
      * einfache Steine sind Kreise und haben ihren Nullpunkt in der Mitte.
      * eine Superdame ist ein Stackpane, mit einem Circle und einem Image. Diese hat ihren Nullpunkt links oben.
      *
-     * @param x
-     * @param y
-     * @param node
+     * @param x Index x des Feldes, auf dem der Stein platziert werden soll
+     * @param y Index y des Feldes, auf dem der Stein platziert werden soll
+     * @param node Node die platziert wird
      * @see Circle
      */
     private void placeToken(int x, int y, Node node) {
@@ -390,7 +381,7 @@ public class GamePaneController {
             sp.getChildren().add(iw);
             sp.setLayoutX(c.getLayoutX() - c.getRadius());
             sp.setLayoutY(c.getLayoutY() - c.getRadius());
-            sp.setOnMouseClicked(event -> onFieldKlick(event));
+            sp.setOnMouseClicked(this::onFieldKlick);
             playingField.getChildren().remove(c);
             playingField.getChildren().add(sp);
             s.changeNode(sp);
@@ -413,9 +404,9 @@ public class GamePaneController {
                 if (e.getSource() instanceof Rectangle) {
                     Rectangle temp = (Rectangle) e.getSource();
                     int index = field.indexOf(temp);
-                    int x = (int)(index / amount);
+                    int x = (index / amount);
                     int y = index % amount;
-                    Field pressedField = control.playingField.getField(x, y);
+                    Field pressedField = Main.playingField.getField(x, y);
                     control.getGame().selectField(pressedField);
                 }
                 else {

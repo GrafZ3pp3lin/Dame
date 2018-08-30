@@ -14,7 +14,7 @@ public class PlayingField {
         createField();
     }
 
-    public void createField(){
+    private void createField(){
         cField = new Field[FieldSize*FieldSize];
         boolean black = false;
         for (int i = 0; i < FieldSize; i++){
