@@ -39,6 +39,10 @@ public class RulesPaneController {
         }
     }
 
+    /**
+     * schließt die Regel Oberfläche wieder.
+     * Wird audgeführt, sobald der "OK" Knopf gedrückt wird
+     */
     @FXML
     private void close() {
         rulesStage.close();

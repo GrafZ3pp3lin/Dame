@@ -100,7 +100,7 @@ public class Game {
             currentField = null;
             return;
         }
-        if(Main.playingField.getField(s.getIndexX(), s.getIndexY()) != currentField) {
+        if(currentField == null || Main.playingField.getField(s.getIndexX(), s.getIndexY()) != currentField) {
             move.init(s);
             Field f = Main.playingField.getField(move.getStone().getIndexX(), move.getStone().getIndexY());
             move.addEnterField(f);

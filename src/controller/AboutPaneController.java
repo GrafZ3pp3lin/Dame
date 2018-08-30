@@ -34,6 +34,10 @@ public class AboutPaneController {
                 "Mareike Giek");
     }
 
+    /**
+     * schließt die About Oberfläche wieder.
+     * wird ausgeführt, sobald auf das Fenster geglickt wird.
+     */
     @FXML
     private void close() {
         aboutStage.close();
