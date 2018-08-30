@@ -225,10 +225,6 @@ public class GamePaneController {
                     //TODO ArrayIndexOutOfBoundsException
                     if (!isStoneNearField(s, move.getNextField(), value)) {
                         Platform.runLater(() -> calculateTokenLocation(s.getcCirc(), value, move));
-//                        s.getcCirc().setLayoutX(s.getcCirc().getLayoutX() + (value / 12)
-//                                * (move.getNextField().getIndexX() >= move.getCurrentField().getIndexX() ? 1 : -1));
-//                        s.getcCirc().setLayoutY(s.getcCirc().getLayoutY() + (value / 12)
-//                                * (move.getNextField().getIndexY() >= move.getCurrentField().getIndexY() ? -1 : 1));
                         if (move.getFirstSkipedField() != null && isStoneNearField(s, move.getFirstSkipedField(), value)) {
                             Stone stone = control.getPlayerController().getOtherPlayer().getStoneAt(move.getFirstSkipedField().getIndexX(), move.getFirstSkipedField().getIndexY());
                             if (stone != null) {

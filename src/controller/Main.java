@@ -88,6 +88,8 @@ public class Main extends Application {
         primaryStage.setMinHeight(menuLayout.getPrefHeight());
         primaryStage.setMinWidth(menuLayout.getPrefWidth());
         primaryStage.show();
+
+        winDialog("Olaf");
     }
 
     /**
@@ -251,11 +253,17 @@ public class Main extends Application {
         setGameLayout();
     }
 
+    /**
+     * Zeigt ein Fesnter an sobald ein Spieler gewonnen hat. Der Spieler hat die Möglichkeit das Spiel neuzustarten,
+     * ins Hauptmenü zu wechseln, oder das Programm zu beenden
+     *
+     * @param name Name des Spielers, der gewonnen hat.
+     */
     public void winDialog(String name){
 
         Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
         dialog.initStyle(StageStyle.UNDECORATED);
-        dialog.setTitle(name + " gewinnt");
+        dialog.getDialogPane().getStylesheets().add(Main.class.getResource("view/style.css").toExternalForm());
         dialog.setHeaderText(name + " hat das Spiel gewonnen! Wähle nun, ob du eine neue Runde spielen, ins Hauptmenü zurückkehren oder das Spiel beenden möchtest.");
 
         ButtonType restartButton = new ButtonType("Neustart");
@@ -267,9 +275,11 @@ public class Main extends Application {
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.get() == restartButton){
             startGame(playerController.isSinglePlayerGame(), playerController.getPlayer1().getName(), playerController.getPlayer2().getName());
-        } else if (result.get() == menuButton) {
+        }
+        else if (result.get() == menuButton) {
             returnToStart();
-        } else {
+        }
+        else {
             Platform.exit();
         }
 
