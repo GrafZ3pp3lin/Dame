@@ -17,12 +17,12 @@ public class PlayerController {
 
     public void init(boolean ki, int size, String name1, String name2) {
         singlePlayerGame = ki;
-        player1 = new Player(Color.BLACK, name1.isEmpty() ? "Player 1" : name1, size);
+        player1 = new Player(Color.BLACK, name1.isEmpty() || name1.length() > 15 ? "Player 1" : name1, size);
         if (!ki) {
-            player2 = new Player(Color.WHITE, name2.isEmpty() ? "Player 2" : name2, size);
+            player2 = new Player(Color.WHITE, name2.isEmpty() || name2.length() > 15 ? "Player 2" : name2, size);
         }
         else{
-            player2 = new KI(Color.WHITE, name2.isEmpty() ? "KI" : name2, size, player1);
+            player2 = new KI(Color.WHITE, name2.isEmpty() || name2.length() > 15 ? "KI" : name2, size, player1);
         }
         currentPlayer1 = true;
     }
