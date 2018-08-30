@@ -13,9 +13,6 @@ public enum Color {
     /**
      * Definiert einen schwarzen Stein
      */
-    BLACK,
-    /**
-     * Sollte nicht verwendet werden
-     */
-    NONE
+    BLACK
+
 }

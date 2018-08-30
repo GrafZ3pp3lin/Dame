@@ -13,7 +13,7 @@ public class Zugfolge extends Move{
         this.zuglaenge = zuglaenge;
     }
 
-    public int getZuglaenge(){return zuglaenge;}
+    private int getZuglaenge(){return zuglaenge;}
 
     public String toString(){
         return "laenge: " + zuglaenge + "; vonPos: " + super.getFirstField().getIndexX() + ", " + super.getFirstField().getIndexY() + " nachPos: " + super.getEndField().getIndexX() + ", " + super.getEndField().getIndexY();

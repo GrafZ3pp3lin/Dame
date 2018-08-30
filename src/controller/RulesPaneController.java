@@ -1,13 +1,12 @@
 package controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.io.*;
-import java.nio.charset.CharsetDecoder;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 public class RulesPaneController {
@@ -29,7 +28,7 @@ public class RulesPaneController {
     private void initialize() {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(RulesPaneController.class.getClassLoader().getResourceAsStream("resources/Rules.txt"), StandardCharsets.UTF_8));
-            String zeile = "";
+            String zeile;
             while ((zeile = br.readLine()) != null) {
                 rules.appendText(zeile + "\n");
             }

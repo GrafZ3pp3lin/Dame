@@ -2,8 +2,6 @@ package Model;
 
 import javafx.scene.shape.Rectangle;
 
-import java.awt.*;
-
 /**
  * speichert Daten eines einzelnen Feldes
  * @author Mareike Giek

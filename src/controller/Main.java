@@ -270,10 +270,10 @@ public class Main extends Application {
         dialog.getButtonTypes().setAll(restartButton, menuButton, closeButton);
 
         Optional<ButtonType> result = dialog.showAndWait();
-        if (result.get() == restartButton){
+        if (result.isPresent() && result.get() == restartButton){
             startGame(playerController.isSinglePlayerGame(), playerController.getPlayer1().getName(), playerController.getPlayer2().getName());
         }
-        else if (result.get() == menuButton) {
+        else if (result.isPresent() && result.get() == menuButton) {
             returnToStart();
         }
         else {
@@ -288,14 +288,6 @@ public class Main extends Application {
      */
     public PlayerController getPlayerController() {
         return playerController;
-    }
-
-    /**
-     * gibt ein Objekt des GamePaneControllers zurück
-     * @return GamePaneController
-     */
-    public GamePaneController getGamePaneController(){
-        return gamePaneController;
     }
 
     /**

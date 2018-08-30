@@ -1,7 +1,6 @@
 package controller;
 
 import Model.*;
-import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ public class Game {
 
     //SuperDame kann beliebig viele Schritte gehen
     private boolean testField(int x, int y, int indexX, int indexY, int indexX2, int indexY2, boolean further) {
-        Field field = control.playingField.getField(x + indexX, y + indexY);
+        Field field = Main.playingField.getField(x + indexX, y + indexY);
         Field field2;
         if (field != null) {
             if (emptyField(field) && !further) {
@@ -45,7 +44,7 @@ public class Game {
                 return true;
             }
             else if (playerController.getOtherPlayer().hasStoneAt(field.getIndexX(), field.getIndexY())) {
-                field2 = control.playingField.getField(x + indexX2, y + indexY2);
+                field2 = Main.playingField.getField(x + indexX2, y + indexY2);
                 if(!visitedFields.contains(field)) {
                     if (field2 != null && emptyField(field2)) {
                         possibleFields.add(field2);
@@ -97,8 +96,13 @@ public class Game {
             move.setOutdated(true);
             return;
         }
-        move.init(s);
-        Field f = control.playingField.getField(move.getStone().getIndexX(), move.getStone().getIndexY());
+        if (move != null) {
+            move.init(s);
+        }
+        else {
+            move = new Move(s);
+        }
+        Field f = Main.playingField.getField(move.getStone().getIndexX(), move.getStone().getIndexY());
         move.addEnterField(f);
         possibleFields.clear();
         testFieldScope(f, s.getColor(), false, s.isSuperDame());
@@ -125,9 +129,9 @@ public class Game {
                             y = move.getLastField().getIndexY() - i;
                         }
                         if (playerController.getOtherPlayer().hasStoneAt(x, y)) {
-                            move.addSkipField(control.playingField.getField(x, y));
+                            move.addSkipField(Main.playingField.getField(x, y));
 
-                            visitedFields.add(control.playingField.getField(x, y));
+                            visitedFields.add(Main.playingField.getField(x, y));
                             gamePaneController.colorField();
                             possibleFields.clear();
 
@@ -156,7 +160,7 @@ public class Game {
 
     private void makeMove(Move move) {
         gamePaneController.colorField();
-        Platform.runLater(() -> gamePaneController.moveToken(move));
+        gamePaneController.moveToken(move);
         move.update();
         testForSuperDame(move.getStone());
         possibleFields.clear();
@@ -184,7 +188,7 @@ public class Game {
 
     private boolean testForWinner() {
         if (!isMovePossible(playerController.getOtherPlayer())) {
-            Platform.runLater(() -> control.winDialog(playerController.getCurrentPlayer().getName()));
+            control.winDialog(playerController.getCurrentPlayer().getName());
             return true;
         }
         return false;
@@ -203,9 +207,8 @@ public class Game {
         return false;
     }
 
-    public void playKI() {
+    private void playKI() {
         if(playerController.isSinglePlayerGame() && !playerController.isCurrentPlayer1()) {
-
             try {
                 Move m = ((KI) playerController.getPlayer2()).getBestMove();
                 makeMove(m);
