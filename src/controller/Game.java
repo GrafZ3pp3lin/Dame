@@ -163,11 +163,12 @@ public class Game {
     }
 
     public void finishedMove() {
-        testForWinner();
-        move.setOutdated(true);
-        playerController.changePlayer();
-        gamePaneController.updatePlayer();
-        playKI();
+        if (!testForWinner()) {
+            move.setOutdated(true);
+            playerController.changePlayer();
+            gamePaneController.updatePlayer();
+            playKI();
+        }
     }
 
     private void testForSuperDame(Stone s) {
@@ -181,26 +182,12 @@ public class Game {
         }
     }
 
-    private void testForWinner() {
-        if (playerController.getPlayer1().getActiveStones() == 0 || !isMovePossible(playerController.getPlayer1())) {
-            System.out.println("Player2 Win");
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    control.winDialog(playerController.getPlayer2().getName());
-                }
-            });
+    private boolean testForWinner() {
+        if (!isMovePossible(playerController.getOtherPlayer())) {
+            Platform.runLater(() -> control.winDialog(playerController.getCurrentPlayer().getName()));
+            return true;
         }
-        else if (playerController.getPlayer2().getActiveStones() == 0 || !isMovePossible(playerController.getPlayer2())) {
-            System.out.println("Player1 Win");
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    control.winDialog(playerController.getPlayer1().getName());
-
-                }
-            });
-        }
+        return false;
     }
 
     private boolean isMovePossible(Player p) {

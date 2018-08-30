@@ -133,6 +133,7 @@ public class Main extends Application {
      */
     private void setStartLayout() {
         menuLayout.setCenter(startLayout);
+        this.primaryStage.setResizable(true);
         menuPaneController.disableReturnItem(true);
     }
 
@@ -166,6 +167,7 @@ public class Main extends Application {
      */
     private void setGameLayout() {
         menuLayout.setCenter(gameLayout);
+        this.primaryStage.setResizable(false);
         menuPaneController.disableReturnItem(false);
     }
 
@@ -252,7 +254,7 @@ public class Main extends Application {
     public void winDialog(String name){
 
         Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
-        dialog.initStyle(StageStyle.UTILITY);
+        dialog.initStyle(StageStyle.UNDECORATED);
         dialog.setTitle(name + " gewinnt");
         dialog.setHeaderText(name + " hat das Spiel gewonnen! Wähle nun, ob du eine neue Runde spielen, ins Hauptmenü zurückkehren oder das Spiel beenden möchtest.");
 
@@ -268,7 +270,7 @@ public class Main extends Application {
         } else if (result.get() == menuButton) {
             returnToStart();
         } else {
-            System.exit(0);
+            Platform.exit();
         }
 
     }
