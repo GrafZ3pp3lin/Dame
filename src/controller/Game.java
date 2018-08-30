@@ -15,6 +15,7 @@ public class Game {
     private List<Field> possibleFields;
     private List<Field> visitedFields;
     private Move move;
+    private Field currentField;
 
     public Game(Main control, GamePaneController gamePaneController, PlayerController playerController) {
         this.control = control;
@@ -47,8 +48,9 @@ public class Game {
             else if (playerController.getOtherPlayer().hasStoneAt(field.getIndexX(), field.getIndexY())) {
                 field2 = control.playingField.getField(x + indexX2, y + indexY2);
                 if(!visitedFields.contains(field)) {
-                    if (field2 != null && emptyField(field2)) {
+                    if (field2 != null && emptyField(field2) || field2 != null && move.getFirstField() == field2) {
                         possibleFields.add(field2);
+                        currentField = field2;
                         return false;
                     }
                 }
@@ -92,17 +94,25 @@ public class Game {
     }
 
     public void selectStone(Stone s) {
-        if (move != null && move.getStone() == s && !move.isOutdated()) {
+        if (move != null && move.getStone() == s && !move.isOutdated() && Main.playingField.getField(s.getIndexX(), s.getIndexY()) != currentField) {
             gamePaneController.colorField();
             move.setOutdated(true);
+            visitedFields.clear();
+            currentField = null;
             return;
         }
-        move.init(s);
-        Field f = control.playingField.getField(move.getStone().getIndexX(), move.getStone().getIndexY());
-        move.addEnterField(f);
-        possibleFields.clear();
-        testFieldScope(f, s.getColor(), false, s.isSuperDame());
-        gamePaneController.highlightFields(possibleFields, visitedFields, move);
+        if(Main.playingField.getField(s.getIndexX(), s.getIndexY()) != currentField) {
+            move.init(s);
+            Field f = control.playingField.getField(move.getStone().getIndexX(), move.getStone().getIndexY());
+            move.addEnterField(f);
+            possibleFields.clear();
+            testFieldScope(f, s.getColor(), false, s.isSuperDame());
+            gamePaneController.highlightFields(possibleFields, move);
+        }
+        else  if (move != null && !move.isOutdated()) {
+            Field f = control.playingField.getField(s.getIndexX(), s.getIndexY());
+            selectField(f);
+        }
     }
 
     public void selectField(Field f) {
@@ -133,19 +143,27 @@ public class Game {
 
                             testFieldScope(move.getEndField(), move.getStone().getColor(), true, move.getStone().isSuperDame());
                             if (!possibleFields.isEmpty()) {
-                                gamePaneController.highlightFields(possibleFields, visitedFields, move);
+                                gamePaneController.highlightFields(possibleFields, move);
                                 return;
                             }
                         }
                     }
                 }
+                currentField = null;
                 visitedFields.clear();
                 makeMove(move);
             }
             else if (move.getEndField().equals(f) && move.getEndField() != move.getFirstField()) {
                 makeMove(move);
             }
-            else if (playerController.getCurrentPlayer().hasStoneAt(f.getIndexX(), f.getIndexY())) {
+            else if (playerController.getCurrentPlayer().hasStoneAt(f.getIndexX(), f.getIndexY()) && currentField == null) {
+                selectStone(playerController.getCurrentPlayer().getStoneAt(f.getIndexX(), f.getIndexY()));
+            }
+            else if(currentField != null){
+                currentField = null;
+                visitedFields.clear();
+                possibleFields.clear();
+                move.setOutdated(true);
                 selectStone(playerController.getCurrentPlayer().getStoneAt(f.getIndexX(), f.getIndexY()));
             }
         }
@@ -205,12 +223,11 @@ public class Game {
 
     public void playKI() {
         if(playerController.isSinglePlayerGame() && !playerController.isCurrentPlayer1()) {
-
             try {
                 Move m = ((KI) playerController.getPlayer2()).getBestMove();
                 makeMove(m);
             } catch (NoPossibleMoveException e) {
-                //TODO KI hat verloren, da sie keine Züge mehr machen kann
+                Platform.runLater(() -> control.winDialog(playerController.getPlayer1().getName()));
             }
 
         }
