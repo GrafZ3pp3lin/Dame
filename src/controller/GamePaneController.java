@@ -221,40 +221,42 @@ public class GamePaneController {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                try {
-                    //TODO ArrayIndexOutOfBoundsException
-                    if (!isStoneNearField(s, move.getNextField(), value)) {
-                        Platform.runLater(() -> calculateTokenLocation(s.getcCirc(), value, move));
-                        if (move.getFirstSkipedField() != null && isStoneNearField(s, move.getFirstSkipedField(), value)) {
-                            Stone stone = control.getPlayerController().getOtherPlayer().getStoneAt(move.getFirstSkipedField().getIndexX(), move.getFirstSkipedField().getIndexY());
-                            if (stone != null) {
-                                stone.setEliminated();
-                                Platform.runLater(() -> removeToken(stone));
-                                move.nextSkipedField();
+                Platform.runLater(() -> {
+                    try {
+                        //TODO ArrayIndexOutOfBoundsException
+                        if (!isStoneNearField(s, move.getNextField(), value)) {
+                            Platform.runLater(() -> calculateTokenLocation(s.getcCirc(), value, move));
+                            if (move.getFirstSkipedField() != null && isStoneNearField(s, move.getFirstSkipedField(), value)) {
+                                Stone stone = control.getPlayerController().getOtherPlayer().getStoneAt(move.getFirstSkipedField().getIndexX(), move.getFirstSkipedField().getIndexY());
+                                if (stone != null) {
+                                    stone.setEliminated();
+                                    Platform.runLater(() -> removeToken(stone));
+                                    move.nextSkipedField();
+                                }
+                            }
+                        }
+                        else {
+                            if (!move.nextField()) {
+                                Platform.runLater(() -> placeToken(move.getEndField().getIndexX(), move.getEndField().getIndexY(), s.getcCirc()));
+                                t.cancel();
+                                t.purge();
+                                if (s.isSuperDame()) {
+                                    Platform.runLater(() -> visualizeSuperDame(s));
+                                }
+                                control.getGame().finishedMove();
+                                graphicAction = false;
                             }
                         }
                     }
-                    else {
-                        if (!move.nextField()) {
-                            Platform.runLater(() -> placeToken(move.getEndField().getIndexX(), move.getEndField().getIndexY(), s.getcCirc()));
-                            t.cancel();
-                            t.purge();
-                            if (s.isSuperDame()) {
-                                Platform.runLater(() -> visualizeSuperDame(s));
-                            }
-                            control.getGame().finishedMove();
-                            graphicAction = false;
-                        }
+                    catch (NullPointerException e) {
+                        System.err.println("Something went wrong");
+                        e.printStackTrace();
                     }
-                }
-                catch (NullPointerException e) {
-                    System.err.println("Something went wrong");
-                    e.printStackTrace();
-                }
-                catch (ArrayIndexOutOfBoundsException e) {
-                    System.err.println("Something went wrong");
-                    e.printStackTrace();
-                }
+                    catch (ArrayIndexOutOfBoundsException e) {
+                        System.err.println("Something went wrong");
+                        e.printStackTrace();
+                    }
+                });
             }
         };
         t.schedule(task, 0, 40);
