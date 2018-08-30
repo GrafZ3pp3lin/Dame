@@ -13,7 +13,7 @@ public class MenuPaneController {
 
     private Main control;
 
-    public void setInstances(Main control) {
+    public void setObjects(Main control) {
         this.control = control;
     }
 
@@ -23,6 +23,11 @@ public class MenuPaneController {
     @FXML
     private void onAbout() {
         control.showAboutPane();
+    }
+
+    @FXML
+    private void onRules() {
+        control.showRulesPane();
     }
 
     @FXML

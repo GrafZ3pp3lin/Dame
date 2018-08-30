@@ -106,6 +106,46 @@
 	-fx-text-fill: black;
 }
 
+.text-area .context-menu .menu-item .label {
+    -fx-text-fill: black;
+}
+
+.text-area:focused {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-text-box-border, -fx-control-inner-background;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 3, 2, 2;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+    -fx-border-color:derive(gray,90%);
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color:derive(black,90%);
+    -fx-background-insets: 0, 0, 0;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar .thumb:hover,
+.scroll-bar .thumb:pressed {
+	-fx-background-color: derive(black,50%);
+}
+
+.increment-button:hover ,
+.decrement-button:hover {
+    -fx-background-color:derive(gray,100%);
+}
+
+.scroll-bar .increment-button,.scroll-bar .decrement-button  {
+	-fx-padding: 5px;
+}
+
+.scroll-bar .increment-arrow,.scroll-bar .decrement-arrow {
+	-fx-font-size: 15px;
+}
+
 #title {
 	-fx-font-size: 150px;
 	-fx-font-weight: bolder;

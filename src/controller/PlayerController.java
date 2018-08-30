@@ -9,7 +9,13 @@ public class PlayerController {
     private boolean currentPlayer1;
     private boolean singlePlayerGame;
 
+    public PlayerController() {}
+
     public PlayerController(boolean ki, int size, String name1, String name2) {
+        init(ki, size, name1, name2);
+    }
+
+    public void init(boolean ki, int size, String name1, String name2) {
         singlePlayerGame = ki;
         player1 = new Player(Color.BLACK, name1.isEmpty() ? "Player 1" : name1, size);
         if (!ki) {

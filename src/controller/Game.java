@@ -13,6 +13,7 @@ public class Game {
     private PlayerController playerController;
 
     private List<Field> possibleFields;
+    private List<Field> visitedFields;
     private Move move;
 
     public Game(Main control, GamePaneController gamePaneController, PlayerController playerController) {
@@ -20,6 +21,13 @@ public class Game {
         this.gamePaneController = gamePaneController;
         this.playerController = playerController;
         possibleFields = new ArrayList<>();
+        visitedFields = new ArrayList<>();
+        move = new Move();
+    }
+
+    public void reset() {
+        possibleFields.clear();
+        move.setOutdated(true);
     }
 
     private boolean emptyField(Field f) {
@@ -27,41 +35,21 @@ public class Game {
                 !playerController.getOtherPlayer().hasStoneAt(f.getIndexX(), f.getIndexY());
     }
 
-    //TODO SuperDame
     //SuperDame kann beliebig viele Schritte gehen
-    private boolean testField(int x, int y, int indexX, int indexY, boolean further) {
+    private boolean testField(int x, int y, int indexX, int indexY, int indexX2, int indexY2, boolean further) {
         Field field = control.playingField.getField(x + indexX, y + indexY);
+        Field field2;
         if (field != null) {
-            if (Math.abs(indexX) == 1 || further) {
-                if (emptyField(field) && !further) {
-                    possibleFields.add(field);
-                    return true;
-                } else {
-                    if (playerController.getOtherPlayer().hasStoneAt(field.getIndexX(), field.getIndexY())) {
-                        Field nextField = control.playingField.getField(x + indexX * 2, y + indexY * 2);
-                        if (nextField != null && (emptyField(nextField) || (nextField == move.getFirstField() && further))) {
-                            possibleFields.add(nextField);
-                            return true;
-                        }
-                    }
-                }
-            } else {
-                if(emptyField(field)) {
-                    for (int prev = 1; prev < Math.abs(indexX); prev++) {
-                        if (playerController.getCurrentPlayer().hasStoneAt(x + prev * (indexX / Math.abs(indexX)), y + prev * (indexY / Math.abs(indexY)))) {
-                            return false;
-                        }
-                    }
-                    possibleFields.add(field);
-                    return true;
-                } else if (playerController.getOtherPlayer().hasStoneAt(field.getIndexX(), field.getIndexY())) {
-                    Field nextField = control.playingField.getField(x + indexX + (indexX / Math.abs(indexX)), y + indexY + (indexY / Math.abs(indexY)));
-                    Field prevField = control.playingField.getField(x + indexX - (indexX / Math.abs(indexX)), y + indexY - (indexY / Math.abs(indexY)));
-                    if (playerController.getOtherPlayer().hasStoneAt(prevField.getIndexX(), prevField.getIndexY())) {
+            if (emptyField(field) && !further) {
+                possibleFields.add(field);
+                return true;
+            }
+            else if (playerController.getOtherPlayer().hasStoneAt(field.getIndexX(), field.getIndexY())) {
+                field2 = control.playingField.getField(x + indexX2, y + indexY2);
+                if(!visitedFields.contains(field)) {
+                    if (field2 != null && emptyField(field2)) {
+                        possibleFields.add(field2);
                         return false;
-                    } else if (nextField != null && emptyField(nextField)) {
-                        possibleFields.add(nextField);
-                        return true;
                     }
                 }
             }
@@ -69,67 +57,56 @@ public class Game {
         return false;
     }
 
-    //TODO SuperDame
     //SuperDame kann in alle vier richtungen gehen
-    private void testFieldScope(Stone s, Field f, boolean further) {
-        if (s.isSuperDame() == false) {
-            if (s.getColor() == Color.BLACK) {
-                testField(f.getIndexX(), f.getIndexY(), 1, 1, further);
-                testField(f.getIndexX(), f.getIndexY(), -1, 1, further);
-            } else {
-                testField(f.getIndexX(), f.getIndexY(), 1, -1, further);
-                testField(f.getIndexX(), f.getIndexY(), -1, -1, further);
-            }
-        } else{
-            for(int i = 1; i < control.playingField.getSize(); i++) {
-                if (further == false) {
-                    testField(f.getIndexX(), f.getIndexY(), i, i, further);
-                    testField(f.getIndexX(), f.getIndexY(), i, -i, further);
-                    testField(f.getIndexX(), f.getIndexY(), -i, i, further);
-                    testField(f.getIndexX(), f.getIndexY(), -i, -i, further);
-                } else {
-                    if(f.getIndexX() - move.getLastField().getIndexX() > 0){
-                        if(f.getIndexY() - move.getLastField().getIndexY() > 0){
-                            testField(f.getIndexX(), f.getIndexY(), i, i, further);
-                            testField(f.getIndexX(), f.getIndexY(), i, -i, further);
-                            testField(f.getIndexX(), f.getIndexY(), -i, i, further);
-                        } else {
-                            testField(f.getIndexX(), f.getIndexY(), i, i, further);
-                            testField(f.getIndexX(), f.getIndexY(), i, -i, further);
-                            testField(f.getIndexX(), f.getIndexY(), -i, -i, further);
-                        }
-                    } else {
-                        if(f.getIndexY() - move.getLastField().getIndexY() > 0){
-                            testField(f.getIndexX(), f.getIndexY(), i, i, further);
-                            testField(f.getIndexX(), f.getIndexY(), -i, i, further);
-                            testField(f.getIndexX(), f.getIndexY(), -i, -i, further);
-                        } else {
-                            testField(f.getIndexX(), f.getIndexY(), i, -i, further);
-                            testField(f.getIndexX(), f.getIndexY(), -i, i, further);
-                            testField(f.getIndexX(), f.getIndexY(), -i, -i, further);
-                        }
-                    }
+    private void testFieldScope(Field f, Color c, boolean further, boolean superDame) {
+        if(superDame){
+            for(int i = 1; i < Main.playingField.getSize(); i++) {
+                if(!testField(f.getIndexX(), f.getIndexY(), i, i, i+1,i+1, further)){
+                    break;
                 }
+            }
+            for(int i = 1; i < Main.playingField.getSize(); i++) {
+                if(!testField(f.getIndexX(), f.getIndexY(), i, -i,i+1,-i-1, further)){
+                    break;
+                }
+            }
+            for(int i = 1; i < Main.playingField.getSize(); i++) {
+                if(!testField(f.getIndexX(), f.getIndexY(), -i, i,-i-1, i+1, further)){
+                    break;
+                }
+            }
+            for(int i = 1; i < Main.playingField.getSize(); i++) {
+                if(!testField(f.getIndexX(), f.getIndexY(), -i, -i, -i-1, -i-1, further)){
+                    break;
+                }
+            }
+        }else {
+            if (c == Color.BLACK) {
+                testField(f.getIndexX(), f.getIndexY(), 1, 1,2,2, further);
+                testField(f.getIndexX(), f.getIndexY(), -1, 1,-2,2, further);
+            } else {
+                testField(f.getIndexX(), f.getIndexY(), 1, -1,2,-2, further);
+                testField(f.getIndexX(), f.getIndexY(), -1, -1,-2,-2, further);
             }
         }
     }
 
     public void selectStone(Stone s) {
-        if (move != null && move.getStone() == s) {
+        if (move != null && move.getStone() == s && !move.isOutdated()) {
             gamePaneController.colorField();
-            move = null;
+            move.setOutdated(true);
             return;
         }
-        move = new Move(s);
+        move.init(s);
         Field f = control.playingField.getField(move.getStone().getIndexX(), move.getStone().getIndexY());
         move.addEnterField(f);
         possibleFields.clear();
-        testFieldScope(s, f, false);
-        gamePaneController.highlightFields(possibleFields, move);
+        testFieldScope(f, s.getColor(), false, s.isSuperDame());
+        gamePaneController.highlightFields(possibleFields, visitedFields, move);
     }
 
     public void selectField(Field f) {
-        if (move != null) {
+        if (move != null && !move.isOutdated()) {
             if (!possibleFields.isEmpty() && possibleFields.contains(f)) {
                 move.addEnterField(f);
                 if (Math.abs(move.getLastField().getIndexX() - f.getIndexX()) >= 2) {
@@ -150,20 +127,26 @@ public class Game {
                         if (playerController.getOtherPlayer().hasStoneAt(x, y)) {
                             move.addSkipField(control.playingField.getField(x, y));
 
+                            visitedFields.add(control.playingField.getField(x, y));
                             gamePaneController.colorField();
                             possibleFields.clear();
-                            testFieldScope(move.getStone(), move.getEndField(), true);
+
+                            testFieldScope(move.getEndField(), move.getStone().getColor(), true, move.getStone().isSuperDame());
                             if (!possibleFields.isEmpty()) {
-                                gamePaneController.highlightFields(possibleFields, move);
+                                gamePaneController.highlightFields(possibleFields, visitedFields, move);
                                 return;
                             }
                         }
                     }
                 }
+                visitedFields.clear();
                 makeMove(move);
             }
             else if (move.getEndField().equals(f) && move.getEndField() != move.getFirstField()) {
                 makeMove(move);
+            }
+            else if (playerController.getCurrentPlayer().hasStoneAt(f.getIndexX(), f.getIndexY())) {
+                selectStone(playerController.getCurrentPlayer().getStoneAt(f.getIndexX(), f.getIndexY()));
             }
         }
         else if (playerController.getCurrentPlayer().hasStoneAt(f.getIndexX(), f.getIndexY())) {
@@ -174,7 +157,6 @@ public class Game {
     private void makeMove(Move move) {
         gamePaneController.colorField();
         gamePaneController.moveToken(move);
-        //TODO alle übersprungenen Steine eliminieren (move.skippedFields) - wird bisher in GamePaneController gemacht - muss nicht zwingend geändert werden
         move.update();
         testForSuperDame(move.getStone());
         possibleFields.clear();
@@ -182,7 +164,7 @@ public class Game {
 
     public void finishedMove() {
         testForWinner();
-        move = null;
+        move.setOutdated(true);
         playerController.changePlayer();
         gamePaneController.updatePlayer();
         playKI();
@@ -224,7 +206,7 @@ public class Game {
     private boolean isMovePossible(Player p) {
         for (Stone s : p.getStones()) {
             if (!s.isEliminated()) {
-                testFieldScope(s, Main.playingField.getField(s.getIndexX(), s.getIndexY()), false);
+                testFieldScope(Main.playingField.getField(s.getIndexX(), s.getIndexY()), s.getColor(), false, s.isSuperDame());
                 if (!possibleFields.isEmpty()) {
                     possibleFields.clear();
                     return true;
@@ -234,10 +216,16 @@ public class Game {
         return false;
     }
 
-    public void playKI(){
-        if(control.getPlayerController().isSinglePlayerGame() && !control.getPlayerController().isCurrentPlayer1()) {
-            Zugfolge z = ((KI) control.getPlayerController().getPlayer2()).KI();
-            Platform.runLater(() -> makeMove(z));
+    public void playKI() {
+        if(playerController.isSinglePlayerGame() && !playerController.isCurrentPlayer1()) {
+
+            try {
+                Move m = ((KI) playerController.getPlayer2()).getBestMove();
+                Platform.runLater(() -> makeMove(m));
+            } catch (NoPossibleMoveException e) {
+                //TODO KI hat verloren, da sie keine Züge mehr machen kann
+            }
+
         }
     }
 

@@ -26,7 +26,7 @@ public class StartPaneController {
     @FXML
     private TextField textField_Player2;
 
-    public void setInstances(Main control) {
+    public void setObjects(Main control) {
         this.control = control;
     }
 

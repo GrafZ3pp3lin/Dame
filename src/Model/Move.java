@@ -1,20 +1,43 @@
 package Model;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class Move {
 
     private Stone stone;
-    private List<Field> enteredFields;
-    private List<Field> skipedFields;
+    private Vector<Field> enteredFields;
+    private Vector<Field> skipedFields;
     private int index;
+    private boolean outdated;
+
+    public Move() {
+        enteredFields = new Vector<>();
+        skipedFields = new Vector<>();
+        outdated = true;
+    }
 
     public Move(Stone s) {
+        this();
         stone = s;
-        enteredFields = new ArrayList<>();
-        skipedFields = new ArrayList<>();
         index = 1;
+        outdated = false;
+    }
+
+    public void init(Stone s) {
+        stone = s;
+        enteredFields.clear();
+        skipedFields.clear();
+        index = 1;
+        outdated = false;
+    }
+
+    public void setOutdated(boolean outdated) {
+        this.outdated = outdated;
+    }
+
+    public boolean isOutdated() {
+        return outdated;
     }
 
     public Stone getStone() {
@@ -51,7 +74,11 @@ public class Move {
     }
 
     public boolean nextField() {
-        return ++index >= enteredFields.size();
+        if (index < enteredFields.size() - 1) {
+            index++;
+            return true;
+        }
+        return false;
     }
 
     public void addEnterField(Field f) {

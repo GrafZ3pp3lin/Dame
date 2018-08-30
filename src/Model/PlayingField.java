@@ -1,8 +1,13 @@
 package Model;
 
+/**
+ * speichert Daten für das ganze Spielfeld
+ */
 public class PlayingField {
     private int FieldSize;
     private Field cField[];
+
+    public PlayingField() {}
 
     public PlayingField(int size){
         FieldSize = size;
@@ -27,6 +32,11 @@ public class PlayingField {
         }
     }
 
+    public void rebuild(int fieldSize) {
+        this.FieldSize = fieldSize;
+        createField();
+    }
+
     public Field[] getcField(){
         return cField;
     }
@@ -44,7 +54,7 @@ public class PlayingField {
                 }
             }
         }
-        System.err.println("Field (" + x + "/" + y + ") doesn't exist");
+//        System.err.println("Field (" + x + "/" + y + ") doesn't exist");
         return null;
     }
 
