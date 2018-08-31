@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * beinhaltet die KI für den Einzelspielermodus
+ * beinhaltet die KI für den Einzelspielermodus, erbt von Player
  * @author Joel Schmid
  */
 public class KI extends Player {
@@ -44,11 +44,6 @@ public class KI extends Player {
         if(alleZuege.size() == 0){
             throw new NoPossibleMoveException();
         }
-/*
-        for (Zugfolge z : alleZuege) {
-            System.out.println(z.toString());
-        }
-        System.out.println("Anzahl aller Züge: " + alleZuege.size());*/
         return Zugfolge.getBestZug(alleZuege);
     }
 
