@@ -259,7 +259,7 @@ public class Main extends Application {
     }
 
     /**
-     * Zeigt ein Fesnter an sobald ein Spieler gewonnen hat.
+     * Zeigt ein Fenster an sobald ein Spieler gewonnen hat.
      * Der Spieler hat die Möglichkeit das Spiel neuzustarten,
      * ins Hauptmenü zu wechseln, oder das Programm zu beenden.
      *

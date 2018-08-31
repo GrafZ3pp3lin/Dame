@@ -15,6 +15,13 @@ public class PlayerController {
         init(ki, size, name1, name2);
     }
 
+    /**
+     * Initialisiert das Spiel mit den angegebenen Parametern
+     * @param ki Gibt an, ob die KI benutzt wird (Singleplayer)
+     * @param size Größe des Spielfeldes
+     * @param name1 Name von Player1
+     * @param name2 Name von Player2
+     */
     public void init(boolean ki, int size, String name1, String name2) {
         singlePlayerGame = ki;
         player1 = new Player(Color.BLACK, name1.isEmpty() || name1.length() > 15 ? "Player 1" : name1, size);
@@ -44,7 +51,10 @@ public class PlayerController {
         }
     }
 
-    //return current Player
+    /**
+     * Gibt den aktiven Spieler zurück
+     * @return Player aktiver Spieler
+     */
     public Player getCurrentPlayer() {
         if (currentPlayer1) {
             return player1;
@@ -54,6 +64,10 @@ public class PlayerController {
         }
     }
 
+    /**
+     * Gibt den nicht aktiven Spieler zurück
+     * @return Player nicht aktiver Spieler
+     */
     public Player getOtherPlayer() {
         if (!currentPlayer1) {
             return player1;
@@ -63,6 +77,9 @@ public class PlayerController {
         }
     }
 
+    /**
+     *  Wechselt den aktiven Spieler
+     */
     public void changePlayer() {
         currentPlayer1 = !currentPlayer1;
     }

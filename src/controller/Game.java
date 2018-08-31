@@ -25,6 +25,9 @@ public class Game {
         move = new Move();
     }
 
+    /**
+     *  Leert die Liste möglicher Zielfelder und setzt den Zug auf veraltet
+     */
     public void reset() {
         possibleFields.clear();
         move.setOutdated(true);
@@ -35,7 +38,17 @@ public class Game {
                 !playerController.getOtherPlayer().hasStoneAt(f.getIndexX(), f.getIndexY());
     }
 
-    //SuperDame kann beliebig viele Schritte gehen
+    /**
+     * Überprüft für ein angegebenes Feld, ob darauf gesprungen werden kann
+     * @param x x-Wert des Feldes auf dem der Stein liegt
+     * @param y y-Wert des Feldes auf dem der Stein liegt
+     * @param indexX Differenz zwischen x und dem x-Wert des zu überprüfenden Feldes
+     * @param indexY Differenz zwischen y und dem y-Wert des zu überprüfenden Feldes
+     * @param indexX2 Differenz zwischen x und dem x-Wert des Feldes hinter dem zu überprüfenden Feld
+     * @param indexY2 Differenz zwischen y und dem y-Wert des Feldes hinter dem zu überprüfenden Feld
+     * @param further gesetzt wenn nicht der erste Sprung
+     * @return boolean Sprung möglich
+     */
     private boolean testField(int x, int y, int indexX, int indexY, int indexX2, int indexY2, boolean further) {
         Field field = Main.playingField.getField(x + indexX, y + indexY);
         Field field2;
@@ -58,7 +71,13 @@ public class Game {
         return false;
     }
 
-    //SuperDame kann in alle vier richtungen gehen
+    /**
+     * Überprüft abhängig vom ausgewählten Stein, auf welche Felder gesprungen werden kann
+     * @param f ausgewähltes Feld
+     * @param c Farbe des aktuellen Steins
+     * @param further gesetzt wenn nicht der erste Sprung
+     * @param superDame aktueller Stein ist Superdame
+     */
     private void testFieldScope(Field f, Color c, boolean further, boolean superDame) {
         if(superDame){
             for(int i = 1; i < Main.playingField.getSize(); i++) {
@@ -92,6 +111,10 @@ public class Game {
         }
     }
 
+    /**
+     * Führt eine passende Option für den angeklickten Stein aus
+     * @param s angeklickter Stein
+     */
     public void selectStone(Stone s) {
         if (move != null && move.getStone() == s && !move.isOutdated() && Main.playingField.getField(s.getIndexX(), s.getIndexY()) != currentField) {
             gamePaneController.colorField();
@@ -114,6 +137,10 @@ public class Game {
         }
     }
 
+    /**
+     * Führt eine passende Aktion für das angeklickte Feld aus
+     * @param f angeklicktes Feld
+     */
     public void selectField(Field f) {
         if (move != null && !move.isOutdated()) {
             if (!possibleFields.isEmpty() && possibleFields.contains(f)) {
@@ -171,6 +198,10 @@ public class Game {
         }
     }
 
+    /**
+     * Bewegt den Stein anhand des ausgewählten Zuges und überprüft, ob der Stein anschließend eine Superdame wird
+     * @param move Ausgewählter Zug, der mit dem Stein durchgeführt wird
+     */
     private void makeMove(Move move) {
         gamePaneController.colorField();
         gamePaneController.moveToken(move);
@@ -179,6 +210,9 @@ public class Game {
         possibleFields.clear();
     }
 
+    /**
+     * Überprüft nach Beenden des Zuges, ob ein Spieler gewonnen hat und wechselt den aktuellen Spieler, wenn dies nicht der Fall ist
+     */
     public void finishedMove() {
         if (!testForWinner()) {
             move.setOutdated(true);
@@ -207,6 +241,11 @@ public class Game {
         return false;
     }
 
+    /**
+     * Überprüft für alle Steine eines Spielers, ob weitere Züge möglich sind
+     * @param p Spiler dessen Steine geprüft werden
+     * @return boolean, ob ein Zug möglich ist
+     */
     private boolean isMovePossible(Player p) {
         for (Stone s : p.getStones()) {
             if (!s.isEliminated()) {
@@ -220,6 +259,9 @@ public class Game {
         return false;
     }
 
+    /**
+     *  Lässt im Falle eines Singleplayer-Spiels die KI ihren Zug machen, falls einer möglich ist
+     */
     private void playKI() {
         if(playerController.isSinglePlayerGame() && !playerController.isCurrentPlayer1()) {
             try {
