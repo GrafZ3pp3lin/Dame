@@ -2,6 +2,11 @@ package controller;
 
 import Model.*;
 
+/**
+ * Verwaltung von Spielerinformationen
+ *
+ * @author Alexander Hengsteler
+ */
 public class PlayerController {
 
     private Player player1;
