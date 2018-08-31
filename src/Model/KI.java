@@ -6,12 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Diese Klasse beinhaltet die KI für den Einzelspielermodus
+ * beinhaltet die KI für den Einzelspielermodus
  * @author Joel Schmid
  */
 public class KI extends Player {
 
+    /**
+     * menschlicher Gegner
+     */
     private Player enemy;
+
+    /**
+     * Liste aller möglichen Züge, die von der KI ausgeführt werden könnten
+     */
     private List<Zugfolge> alleZuege;
 
     public KI(Color c, String name, int size, Player enemy) {
@@ -21,6 +28,7 @@ public class KI extends Player {
 
     /**
      * Wird von der KI ein Zug erwartet, wird diese Methode aufgerufen, sie ermittelt einen möglichst langen Zug
+     * @throws NoPossibleMoveException
      * @return Zugfolge
      */
     public Move getBestMove() throws NoPossibleMoveException{
@@ -29,7 +37,7 @@ public class KI extends Player {
         //Für alle noch nicht eliminierten Steine werden alle möglichen Züge ermittelt (KI ist eine rekursive Methode)
         for (Stone s : getStones()) {
             if (!s.isEliminated()) {
-                calculatePossibleMoves(s, s.getIndexX(), s.getIndexY(), 0, true, new ArrayList<Field>(), new ArrayList<Field>());
+                ki(s, s.getIndexX(), s.getIndexY(), 0, true, new ArrayList<Field>(), new ArrayList<Field>());
             }
         }
 
@@ -46,8 +54,9 @@ public class KI extends Player {
 
     /**
      * Hier wird ausgehend von X und Y Koordinaten geschaut, welcher Zug möglich ist.
-     * normale Steine können nur nach unten (RIGHTDOWN, LEFTDOWN) die superdame kann in alle vier diagonalen Richtungen
-     * (RIGHTDOWN, LEFTDOWN, RIGHTUP, LEFTUP)
+     * normale Steine können nur nach unten schlagen/ziehen (RIGHTDOWN, LEFTDOWN), die Superdame kann hingegen in alle vier diagonalen Richtungen
+     * (RIGHTDOWN, LEFTDOWN, RIGHTUP, LEFTUP) und auch mehrere Felder auf einmal
+     * @see #ki(Stone, int, int, int, boolean, List, List)
      * @param s Stein, für den der Zug ermittelt wird
      * @param d Richtung, in die gefahren werden soll
      * @param x aktuelle X-Koordinate
@@ -59,7 +68,7 @@ public class KI extends Player {
      */
     private int diagonalcheck(Stone s, Direction d, int x, int y, boolean ersterDurchgang, List<Field> skipped, List<Field> entered) {
 
-        // Ermittelt möglichen Spielzug nach Rechts unten
+        // ermittelt möglichen Spielzug nach rechts unten
         if (d.equals(Direction.RIGHTDOWN)) {
             /*  Wenn s eine superdame ist, wird die for-Schleife mehrmals durchlaufen um auch einen weiter entfernten Stein zu finden,
                 ansonsten nur einmal, um zu schauen, ob beim nächsten Feld bereits ein gegnerischer Stein ist. */
@@ -159,6 +168,7 @@ public class KI extends Player {
     /**
      * Die KI Methode ermittelt mit hilfe von diagonalcheck, ob ein gegnerischer Stein geschlagen werden kann und ruft sich dann mit der
      * neuen Position (X,Y) wieder Rekursiv auf. Dann wird ausgehen von der neuen Position wieder Diagonalchecks durchgeführt
+     * @see #diagonalcheck(Stone, Direction, int, int, boolean, List, List)
      * @param s aktueller Stein
      * @param x aktuelle X-Koordinate
      * @param y aktuelle Y-Koordinate
@@ -167,7 +177,7 @@ public class KI extends Player {
      * @param skipped enthält alle gegnerischen Felder, die in diesem Zug bereits rausgeworfen wurden
      * @param entered enthält alle Felder, auf denen der eigene Stein kurz aufkommt
      */
-    private void calculatePossibleMoves(Stone s, int x, int y, int zuglaenge, boolean ersterDurchgang, List<Field> skipped, List<Field> entered) {
+    private void ki(Stone s, int x, int y, int zuglaenge, boolean ersterDurchgang, List<Field> skipped, List<Field> entered) {
 
         // ist dies der erste Durchgang, wird das Startfeld hinzugefügt
         if (ersterDurchgang) {
@@ -189,9 +199,9 @@ public class KI extends Player {
 
         int a;
         if ((a = diagonalcheck(s, Direction.RIGHTDOWN, x, y, ersterDurchgang, skippedLeftDown, enteredLeftDown)) > 1) {
-            /*  KI wird rekursiv aufgerufen, wenn ein gegnerischer Stein übersprungen werden kann, um zu schauen ob ein weiterer
+            /*  KI wird rekursiv aufgerufen, wenn ein gegnerischer Stein übersprungen werden kann (Rückgabewert von diagonalcheck > 1), um zu schauen ob ein weiterer
                 gegnerischer Stein von der neuen Position aus erreichbar ist */
-            calculatePossibleMoves(s, x + a, y - a, zuglaenge + a, false, new ArrayList<Field>(skippedLeftDown), new ArrayList<Field>(enteredLeftDown));
+            ki(s, x + a, y - a, zuglaenge + a, false, new ArrayList<Field>(skippedLeftDown), new ArrayList<Field>(enteredLeftDown));
         } else {
             if (zuglaenge + a > 0) {
                 Zugfolge z = new Zugfolge(zuglaenge + a, s);
@@ -202,7 +212,7 @@ public class KI extends Player {
         }
 
         if ((a = diagonalcheck(s, Direction.LEFTDOWN, x, y, ersterDurchgang, skippedRightDown, enteredRightDown)) > 1) {
-            calculatePossibleMoves(s, x - a, y - a, zuglaenge + a, false, new ArrayList<Field>(skippedRightDown), new ArrayList<Field>(enteredRightDown));
+            ki(s, x - a, y - a, zuglaenge + a, false, new ArrayList<Field>(skippedRightDown), new ArrayList<Field>(enteredRightDown));
         } else {
             if (zuglaenge + a > 0) {
                 Zugfolge z = new Zugfolge(zuglaenge + a, s);
@@ -213,7 +223,7 @@ public class KI extends Player {
         }
 
         if ((a = diagonalcheck(s, Direction.RIGHTUP, x, y, ersterDurchgang, skippedLeftUp, enteredLeftUp)) > 1) {
-            calculatePossibleMoves(s, x + a, y + a, zuglaenge + a, false, new ArrayList<Field>(skippedLeftUp), new ArrayList<Field>(enteredLeftUp));
+            ki(s, x + a, y + a, zuglaenge + a, false, new ArrayList<Field>(skippedLeftUp), new ArrayList<Field>(enteredLeftUp));
         } else {
             if (zuglaenge + a > 0) {
                 Zugfolge z = new Zugfolge(zuglaenge + a, s);
@@ -224,7 +234,7 @@ public class KI extends Player {
         }
 
         if ((a = diagonalcheck(s, Direction.LEFTUP, x, y, ersterDurchgang, skippedRightUp, enteredRightUp)) > 1) {
-            calculatePossibleMoves(s, x - a, y + a, zuglaenge + a, false, new ArrayList<Field>(skippedRightUp), new ArrayList<Field>(enteredRightUp));
+            ki(s, x - a, y + a, zuglaenge + a, false, new ArrayList<Field>(skippedRightUp), new ArrayList<Field>(enteredRightUp));
         } else {
             if (zuglaenge + a > 0) {
                 Zugfolge z = new Zugfolge(zuglaenge + a, s);

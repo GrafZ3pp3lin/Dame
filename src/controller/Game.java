@@ -25,17 +25,36 @@ public class Game {
         move = new Move();
     }
 
+    /**
+     * spiel wird zurückgesetzt
+     */
     public void reset() {
         possibleFields.clear();
         move.setOutdated(true);
     }
 
+    /**
+     *
+     * @param f Feld
+     * @return ist auf f ein Stein
+     */
     private boolean emptyField(Field f) {
-        return !playerController.getCurrentPlayer().hasStoneAt(f.getIndexX(), f.getIndexY()) &&
-                !playerController.getOtherPlayer().hasStoneAt(f.getIndexX(), f.getIndexY());
+        return playerController.getCurrentPlayer().hasStoneAt(f.getIndexX(), f.getIndexY()) ||
+                playerController.getOtherPlayer().hasStoneAt(f.getIndexX(), f.getIndexY());
     }
 
-    //SuperDame kann beliebig viele Schritte gehen
+    /**
+     * ermittelt die Felder, die vom Feld(x,y) erreichbar sind
+     * @see #testFieldScope(Field, Color, boolean, boolean)
+     * @param x aktuelle X-Koordinate
+     * @param y aktuelle Y-Koordinate
+     * @param indexX wie weit von X entfernnt
+     * @param indexY wie weit von Y entfernnt
+     * @param indexX2 x + indexX2 ist Zielkoordinate, wenn x + indexX ein gegnerischer Stein ist
+     * @param indexY2 y + indexY2 ist Zielkoordinate, wenn y + indexY ein gegnerischer Stein ist
+     * @param further
+     * @return suche nach weiteren Feldern in dieser Richtung abbrechen
+     */
     private boolean testField(int x, int y, int indexX, int indexY, int indexX2, int indexY2, boolean further) {
         Field field = Main.playingField.getField(x + indexX, y + indexY);
         Field field2;
@@ -58,7 +77,14 @@ public class Game {
         return false;
     }
 
-    //SuperDame kann in alle vier richtungen gehen
+    /**
+     * Ausgehend von f wird
+     * @see #testField(int, int, int, int, int, int, boolean)
+     * @param f Startfeld
+     * @param c Spielerfarbe
+     * @param further Wurde bereits ein gegnerischer Stein in diesem Zug übersprungen (es kann dann nur weitergemacht werden, wenn ein weiterer Stein geschlagen werden kann)
+     * @param superDame ist der Stein eine Superdame
+     */
     private void testFieldScope(Field f, Color c, boolean further, boolean superDame) {
         if(superDame){
             for(int i = 1; i < Main.playingField.getSize(); i++) {
@@ -114,6 +140,10 @@ public class Game {
         }
     }
 
+    /**
+     * Wenn mit der Maus ein Feld angeklickt wird
+     * @param f Ausgewähltes Feld
+     */
     public void selectField(Field f) {
         if (move != null && !move.isOutdated()) {
             if (!possibleFields.isEmpty() && possibleFields.contains(f)) {
@@ -171,6 +201,10 @@ public class Game {
         }
     }
 
+    /**
+     * Ein Spielzug wird ausgeführt
+     * @param move Spielzug
+     */
     private void makeMove(Move move) {
         gamePaneController.colorField();
         gamePaneController.moveToken(move);
@@ -188,6 +222,10 @@ public class Game {
         }
     }
 
+    /**
+     * Ist der Stein s an der gegnerischen Grundlinie angekommen, wird er zur Superdame
+     * @param s
+     */
     private void testForSuperDame(Stone s) {
         if (s.getColor() == Color.BLACK) {
             if (s.getIndexY() == Main.playingField.getSize() - 1) {
@@ -199,6 +237,9 @@ public class Game {
         }
     }
 
+    /**
+     * hat ein Spieler bereits gewonnen
+     */
     private boolean testForWinner() {
         if (!isMovePossible(playerController.getOtherPlayer())) {
             control.winDialog(playerController.getCurrentPlayer().getName());
@@ -207,6 +248,11 @@ public class Game {
         return false;
     }
 
+    /**
+     * ist ein Spielzug des Spielers p möglich
+     * @param p Spieler
+     * @return gibt es einen möglichen Spielzug
+     */
     private boolean isMovePossible(Player p) {
         for (Stone s : p.getStones()) {
             if (!s.isEliminated()) {
@@ -220,6 +266,9 @@ public class Game {
         return false;
     }
 
+    /**
+     * Im einzelspielermodus wird die KI ausgeführt, im Mehrspielermodus wird nichts gemacht
+     */
     private void playKI() {
         if(playerController.isSinglePlayerGame() && !playerController.isCurrentPlayer1()) {
             try {

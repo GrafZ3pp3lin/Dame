@@ -1,17 +1,17 @@
 Das Spielbrett:
-Dame wird auf einem quadratischen Brett mit abwechselnd weißen und schwarzen Feldern gespielt. Vor dem Start kann gewählt werden, ob auf einem 8x8 oder 10x10 Feld gespielt werden soll.
+Dame wird auf einem quadratischen Brett mit abwechselnd weißen und schwarzen Feldern gespielt (Schachbrett). Vor dem Start kann gewählt werden, ob auf einem 8x8 oder 10x10 Feld gespielt werden soll.
 Das Damebrett wird automatisch so platziert, dass links unten ein dunkles Feld liegt. Der Startspieler beginnt mit den schwarzen Steinen.
 
 Steine ziehen:
-Steine dürfen in diagonaler Richtung gezogen werden, aber nur vorwärts und nur auf freie dunkle Felder.
+Steine dürfen in diagonaler Richtung nach vorne gezogen werden, dass heißt, ein Stein befindet sich immer auf einem Schwarzen Feld.
 
 Schlagen:
 Andere Steine können durch Überspringen geschlagen werden. Dazu muss das Feld diagonal hinter dem "geschlagenen" Stein frei sein.
-Einfache Steine können nur vorwärts schlagen. Sollte ein Stein geschlagen werden und von der neuen Position ein weitere Steine geschlagen werden können. Dürfen diese auch geschlagen werden.
+Einfache Steine können nur vorwärts schlagen. Sollte ein Stein geschlagen werden und es von der neuen Position möglich sein einen weiteren Stein zu schlagen, kann dieser noch im gleichen Zug ausgeführt werden.
 Es gilt kein Schlagzwang, wenn du aus taktischen Gründen, auf einen Schlag verzichten willst, ist dies möglich.
 
 In Dame umwandeln:
-Du bekommst eine Dame, wenn einer deiner Steine auf der gegnerischen Grundlinie stehen bleibt, egal ob durch einen normalen Zug oder durch ein Schlagen. Der Stein wird dann markiert (Du erkennst eine Superdame, wenn du sie siehst ;D)
+Du bekommst eine Dame, wenn einer deiner Steine auf der gegnerischen Grundlinie stehen bleibt, egal ob durch einen normalen Zug oder durch das Schlagen eines gegnerischen Steines. Der Stein wird dann markiert (Du erkennst eine Superdame, wenn du sie siehst ;D)
 Eine Dame kannst nun sowohl schräg vorwärts als auch rückwärts beweget werden und genauso darfst du mit ihr auch schlagen. Beim Schlagen kann die Dame mehrere leere Felder bis zum gegnerischen Stein überwinden, aber muss nach dem Schlagen direkt hinter dem geschlagenen Stein landen.
 
 Spielende:
