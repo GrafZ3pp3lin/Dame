@@ -39,8 +39,8 @@ public class Game {
      * @return ist auf f ein Stein
      */
     private boolean emptyField(Field f) {
-        return playerController.getCurrentPlayer().hasStoneAt(f.getIndexX(), f.getIndexY()) ||
-                playerController.getOtherPlayer().hasStoneAt(f.getIndexX(), f.getIndexY());
+        return !playerController.getCurrentPlayer().hasStoneAt(f.getIndexX(), f.getIndexY()) &&
+                !playerController.getOtherPlayer().hasStoneAt(f.getIndexX(), f.getIndexY());
     }
 
     /**
