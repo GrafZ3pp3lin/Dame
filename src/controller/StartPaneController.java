@@ -18,22 +18,22 @@ public class StartPaneController {
     private Main control;
 
     /**
-     * ComboBox, um zwischen der Spielfeldgröße zu wählen
-     * Zur Wahl stehen ein 8*8 Feld und ein 10*10 Feld
+     * ComboBox, um zwischen der Spielfeldgröße zu wählen.
+     * Zur Wahl stehen ein 8*8 Feld und ein 10*10 Feld.
      */
     @FXML
     private ComboBox<String> comboBox_size;
 
     /**
      * TextFeld um den Namen von Spieler 1 zu wählen.
-     * Standard ist "Spieler 1"
+     * Standard ist "Spieler 1".
      */
     @FXML
     private TextField textField_Player1;
 
     /**
      * TextFeld um den Namen von Spieler 2 zu wählen.
-     * Standard ist "Spieler 2"
+     * Standard ist "Spieler 2".
      */
     @FXML
     private TextField textField_Player2;
@@ -43,7 +43,8 @@ public class StartPaneController {
     }
 
     /**
-     * initialisiert die ComboBox. Wird automatisch bei der Initialisierung der Oberfläche aufgerufen
+     * initialisiert die ComboBox.
+     * Wird automatisch bei der Initialisierung der Oberfläche aufgerufen.
      */
     @FXML
     private void initialize() {
@@ -53,7 +54,8 @@ public class StartPaneController {
     }
 
     /**
-     * startet ein Single Player Spiel. Als zweiter Spieler wird eine KI initialisiert
+     * startet ein Single Player Spiel.
+     * Als zweiter Spieler wird eine KI initialisiert.
      */
     @FXML
     private void onSinglePlayerStart() {
@@ -61,7 +63,8 @@ public class StartPaneController {
     }
 
     /**
-     * startet ein Multi Player Spiel. Als zweiter Spieler wird ein normaler Spieler initialisiert
+     * startet ein Multi Player Spiel.
+     * Als zweiter Spieler wird ein normaler Spieler initialisiert.
      */
     @FXML
     private void onMultiPlayerStart() {
@@ -73,7 +76,7 @@ public class StartPaneController {
      * ausgewählter Wert der ComboBox. Standard ist 8.
      * Auswahl steht zwischen 8 und 10.
      *
-     * @return Wert, wie viele Felder das Spielfeld haben soll
+     * @return Wert, wie viele Felder das Spielfeld haben soll.
      */
     public int getSize() {
         return comboBox_size.getValue().equals(acht) ? 8 : 10;

@@ -16,8 +16,7 @@ import javafx.scene.shape.Rectangle;
 import java.util.*;
 
 /**
- * Diese Klasse verwaltet das SpielFeld und steuert
- * Benutzereingaben innerhalb eines Spiels
+ * Diese Klasse verwaltet das SpielFeld und steuert Benutzereingaben innerhalb eines Spiels.
  *
  * @author Johannes Gaiser
  */
@@ -30,41 +29,76 @@ public class GamePaneController {
     private int amount, tokenRadius;
     private boolean graphicAction;
 
+    /**
+     * Pane, auf dem das Spielfeld + Steine generiert wird
+     */
     @FXML
     private Pane playingField;
 
+    /**
+     * Pane, auf das eliminierte Steine von Spieler 1 kommen
+     *
+     * @see #removeToken(Stone)
+     */
     @FXML
     private Pane pane_player1;
 
+    /**
+     * Pane, auf das eliminierte Steine von Spieler 2 kommen
+     *
+     * @see #removeToken(Stone)
+     */
     @FXML
     private Pane pane_player2;
 
+    /**
+     * Label, in dem der Name von Spieler 1 steht.
+     * sobald Spieler 1 an der Reihe ist, wird der Name hervorgehoben.
+     *
+     * @see #updatePlayer()
+     */
     @FXML
     private Label label_player1;
 
+    /**
+     * Label, in dem der Name von Spieler 1 steht.
+     * sobald Spieler 1 an der Reihe ist, wird der Name hervorgehoben.
+     *
+     * @see #updatePlayer()
+     */
     @FXML
     private Label label_player2;
 
+    /**
+     * Label, in dem Status Meldungen angezeigt werden können.
+     * Das Label befindet sich Oberhalb des Spielfelds.
+     *
+     * @see #setStatus(String)
+     */
     @FXML
     private Label label_status;
 
+    /**
+     * Liste mit allen Rechtecken der Felder, sodass einfacher die Farbe geändert werden kann.
+     */
     private ArrayList<Rectangle> field;
 
     /**
-     * setzt alle notwendigen Instanzen
+     * Methode um Objekte zu übergeben.
      *
-     * @param control Instanz der Main Klasse
+     * @param control Objekt der Main Klasse
      */
     public void setObjects(Main control) {
         this.control = control;
     }
 
     /**
-     *stellt das Spielfelds grafisch dar
+     * Stellt das Spielfelds grafisch dar.
+     * Initialisiert alle {@link Rectangle} der einzelnen Felder.
      *
-     * @param amount Größe des Spielfelds (8/10)
-     * @param size Größe des Spielfelds in Pixel
-     * @param pf Instanz von PlayingField (Daten für das Spielfeld)
+     * @param amount Größe des Spielfelds (8/10).
+     * @param size Größe des Spielfelds in Pixel.
+     * @param pf Objekt von {@link PlayingField} (um alle Felder auszulesen).
      */
     public void buildPlayingField(int amount, int size, PlayingField pf) {
         this.amount = amount;
@@ -95,7 +129,7 @@ public class GamePaneController {
     }
 
     /**
-     * färbt das Spielfeld in seiner Standardfarbe ein
+     * färbt das Spielfeld in seiner Standardfarbe ein.
      */
     public void colorField() {
         int i = 0;
@@ -110,7 +144,7 @@ public class GamePaneController {
     }
 
     /**
-     * entfernt alle grafischen Objekte von der Oberfläche
+     * entfernt alle grafischen Objekte von der Oberfläche.
      */
     public void clearField() {
         pane_player1.getChildren().clear();
@@ -119,7 +153,9 @@ public class GamePaneController {
     }
 
     /**
-     * setzt die Spielsteine der Spieler auf das Spielfeld
+     * setzt die Spielsteine der Spieler auf das Spielfeld.
+     * Dabei werden alle {@link Circle} der Steine initialisiert.
+     *
      * @param p alle Spieler
      */
     public void createTokens(Player... p) {
@@ -133,7 +169,7 @@ public class GamePaneController {
     }
 
     /**
-     * setzt die Namen der beiden Spieler
+     * setzt die Namen der beiden Spieler.
      *
      * @param name1 Name Spieler1
      * @param name2 Name Spieler2
@@ -149,7 +185,7 @@ public class GamePaneController {
 
     /**
      * färbt die Spieler Namen richtig ein.
-     * Der Spieler der am Zug ist, bekommt einen orangenen Namen
+     * Der Spieler der am Zug ist, bekommt einen orangenen Namen.
      */
     public void updatePlayer() {
         if (control.getPlayerController().isCurrentPlayer1()) {
@@ -163,20 +199,21 @@ public class GamePaneController {
     }
 
     /**
-     * Message auf der Spieloberfläche
-     * ein leerer String resetet die Message
+     * Nachricht auf der Spieloberfläche.
+     * nutze {@code ""} um gar nichts anzuzeigen.
      *
-     * @param message Message
+     * @param message Nachricht, die angezeigt werden soll.
      */
     private void setStatus(String message) {
         label_status.setText(message);
     }
 
     /**
-     * entfernt einen einzigen Stein vom Spielfeld und setzt diesen an den Rand
-     * die eliminierten Steine werden "gestapelt" dargestellt Jeder Stein überagt seinen Vorgänger zur Hälfte
+     * entfernt einen einzigen Stein vom Spielfeld und setzt diesen an den Rand.
+     * <br>
+     * Die eliminierten Steine werden "gestapelt" dargestellt. Jeder Stein überagt seinen Vorgänger zur Hälfte.
      *
-     * @param stone Stein der entfernt wird
+     * @param stone Stein der entfernt wird.
      */
     private void removeToken(Stone stone) {
         playingField.getChildren().remove(stone.getcCirc());
@@ -201,10 +238,10 @@ public class GamePaneController {
     }
 
     /**
-     * bewegt einen Stein entlang eines Moves
-     * alle Felder (enterFields) von Move werden der Reihe nach angefahren
-     * während des Zugs werden, sobald beide Steine übereinander sind, die übersprungenen Steine (skippedFields) entfernt
-     * während der Stein bewegt wird, sind weitere Benutzereingaben gesperrt.
+     * bewegt einen Stein entlang eines Moves.
+     * <br>Alle Felder (enterFields) von Move werden der Reihe nach angefahren.
+     * Während des Zugs werden, sobald beide Steine übereinander sind, die übersprungenen Steine (skippedFields) entfernt.<br>
+     * Während der Stein bewegt wird, sind weitere Benutzereingaben gesperrt. {@link #graphicAction}
      *
      * @param move Move, den der Stein macht
      */
@@ -254,12 +291,12 @@ public class GamePaneController {
     }
 
     /**
-     * setzt die Node um einen kleinen Wert näher in Richtung Ziel
-     * Die Node wird jedes mal um einen Bruchteil (1/12) eines Feldes weiter gesetzt
+     * setzt die Node um einen kleinen Wert näher in Richtung Ziel.
+     * Die Node wird jedes mal um einen Bruchteil (1/12) eines Feldes weiter gesetzt.
      *
-     * @param n Node n
-     * @param value Größe eines Feldes
-     * @param move Der aktuelle Zug. Notwendig um die Richtung zu bestimmen
+     * @param n Objekt, welches bewegt werden soll.
+     * @param value Größe eines Feldes.
+     * @param move Der aktuelle Zug. Notwendig um die Richtung zu bestimmen.
      */
     private void calculateTokenLocation(Node n, double value, Move move) {
         n.setLayoutX(n.getLayoutX() + (value / 12)
@@ -269,13 +306,13 @@ public class GamePaneController {
     }
 
     /**
-     * testet ob eine Node grafisch über einem Feld liegt
-     * ein leichter Versatz von +/- 2% wird beachtet
+     * testet ob eine Node grafisch über einem Feld liegt.
+     * Ein leichter Versatz von +/- 2% wird berücksichtigt.
      *
-     * @param s Stein
-     * @param f Feld
-     * @param value Abstand in dem der Stein bewegt wird
-     * @return true, falls der Stein über dem Feld liegt
+     * @param s Stein der getestet wird.
+     * @param f Feld, das getestet wird ob der Node darauf liegt.
+     * @param value Abstand in dem der Stein bewegt wird.
+     * @return true, falls der Stein über dem Feld liegt.
      */
     private boolean isStoneNearField(Stone s, Field f, double value) {
         double off = 0;
@@ -288,11 +325,11 @@ public class GamePaneController {
     }
 
     /**
-     * hebt alle besuchten Felder und mögliche weitere Felder hervor
-     * besuchte Felder werden blau hervorgehoben und mögliche grün
+     * hebt alle besuchten Felder und mögliche weitere Felder hervor.
+     * Besuchte Felder werden blau hervorgehoben und mögliche grün.
      *
-     * @param fields mögliche Felder
-     * @param move Move (besuchte Felder)
+     * @param fields mögliche Felder.
+     * @param move Move (besuchte Felder).
      */
     public void highlightFields(List<Field> fields, Move move) {
         colorField();
@@ -306,12 +343,12 @@ public class GamePaneController {
     }
 
     /**
-     * initialisiert einen Token(Circle) und setzt ihn richtig aufs Spielfeld
+     * initialisiert den {@link Circle} eines Steins und setzt ihn an die richtige Stelle auf dem Spielfeld.
      *
      * @param x X-Position
      * @param y Y-Position
-     * @param c Kreis
-     * @param color Farbe
+     * @param c Kreis der initialisiert wird
+     * @param color Farbe die der Stein haben soll
      */
     private void initToken(int x, int y, Node c, Color color) {
         if (c instanceof Circle) {
@@ -329,14 +366,13 @@ public class GamePaneController {
     }
 
     /**
-     * setzt die x- und y-Koordinaten einer Node, unter Beachtung der Superdame
-     * einfache Steine sind Kreise und haben ihren Nullpunkt in der Mitte.
-     * eine Superdame ist ein Stackpane, mit einem Circle und einem Image. Diese hat ihren Nullpunkt links oben.
+     * setzt die x- und y-Koordinaten einer Node, unter Beachtung der Superdame.
+     * <br>Einfache Steine sind Kreise und haben ihren Nullpunkt in der Mitte ({@link Circle}).
+     * Eine Superdame ist ein Stackpane, mit einem Circle und einem Image. Diese hat ihren Nullpunkt links oben.
      *
-     * @param x Index x des Feldes, auf dem der Stein platziert werden soll
-     * @param y Index y des Feldes, auf dem der Stein platziert werden soll
-     * @param node Node die platziert wird
-     * @see Circle
+     * @param x Index x des Feldes, auf dem der Stein platziert werden soll.
+     * @param y Index y des Feldes, auf dem der Stein platziert werden soll.
+     * @param node Node die platziert wird.
      */
     private void placeToken(int x, int y, Node node) {
         double a = (double)size / amount;
@@ -349,9 +385,9 @@ public class GamePaneController {
     }
 
     /**
-     * updatet einen Token, sodass dieser ganz oben auf dem Feld liegt und sich
-     * über anderen Tokens befindet. Die Node wird kurz von der Oberfläche entfernt und wieder hinzugefügt
-     * Wichtig für moveToken
+     * updatet einen Token, sodass dieser ganz oben auf dem Feld liegt und sich über anderen Tokens befindet.
+     * Die Node wird kurz von der Oberfläche entfernt und wieder hinzugefügt
+     * <b>WICHTIG:</b> für {@link #moveToken(Move)}
      *
      * @param c Kreis
      */
@@ -361,8 +397,9 @@ public class GamePaneController {
     }
 
     /**
-     * verwandelt einen einfachen Stein in eine Superdame. Dazu wird ein Stackpane erzeugt,
-     * in welches der Circle und ein Image platziert werden. Das Image hat 75% der Größe des Circles
+     * verwandelt einen einfachen Stein in eine Superdame.
+     * Dazu wird ein Stackpane erzeugt, in welches der {@link Circle} und ein {@link javafx.scene.image.Image} platziert werden.
+     * Das Image hat 75% der Größe des Circles.
      *
      * @param s Superdamen Stein
      */
@@ -389,12 +426,14 @@ public class GamePaneController {
     }
 
     /**
-     * verarbeitet die Maus Klicks auf das Spielfeld
-     * Geglickt werden kann auf ein Feld (Rectangle) ein Stein (Circle) oder ein Stackpane(Superdame)
-     * Zu der geglickten Node wird das entsprechende Feld, bzw. der Stein ermittelt und an das Game übergeben
+     * verarbeitet die Maus Klicks auf das Spielfeld.
+     * Geglickt werden kann auf ein {@link Rectangle} von einem {@link Field},
+     * ein {@link Circle} von einem {@link Stone} oder ein {@link StackPane} von einer Superdame.
+     * Zu der geglickten Node wird das entsprechende Feld, bzw. der Stein ermittelt und an das Game übergeben.
      *
      * @param e MouseEvent
-     * @see Game
+     * @see Game#selectStone(Stone)
+     * @see Game#selectField(Field)
      */
     @FXML
     private void onFieldKlick(MouseEvent e) {

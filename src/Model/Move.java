@@ -18,8 +18,8 @@ public class Move {
     private boolean outdated;
 
     /**
-     * Basic Constructor
-     * initialisiert die Listen
+     * Basic Constructor.
+     * initialisiert die Listen.
      */
     public Move() {
         enteredFields = new Vector<>();
@@ -28,9 +28,9 @@ public class Move {
     }
 
     /**
-     * initialisiert den Move gleich mit einem Stein
+     * initialisiert den Move gleich mit einem Stein.
      *
-     * @param s ausgewählter Stein
+     * @param s ausgewählter Stein.
      */
     public Move(Stone s) {
         this();
@@ -41,9 +41,9 @@ public class Move {
 
     /**
      * initialisiert den Move mit einem Stein.
-     * Bisherige Daten werden dabei überschrieben
+     * Bisherige Daten werden dabei überschrieben.
      *
-     * @param s ausgewählter Stein
+     * @param s ausgewählter Stein.
      */
     public void init(Stone s) {
         stone = s;
@@ -54,19 +54,22 @@ public class Move {
     }
 
     /**
-     * setzt einen Flag, dass der Move veraltet ist.
-     * Dadurch kann ein Stein wieder abgewählt werden
+     * setzt den Flag {@link #outdated}.
+     * Dieser Flag gibt an, dass der Move veraltet ist.
+     * Dadurch kann ein Stein wieder abgewählt werden.
      *
      * @param outdated Flag veraltet
+     * @see #isOutdated()
      */
     public void setOutdated(boolean outdated) {
         this.outdated = outdated;
     }
 
     /**
-     * gibt den Flag 'veraltet' zurück.
+     * gibt den Flag {@link #outdated} zurück.
      *
      * @return Flag veraltet
+     * @see #setOutdated(boolean)
      */
     public boolean isOutdated() {
         return outdated;
@@ -74,9 +77,9 @@ public class Move {
 
     /**
      * gibt den zu dem Move gehörenden Stein.
-     * mit diesem Stein wird der gesamte Move gezogen
+     * mit diesem Stein wird der gesamte Move gezogen.
      *
-     * @return ausgewählter Stein
+     * @return ausgewählter Stein.
      */
     public Stone getStone() {
         return stone;
@@ -84,10 +87,10 @@ public class Move {
 
     /**
      * liefert das erste Feld der besuchten Felder.
-     * WICHTIG: Muss das Feld sein, auf dem der Stein zu Anfang lag.
-     * Gibt null zurück, wenn die Liste leer ist
+     * <br><b>WICHTIG:</b> Muss das Feld sein, auf dem der Stein zu Anfang lag.
+     * Gibt {@code null} zurück, wenn die Liste leer ist.
      *
-     * @return Startfeld, auf dem der Stein anfangs lag
+     * @return Startfeld, auf dem der Stein anfangs lag.
      */
     public Field getFirstField() {
         if (enteredFields != null && !enteredFields.isEmpty()) {
@@ -98,9 +101,9 @@ public class Move {
 
     /**
      * Gibt das letzte besuchte Feld zurück.
-     * Das ist das Feld, auf dem der Stein zuletzt liegt
+     * Das ist das Feld, auf dem der Stein zuletzt liegt.
      *
-     * @return End-Feld des Steins
+     * @return End-Feld des Steins.
      */
     public Field getEndField() {
         if (enteredFields != null && !enteredFields.isEmpty()) {
@@ -115,6 +118,7 @@ public class Move {
      * Der übersprungene Stein muss zwischen dem LastField und dem EndField liegen.
      *
      * @return Vorletztes Feld.
+     * @see controller.Game#selectField(Field)
      */
     public Field getLastField() {
         if (enteredFields != null && !enteredFields.isEmpty() && enteredFields.size() > 1) {
@@ -125,28 +129,29 @@ public class Move {
 
     /**
      * Gibt das Feld zu dem index zurück.
-     * zu diesem Feld wird der Stein grafisch bewegt. Sobald der Stein angekommen ist, wird der Index erhöht.
+     * Zu diesem Feld wird der Stein grafisch bewegt. Sobald der Stein angekommen ist, wird der {@link #index} erhöht.
      *
-     * @return Feld zu dem sich der Stein bewegen soll
+     * @return Feld zu dem sich der Stein bewegen soll.
+     * @see #nextField()
      */
     public Field getNextField() {
         return enteredFields.get(index);
     }
 
     /**
-     * Gibt das Feld zurück, auf dem der Stein bisher grafisch lag. (index - 1)
+     * Gibt das Feld zurück, auf dem der Stein bisher grafisch lag. ({@link #index} - 1)
      *
-     * @return Feld von dem der Stein kommt
+     * @return Feld von dem der Stein kommt.
      */
     public Field getCurrentField() {
         return enteredFields.get(index - 1);
     }
 
     /**
-     * erhöht den Index, an dem der Move schrittweise durchgegangen wird.
-     * Wenn es ein nächstes Feld gibt, wird der index erhöht und true zurückgegeben, ansonsten false.
+     * erhöht den {@link #index}, an dem der Move schrittweise durchgegangen wird.
+     * Wenn es ein nächstes Feld gibt, wird der index erhöht und {@code true} zurückgegeben, ansonsten {@code false}.
      *
-     * @return Flag, ob es ein nächstes Feld gibt
+     * @return Flag, ob es ein nächstes Feld gibt.
      */
     public boolean nextField() {
         if (index < enteredFields.size() - 1) {
@@ -157,18 +162,18 @@ public class Move {
     }
 
     /**
-     * Fügt ein Feld zu den besuchten Felder hinzu
+     * Fügt ein Feld zu den besuchten Felder ({@link #enteredFields}) hinzu.
      *
-     * @param f Feld, das der Spieler ausgewählt hat und das der Stein besucht
+     * @param f Feld, das der Spieler ausgewählt hat und das der Stein besucht.
      */
     public void addEnterField(Field f) {
         enteredFields.add(f);
     }
 
     /**
-     * Fügt ein Feld zu den übersprungenen Feldern hinzu.
-     * WICHTIG: Auf diesem Feld muss ein gegnerischer Stein liegen.
-     * Wird dazu genutzt, um den gegnerischen Stein dann zu entfernen, wenn der ausgewählte Stein über diesem Feld liegt
+     * Fügt ein Feld zu den übersprungenen Feldern ({@link #skipedFields}) hinzu.
+     * <br><b>WICHTIG:</b> Auf diesem Feld muss ein gegnerischer Stein liegen.
+     * Wird dazu genutzt, um den gegnerischen Stein dann zu entfernen, wenn der ausgewählte Stein über diesem Feld liegt.
      *
      * @param f übersprungenes Feld mit einem gegnerischen Stein
      */
@@ -177,9 +182,9 @@ public class Move {
     }
 
     /**
-     * Fügt eine ganze Liste von besuchten Feldern hinzu
+     * Fügt eine ganze Liste von besuchten Feldern hinzu.
      *
-     * @param f Liste mit Feldern, die der Stein der Reihe nach besuchen soll
+     * @param f Liste mit Feldern, die der Stein der Reihe nach besuchen soll.
      */
     public void addEnterField(List<Field> f) {
         enteredFields.addAll(f);
@@ -187,10 +192,10 @@ public class Move {
 
     /**
      * Fügt eine Reihe von übersprungenen Felder hinzu.
-     * WICHTIG: Auf diesem Feld muss ein gegnerischer Stein liegen.
-     * Wird dazu genutzt, um gegnerischen Steine dann zu entfernen, wenn der ausgewählte Stein über dem Feld liegt
+     * <br><b>WICHTIG:</b> Auf diesem Feld muss ein gegnerischer Stein liegen.
+     * Wird dazu genutzt, um gegnerischen Steine dann zu entfernen, wenn der ausgewählte Stein über dem Feld liegt.
      *
-     * @param f Liste mit Feldern, die der Stein überspringt und auf denen gegnerische Steine liegen
+     * @param f Liste mit Feldern, die der Stein überspringt und auf denen gegnerische Steine liegen.
      */
     public void addSkipField(Field f) {
         skipedFields.add(f);
@@ -206,18 +211,20 @@ public class Move {
     }
 
     /**
-     * Gibt eine Liste mit allen übersprungenen Feldern zurück
+     * Gibt eine Liste mit allen übersprungenen Feldern zurück.
      *
-     * @return Liste mit Feldern, die der Stein überspringt
+     * @return Liste mit Feldern, die der Stein überspringt.
      */
     public List<Field> getSkipedFields() {
         return skipedFields;
     }
 
     /**
-     * Gibt das erste übersprungene Feld zurück. Auf diesem Feld liegt der nächste gegnerische Stein, der übersprungen wird.
+     * Gibt das erste übersprungene Feld zurück.
+     * Auf diesem Feld liegt der nächste gegnerische Stein, der übersprungen wird.
      *
      * @return nächstes Feld, welches übersprungen wird
+     * @see #nextSkipedField()
      */
     public Field getFirstSkipedField() {
         if (!skipedFields.isEmpty()) {
@@ -230,6 +237,8 @@ public class Move {
      * entfernt das erste übersprungene Feld.
      * Wird ausgeführt, sobald dieses Feld tatsächlich übersprungen wurde.
      * Dadurch wird das nächste Feld zu dem 'FirstSkippedField'
+     *
+     * @see #getFirstSkipedField()
      */
     public void nextSkipedField() {
         if (!skipedFields.isEmpty()) {
@@ -240,7 +249,7 @@ public class Move {
     /**
      * updatet den Stein auf die richtigen Koordinaten.
      * Sollte ganz am Schluss, sobald der Move abgeschlossen ist, ausgeführt werden.
-     * Setzt die Koordinaten des Steins auf die, des Endfeldes
+     * Setzt die Koordinaten des Steins auf die, des Endfeldes.
      */
     public void update() {
         stone.setIndexX(getEndField().getIndexX());
