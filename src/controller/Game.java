@@ -39,7 +39,7 @@ public class Game {
     }
 
     /**
-     *
+     * ist f ein leeres Feld
      * @param f Feld
      * @return ist auf f ein Stein
      */
@@ -83,7 +83,7 @@ public class Game {
     }
 
     /**
-     * Ausgehend von f wird
+     * Ausgehend von f werden die möglichen Zielfelder ermittelt
      * @see #testField(int, int, int, int, int, int, boolean)
      * @param f Startfeld
      * @param c Spielerfarbe
@@ -261,9 +261,9 @@ public class Game {
     }
 
     /**
-     * Überprüft für alle Steine eines Spielers, ob weitere Züge möglich sind
-     * @param p Spiler dessen Steine geprüft werden
-     * @return boolean, ob ein Zug möglich ist
+     * ist ein Spielzug des Spielers p möglich
+     * @param p Spieler
+     * @return gibt es einen möglichen Spielzug
      */
     private boolean isMovePossible(Player p) {
         for (Stone s : p.getStones()) {
@@ -279,7 +279,7 @@ public class Game {
     }
 
     /**
-     *  Lässt im Falle eines Singleplayer-Spiels die KI ihren Zug machen, falls einer möglich ist
+     * Im einzelspielermodus wird die KI ausgeführt, im Mehrspielermodus wird nichts gemacht
      */
     private void playKI() {
         if(playerController.isSinglePlayerGame() && !playerController.isCurrentPlayer1()) {
