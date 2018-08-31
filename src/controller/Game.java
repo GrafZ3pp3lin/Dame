@@ -26,28 +26,34 @@ public class Game {
     }
 
     /**
-     *  Leert die Liste möglicher Zielfelder und setzt den Zug auf veraltet
+     * spiel wird zurückgesetzt
      */
     public void reset() {
         possibleFields.clear();
         move.setOutdated(true);
     }
 
+    /**
+     *
+     * @param f Feld
+     * @return ist auf f ein Stein
+     */
     private boolean emptyField(Field f) {
-        return !playerController.getCurrentPlayer().hasStoneAt(f.getIndexX(), f.getIndexY()) &&
-                !playerController.getOtherPlayer().hasStoneAt(f.getIndexX(), f.getIndexY());
+        return playerController.getCurrentPlayer().hasStoneAt(f.getIndexX(), f.getIndexY()) ||
+                playerController.getOtherPlayer().hasStoneAt(f.getIndexX(), f.getIndexY());
     }
 
     /**
-     * Überprüft für ein angegebenes Feld, ob darauf gesprungen werden kann
-     * @param x x-Wert des Feldes auf dem der Stein liegt
-     * @param y y-Wert des Feldes auf dem der Stein liegt
-     * @param indexX Differenz zwischen x und dem x-Wert des zu überprüfenden Feldes
-     * @param indexY Differenz zwischen y und dem y-Wert des zu überprüfenden Feldes
-     * @param indexX2 Differenz zwischen x und dem x-Wert des Feldes hinter dem zu überprüfenden Feld
-     * @param indexY2 Differenz zwischen y und dem y-Wert des Feldes hinter dem zu überprüfenden Feld
-     * @param further gesetzt wenn nicht der erste Sprung
-     * @return boolean Sprung möglich
+     * ermittelt die Felder, die vom Feld(x,y) erreichbar sind
+     * @see #testFieldScope(Field, Color, boolean, boolean)
+     * @param x aktuelle X-Koordinate
+     * @param y aktuelle Y-Koordinate
+     * @param indexX wie weit von X entfernnt
+     * @param indexY wie weit von Y entfernnt
+     * @param indexX2 x + indexX2 ist Zielkoordinate, wenn x + indexX ein gegnerischer Stein ist
+     * @param indexY2 y + indexY2 ist Zielkoordinate, wenn y + indexY ein gegnerischer Stein ist
+     * @param further
+     * @return suche nach weiteren Feldern in dieser Richtung abbrechen
      */
     private boolean testField(int x, int y, int indexX, int indexY, int indexX2, int indexY2, boolean further) {
         Field field = Main.playingField.getField(x + indexX, y + indexY);
@@ -72,11 +78,12 @@ public class Game {
     }
 
     /**
-     * Überprüft abhängig vom ausgewählten Stein, auf welche Felder gesprungen werden kann
-     * @param f ausgewähltes Feld
-     * @param c Farbe des aktuellen Steins
-     * @param further gesetzt wenn nicht der erste Sprung
-     * @param superDame aktueller Stein ist Superdame
+     * Ausgehend von f wird
+     * @see #testField(int, int, int, int, int, int, boolean)
+     * @param f Startfeld
+     * @param c Spielerfarbe
+     * @param further Wurde bereits ein gegnerischer Stein in diesem Zug übersprungen (es kann dann nur weitergemacht werden, wenn ein weiterer Stein geschlagen werden kann)
+     * @param superDame ist der Stein eine Superdame
      */
     private void testFieldScope(Field f, Color c, boolean further, boolean superDame) {
         if(superDame){
@@ -199,8 +206,8 @@ public class Game {
     }
 
     /**
-     * Bewegt den Stein anhand des ausgewählten Zuges und überprüft, ob der Stein anschließend eine Superdame wird
-     * @param move Ausgewählter Zug, der mit dem Stein durchgeführt wird
+     * Ein Spielzug wird ausgeführt
+     * @param move Spielzug
      */
     private void makeMove(Move move) {
         gamePaneController.colorField();
@@ -222,6 +229,10 @@ public class Game {
         }
     }
 
+    /**
+     * Ist der Stein s an der gegnerischen Grundlinie angekommen, wird er zur Superdame
+     * @param s
+     */
     private void testForSuperDame(Stone s) {
         if (s.getColor() == Color.BLACK) {
             if (s.getIndexY() == Main.playingField.getSize() - 1) {
@@ -233,6 +244,9 @@ public class Game {
         }
     }
 
+    /**
+     * hat ein Spieler bereits gewonnen
+     */
     private boolean testForWinner() {
         if (!isMovePossible(playerController.getOtherPlayer())) {
             control.winDialog(playerController.getCurrentPlayer().getName());

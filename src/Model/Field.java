@@ -4,7 +4,7 @@ import javafx.scene.shape.Rectangle;
 
 /**
  * speichert Daten eines einzelnen Feldes.
- *
+ * Feld hat Farbe und Koordinaten
  * @author Mareike Giek
  */
 public class Field {

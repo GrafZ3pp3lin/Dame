@@ -1,7 +1,8 @@
 package Model;
 
 /**
- * Created by joels on 24.08.2018.
+ *  Nach diesen Richtungen sucht die KI nach möglichen Zügen
+ *  @author Joel Schmid
  */
 public enum Direction {
     RIGHTDOWN, RIGHTUP, LEFTDOWN, LEFTUP

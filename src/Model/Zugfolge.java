@@ -15,10 +15,16 @@ public class Zugfolge extends Move{
 
     private int getZuglaenge(){return zuglaenge;}
 
+    /**
+     * gibt grundlegende Informationen zu einer Zugfolge
+     */
     public String toString(){
         return "laenge: " + zuglaenge + "; vonPos: " + super.getFirstField().getIndexX() + ", " + super.getFirstField().getIndexY() + " nachPos: " + super.getEndField().getIndexX() + ", " + super.getEndField().getIndexY();
     }
 
+    /**
+     * gibt detaillierte Informationen über eine Zugfolge aus
+     */
     public void print(){
         System.out.println("Entered Fields:");
         for(Field f : getEnteredFields()){
@@ -32,8 +38,11 @@ public class Zugfolge extends Move{
     }
 
 
-
-
+    /**
+     * Aus einer Liste mit möglichen Zügen wird ein zufälliger Zug mit maximaler länge zurückgegeben
+     * @param zuege Liste mit möglichen Zügen
+     * @return
+     */
     public static Zugfolge getBestZug(List<Zugfolge> zuege){
         if(zuege != null) {
             if (zuege.size() > 0) {
