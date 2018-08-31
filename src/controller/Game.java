@@ -9,6 +9,7 @@ import java.util.List;
  *  Steuerung von Aktionen die während des Spielens vorkommen
  *
  * @author Alexander Hengsteler
+ * @author Joel Schmid
  */
 public class Game {
 
