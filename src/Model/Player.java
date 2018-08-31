@@ -32,6 +32,11 @@ public class Player {
         createStones(size);
     }
 
+    /**
+     * erstellt ein Spielfeld aus weißen und schwarzen Steinen der angegebenen Größe
+     * Anzahl der Spielsteine berechnen, da von Feldgröße abhängig
+     * @param size Größe des Spielfelds
+     */
     private void createStones(int size) {
         int x, y;
         if (cColor == Color.BLACK){
@@ -63,6 +68,12 @@ public class Player {
         }
     }
 
+    /**
+     * setzt Stein auf andere Stelle des Spielfeldes
+     * @param indexStone Nummer des Steins
+     * @param x x-Koordinate Stein
+     * @param y y-Koordinate Stein
+     */
     public void replaceStone (int indexStone, int x, int y){
         cStone[indexStone].setIndexX(x);
         cStone[indexStone].setIndexY(y);
@@ -72,6 +83,10 @@ public class Player {
         return cStone;
     }
 
+    /**
+     *
+     * @return Anzahl noch aktiver nicht geschlagener Steine
+     */
     public int getActiveStones() {
         int value = 0;
         for (Stone s : getStones()) {
@@ -97,7 +112,11 @@ public class Player {
         return Color.BLACK;
     }
 
-    //returns the Stone Object to the clicked Node(Circle)
+    /**
+     *
+     * @param n angeklickter Circle
+     * @return the Stone Object to the clicked Node(Circle)
+     */
     public Stone getStoneOfClickedCircle(Node n) {
         for (Stone s : cStone) {
             if (s.getcCirc().equals(n)) {
@@ -107,6 +126,9 @@ public class Player {
         return null;
     }
 
+    /**
+     * @return Abfrage auf Stein auf diesem Feld
+     */
     public boolean hasStoneAt(int x, int y) {
         for (Stone s : cStone) {
             if (s.getIndexX() == x && s.getIndexY() == y && !s.isEliminated()) {

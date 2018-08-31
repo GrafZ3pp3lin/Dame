@@ -5,6 +5,10 @@ import javafx.scene.shape.Circle;
 
 /**
  * speichert Daten für einen Stein
+ * Stein besteht aus Farbe, Koordinaten,
+ * superDame (ja/nein), Aktivität (eleminiert ja/nein),
+ * und Circle
+ * @author Mareike Giek
  */
 public class Stone {
 
@@ -26,6 +30,10 @@ public class Stone {
     public Node getcCirc(){
         return cCirc;
     }
+
+    /**
+     * @param n Attribut Circle wird zu übergebener NODE
+     */
     public void changeNode(Node n) {
         cCirc = n;
     }

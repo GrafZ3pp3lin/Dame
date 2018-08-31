@@ -2,6 +2,9 @@ package Model;
 
 /**
  * speichert Daten für das ganze Spielfeld
+ * Spielfeld hat eine Größe
+ *
+ * @author Mareike Giek
  */
 public class PlayingField {
     private int FieldSize;
@@ -54,7 +57,6 @@ public class PlayingField {
                 }
             }
         }
-//        System.err.println("Field (" + x + "/" + y + ") doesn't exist");
         return null;
     }
 
