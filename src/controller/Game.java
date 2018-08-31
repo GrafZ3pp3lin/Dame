@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  Steuerung von Aktionen die während des Spielens vorkommen.
+ * Steuerung von Aktionen die während des Spielens vorkommen.
  *
  * @author Alexander Hengsteler
  * @author Joel Schmid
@@ -131,6 +131,8 @@ public class Game {
 
     /**
      * Führt eine passende Option für den angeklickten Stein aus.
+     * Wenn der Stein bereits der Stein zu dem aktuellen Move ist, wird der Stein wieder abgewählt, also der Move auf veraltet gesetzt ({@link Move#setOutdated(boolean)}).
+     * <br>Ein neuer Move mit dem gewählten Stein wird aufgebaut.
      *
      * @param s angeklickter Stein
      */
@@ -158,6 +160,9 @@ public class Game {
 
     /**
      * Führt eine passende Aktion für das angeklickte Feld aus.
+     * Wenn durch das angeglickte Feld, ein anderes Feld übersprungen wird, wird ermittelt, auf welchen übersprungenen Feld
+     * der gegnerische Stein liegt. Dieses Feld wird als skippedField zum Move hinzugefügt.
+     * Sobald von dem angeglickten Feld kein weiterer Zug mehr möglich ist wird der aufgebaute {@link Move} ausgeführt. ({@link #makeMove(Move)})
      *
      * @param f angeklicktes Feld
      */
