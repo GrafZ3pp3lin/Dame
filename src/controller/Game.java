@@ -51,6 +51,7 @@ public class Game {
 
     /**
      * ermittelt die Felder, die vom Feld(x,y) erreichbar sind
+     * @author Joel Schmid
      * @see #testFieldScope(Field, Color, boolean, boolean)
      * @param x aktuelle X-Koordinate
      * @param y aktuelle Y-Koordinate
@@ -85,6 +86,7 @@ public class Game {
 
     /**
      * Ausgehend von f werden die möglichen Zielfelder ermittelt
+     * @author Joel Schmid
      * @see #testField(int, int, int, int, int, int, boolean)
      * @param f Startfeld
      * @param c Spielerfarbe
