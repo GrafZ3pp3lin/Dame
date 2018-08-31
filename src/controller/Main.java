@@ -89,7 +89,8 @@ public class Main extends Application {
         playerController = new PlayerController();
         game = new Game(this, gamePaneController, playerController);
 
-        primaryStage.sizeToScene();
+//        primaryStage.sizeToScene();
+        primaryStage.setMaximized(true);
         primaryStage.setMinHeight(menuLayout.getPrefHeight());
         primaryStage.setMinWidth(menuLayout.getPrefWidth());
         primaryStage.show();
