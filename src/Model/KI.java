@@ -6,18 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * beinhaltet die KI für den Einzelspielermodus, erbt von Player
+ * beinhaltet die KI für den Einzelspielermodus, erbt von Player.
+ *
  * @author Joel Schmid
  */
 public class KI extends Player {
 
     /**
-     * menschlicher Gegner
+     * menschlicher Gegner.
      */
     private Player enemy;
 
     /**
-     * Liste aller möglichen Züge, die von der KI ausgeführt werden könnten
+     * Liste aller möglichen Züge, die von der KI ausgeführt werden könnten.
      */
     private List<Zugfolge> alleZuege;
 
@@ -27,8 +28,9 @@ public class KI extends Player {
     }
 
     /**
-     * Wird von der KI ein Zug erwartet, wird diese Methode aufgerufen, sie ermittelt einen möglichst langen Zug
-     * @throws NoPossibleMoveException
+     * Wird von der KI ein Zug erwartet, wird diese Methode aufgerufen, sie ermittelt einen möglichst langen Zug.
+     *
+     * @throws NoPossibleMoveException Die KI kann keinen Zug mehr machen.
      * @return Zugfolge
      */
     public Move getBestMove() throws NoPossibleMoveException{
@@ -50,7 +52,8 @@ public class KI extends Player {
     /**
      * Hier wird ausgehend von X und Y Koordinaten geschaut, welcher Zug möglich ist.
      * normale Steine können nur nach unten schlagen/ziehen (RIGHTDOWN, LEFTDOWN), die Superdame kann hingegen in alle vier diagonalen Richtungen
-     * (RIGHTDOWN, LEFTDOWN, RIGHTUP, LEFTUP) und auch mehrere Felder auf einmal
+     * (RIGHTDOWN, LEFTDOWN, RIGHTUP, LEFTUP) und auch mehrere Felder auf einmal.
+     *
      * @see #ki(Stone, int, int, int, boolean, List, List)
      * @param s Stein, für den der Zug ermittelt wird
      * @param d Richtung, in die gefahren werden soll
@@ -161,8 +164,9 @@ public class KI extends Player {
     }
 
     /**
-     * Die KI Methode ermittelt mit hilfe von diagonalcheck, ob ein gegnerischer Stein geschlagen werden kann und ruft sich dann mit der
-     * neuen Position (X,Y) wieder Rekursiv auf. Dann wird ausgehen von der neuen Position wieder Diagonalchecks durchgeführt
+     * Die KI Methode ermittelt mit Hilfe von {@link #diagonalcheck(Stone, Direction, int, int, boolean, List, List)}, ob ein gegnerischer Stein geschlagen werden kann und ruft sich dann mit der
+     * neuen Position (X,Y) wieder rekursiv auf. Dann wird ausgehen von der neuen Position wieder Diagonalchecks durchgeführt
+     *
      * @see #diagonalcheck(Stone, Direction, int, int, boolean, List, List)
      * @param s aktueller Stein
      * @param x aktuelle X-Koordinate

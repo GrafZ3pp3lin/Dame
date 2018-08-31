@@ -17,6 +17,11 @@ public class PlayingField {
         createField();
     }
 
+    /**
+     * generiert ein Spielfeld, mit {@link #FieldSize} Feldern in einer Reihe.
+     * Die einzelnen Felder bekommen abwechselnd die Farbe schwarz oder weiß zugeteilt.
+     * Grafisch werden die Farben allerdings anders dargestellt, da man sonst die Steine nicht von den Feldern unterscheiden könnte.
+     */
     private void createField(){
         cField = new Field[FieldSize*FieldSize];
         boolean black = false;
@@ -35,6 +40,11 @@ public class PlayingField {
         }
     }
 
+    /**
+     * generiert ein neues Spielfeld mit einer anderen Größe.
+     *
+     * @param fieldSize Größe des Spielfelds.
+     */
     public void rebuild(int fieldSize) {
         this.FieldSize = fieldSize;
         createField();
@@ -44,6 +54,13 @@ public class PlayingField {
         return cField;
     }
 
+    /**
+     * gibt ein Feld mit bestimmten Koordinaten zurück.
+     *
+     * @param x x-Koordinate.
+     * @param y y-Koordinate.
+     * @return Feld mit den passenden Koordinaten.
+     */
     public Field getField(int x, int y) {
         if (x * FieldSize + y >= 0 && x * FieldSize + y < FieldSize * FieldSize) {
             if (cField[x * FieldSize + y].getIndexX() == x && cField[x * FieldSize + y].getIndexY() == y) {

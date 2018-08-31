@@ -4,10 +4,11 @@ import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 
 /**
- * speichert Daten für einen Stein
+ * speichert Daten für einen Stein.
  * Stein besteht aus Farbe, Koordinaten,
  * superDame (ja/nein), Aktivität (eleminiert ja/nein),
- * und Circle
+ * und Circle.
+ *
  * @author Mareike Giek
  */
 public class Stone {
@@ -32,7 +33,10 @@ public class Stone {
     }
 
     /**
-     * @param n Attribut Circle wird zu übergebener NODE
+     * Attribut Circle wird zu übergebener NODE.
+     * wird benötigt, um die Superdame grafisch darstellen zu können, da sich bei einer Superdame der Spielstein unterscheidet.
+     *
+     * @param n Neuer grafischer Spielstein
      */
     public void changeNode(Node n) {
         cCirc = n;

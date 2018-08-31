@@ -55,6 +55,8 @@ public class MenuPaneController {
     /**
      * Setzt das {@link MenuItem} "Return" auf enabled/disabled.
      * Auf der Startoberfläche soll das {@link MenuItem} disabled sein.
+     *
+     * @param disable Flag, ob das {@link MenuItem} disabled sein soll oder nicht.
      */
     public void disableReturnItem(boolean disable) {
         menuItem_return.setDisable(disable);

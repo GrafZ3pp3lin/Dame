@@ -5,7 +5,7 @@ import java.util.Vector;
 
 /**
  * speichert einen Zug von einem Stein ab. Darunter, mit welchen Stein gezogen wird, welche Felder besucht (angewählt)
- * werden und welche Felder übersprungen werden, auf denen ein gegnerischer Stein liegt
+ * werden und welche Felder übersprungen werden, auf denen ein gegnerischer Stein liegt.
  *
  * @author Mareike
  */

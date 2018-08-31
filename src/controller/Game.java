@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  Steuerung von Aktionen die während des Spielens vorkommen
+ *  Steuerung von Aktionen die während des Spielens vorkommen.
  *
  * @author Alexander Hengsteler
  * @author Joel Schmid
@@ -32,7 +32,7 @@ public class Game {
     }
 
     /**
-     * spiel wird zurückgesetzt
+     * spiel wird zurückgesetzt.
      */
     public void reset() {
         possibleFields.clear();
@@ -40,7 +40,8 @@ public class Game {
     }
 
     /**
-     * ist f ein leeres Feld
+     * ermittelt, ob f ein leeres Feld ist.
+     *
      * @param f Feld
      * @return ist auf f ein Stein
      */
@@ -50,7 +51,8 @@ public class Game {
     }
 
     /**
-     * ermittelt die Felder, die vom Feld(x,y) erreichbar sind
+     * ermittelt die Felder, die vom Feld(x,y) erreichbar sind.
+     *
      * @author Joel Schmid
      * @see #testFieldScope(Field, Color, boolean, boolean)
      * @param x aktuelle X-Koordinate
@@ -59,7 +61,7 @@ public class Game {
      * @param indexY wie weit von Y entfernnt
      * @param indexX2 x + indexX2 ist Zielkoordinate, wenn x + indexX ein gegnerischer Stein ist
      * @param indexY2 y + indexY2 ist Zielkoordinate, wenn y + indexY ein gegnerischer Stein ist
-     * @param further
+     * @param further ist dies bereits ein weiterer zug, oder noch der erste. Beim ersten Zug wäre es möglich, nur ein Feld weiter zu gehen. Bei weiteren Zügen muss geschlagen werden.
      * @return suche nach weiteren Feldern in dieser Richtung abbrechen
      */
     private boolean testField(int x, int y, int indexX, int indexY, int indexX2, int indexY2, boolean further) {
@@ -85,7 +87,8 @@ public class Game {
     }
 
     /**
-     * Ausgehend von f werden die möglichen Zielfelder ermittelt
+     * Ausgehend von f werden die möglichen Zielfelder ermittelt.
+     *
      * @author Joel Schmid
      * @see #testField(int, int, int, int, int, int, boolean)
      * @param f Startfeld
@@ -127,7 +130,8 @@ public class Game {
     }
 
     /**
-     * Führt eine passende Option für den angeklickten Stein aus
+     * Führt eine passende Option für den angeklickten Stein aus.
+     *
      * @param s angeklickter Stein
      */
     public void selectStone(Stone s) {
@@ -153,7 +157,8 @@ public class Game {
     }
 
     /**
-     * Führt eine passende Aktion für das angeklickte Feld aus
+     * Führt eine passende Aktion für das angeklickte Feld aus.
+     *
      * @param f angeklicktes Feld
      */
     public void selectField(Field f) {
@@ -214,7 +219,8 @@ public class Game {
     }
 
     /**
-     * Ein Spielzug wird ausgeführt
+     * Ein Spielzug wird ausgeführt.
+     *
      * @param move Spielzug
      */
     private void makeMove(Move move) {
@@ -226,7 +232,7 @@ public class Game {
     }
 
     /**
-     * Überprüft nach Beenden des Zuges, ob ein Spieler gewonnen hat und wechselt den aktuellen Spieler, wenn dies nicht der Fall ist
+     * Überprüft nach Beenden des Zuges, ob ein Spieler gewonnen hat und wechselt den aktuellen Spieler, wenn dies nicht der Fall ist.
      */
     public void finishedMove() {
         if (!testForWinner()) {
@@ -238,8 +244,9 @@ public class Game {
     }
 
     /**
-     * Ist der Stein s an der gegnerischen Grundlinie angekommen, wird er zur Superdame
-     * @param s
+     * Ist der Stein s an der gegnerischen Grundlinie angekommen, wird er zur Superdame.
+     *
+     * @param s Stein der getestet wird.
      */
     private void testForSuperDame(Stone s) {
         if (s.getColor() == Color.BLACK) {
@@ -254,6 +261,8 @@ public class Game {
 
     /**
      * hat ein Spieler bereits gewonnen
+     *
+     * @return {@code true} falls ein Spieler gewonnen hat. Dann kann das Spiel beendet werden.
      */
     private boolean testForWinner() {
         if (!isMovePossible(playerController.getOtherPlayer())) {
@@ -265,6 +274,7 @@ public class Game {
 
     /**
      * ist ein Spielzug des Spielers p möglich
+     *
      * @param p Spieler
      * @return gibt es einen möglichen Spielzug
      */

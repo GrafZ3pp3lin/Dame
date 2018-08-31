@@ -49,8 +49,9 @@ public class Main extends Application {
     private Image superDame;
 
     /**
-     * Main-Methode startet die JavaFX Oberfläche
-     * @param args
+     * Main-Methode startet die JavaFX Oberfläche.
+     *
+     * @param args Argumente mit denen das Programm gestartet wird.
      */
     public static void main(String[] args) {
         launch(args);
