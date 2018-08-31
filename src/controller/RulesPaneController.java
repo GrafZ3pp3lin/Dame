@@ -11,18 +11,29 @@ import java.nio.charset.StandardCharsets;
 
 public class RulesPaneController {
 
+    /**
+     * Das "Regeln" Fenster.
+     */
     private Stage rulesStage;
 
+    /**
+     * TextArea, in der die Regeln dargestellt werden können.
+     */
     @FXML
     private TextArea rules;
 
+    /**
+     * Methode, um Objekte zu übergeben.
+     *
+     * @param rules das "Regeln" Fenster
+     */
     public void setObjects(Stage rules) {
         this.rulesStage = rules;
     }
 
     /**
-     * Wird automatisch bei der Initialisierung aufgerufen. Hier werden die Regeln aus der Text datei aus den resourcen
-     * ausgelesen und in die TextArea übertragen.
+     * Hier werden die Regeln aus der Text Datei aus den resourcen ausgelesen und in die TextArea übertragen.
+     * Wird automatisch bei der Initialisierung aufgerufen.
      */
     @FXML
     private void initialize() {
@@ -41,7 +52,7 @@ public class RulesPaneController {
 
     /**
      * schließt die Regel Oberfläche wieder.
-     * Wird audgeführt, sobald der "OK" Knopf gedrückt wird
+     * Wird audgeführt, sobald der "OK" Knopf gedrückt wird.
      */
     @FXML
     private void close() {

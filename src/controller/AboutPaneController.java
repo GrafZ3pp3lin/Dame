@@ -11,18 +11,30 @@ import javafx.stage.Stage;
  */
 public class AboutPaneController {
 
+    /**
+     * Das "About" Fesnter.
+     */
     private Stage aboutStage;
 
+    /**
+     * Label auf der Oberfläche. Hier werden Informationen über die Software eingefügt.
+     */
     @FXML
     private Label label_des;
 
+    /**
+     * Methode, um Objekte zu übergeben.
+     *
+     * @param stage Das About Fenster
+     */
     public void setObjects(Stage stage) {
         aboutStage = stage;
     }
 
     /**
-     * wird automatisch bei der Initialisierung aufgerufen. Hier wird der Text für das Label gesetzt.
-     * Wichtig ist, dass alle Entwickler gennant werden.
+     * setzt den Text für das Label.
+     * Wird automatisch bei der Initialisierung aufgerufen.<br>
+     * Es werden alle Entwickler gennant und der Rahmen der Entstehung.
      */
     @FXML
     private void initialize() {
@@ -36,7 +48,7 @@ public class AboutPaneController {
 
     /**
      * schließt die About Oberfläche wieder.
-     * wird ausgeführt, sobald auf das Fenster geglickt wird.
+     * Wird ausgeführt, sobald auf das Fenster geglickt wird.
      */
     @FXML
     private void close() {

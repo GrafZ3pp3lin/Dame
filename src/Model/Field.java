@@ -3,7 +3,8 @@ package Model;
 import javafx.scene.shape.Rectangle;
 
 /**
- * speichert Daten eines einzelnen Feldes
+ * speichert Daten eines einzelnen Feldes.
+ *
  * @author Mareike Giek
  */
 public class Field {

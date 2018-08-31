@@ -18,9 +18,10 @@ import java.util.Optional;
 
 /**
  * Steuerung.
- * lädt alle Oberflächen und verwaltet diese
+ * lädt alle Oberflächen und verwaltet diese.
  *
  * @author Johannes Gaiser
+ * @author Alexander Hengsteler
  */
 public class Main extends Application {
 
@@ -33,7 +34,7 @@ public class Main extends Application {
 
     //Model
     /**
-     * Datensatz für das Spielfeld
+     * Datensatz für das Spielfeld.
      */
     public static PlayingField playingField;
 
@@ -47,12 +48,16 @@ public class Main extends Application {
     private Image logo;
     private Image superDame;
 
+    /**
+     * Main-Methode startet die JavaFX Oberfläche
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
     /**
-     * wird vor start aufgerufen (lädt alle benötigten Bilder)
+     * wird vor start aufgerufen (lädt alle benötigten Bilder).
      */
     @Override
     public void init() {
@@ -61,8 +66,8 @@ public class Main extends Application {
     }
 
     /**
-     * lädt alle Oberflächen und richtet das fenster ein
-     * initialisiert alle Spielobjekte
+     * Lädt alle Oberflächen und richtet das fenster ein.
+     * Initialisiert alle Spielobjekte.
      *
      * @param primaryStage Oberflächen Fenster
      */
@@ -92,11 +97,11 @@ public class Main extends Application {
     }
 
     /**
-     * lädt das Menü (MenuPane.fxml)
+     * Lädt das Menü (MenuPane.fxml).
      * das Menü ist auf einem BorderPane platziert. Im oberen Teil, ist eine Menü-Leiste, bestehend aus Optionen
      * und Hilfe.
-     * Der mittlere Teil ist leer, sodass hier andere Oberflächen eingefügt werden können. Das Menü bleibt also immer
-     * sichtbar.
+     * Der mittlere Teil ist leer, sodass hier andere Oberflächen eingefügt werden können.
+     * <br>Das Menü bleibt immer sichtbar.
      */
     private void initRootLayout() {
         try {
@@ -113,7 +118,8 @@ public class Main extends Application {
     }
 
     /**
-     * lädt die Start Oberfläche. Auf der Startoberfläche können die Spieleinstellungen verändert werden und
+     * Lädt die Start Oberfläche.
+     * Auf der Startoberfläche können die Spieleinstellungen verändert werden und
      * zwischen Single- und Multiplayer-Spiel gewählt werden.
      */
     private void loadStartLayout() {
@@ -130,7 +136,7 @@ public class Main extends Application {
     }
 
     /**
-     * Das StartLayout wird in das "Center" der Menü Oberfläche gesetzt
+     * Das StartLayout wird in das "Center" ({@link BorderPane#center}) der Menü Oberfläche gesetzt.
      */
     private void setStartLayout() {
         menuLayout.setCenter(startLayout);
@@ -139,7 +145,7 @@ public class Main extends Application {
     }
 
     /**
-     * kehrt auf das Start Layout zurück und bricht das aktuelle Spiel ab
+     * Kehrt auf das Start Layout zurück und bricht das aktuelle Spiel ab.
      */
     public void returnToStart() {
         setStartLayout();
@@ -148,7 +154,8 @@ public class Main extends Application {
     }
 
     /**
-     * lädt die Spiel Oberfläche. Auf der Spieloberfläche wird später das Spielfeld angezeigt
+     * Lädt die Spiel Oberfläche.
+     * Auf der Spieloberfläche wird später das Spielfeld angezeigt
      */
     private void loadGameLayout() {
         try {
@@ -164,7 +171,8 @@ public class Main extends Application {
     }
 
     /**
-     * setzt die Spiel Oberfläche. Dazu wird die das SpielLayout in das "Center" des Menü gesetzt
+     * Setzt die Spiel Oberfläche.
+     * Dazu wird die das SpielLayout in das "Center" ({@link BorderPane#center}) des Menü gesetzt.
      */
     private void setGameLayout() {
         menuLayout.setCenter(gameLayout);
@@ -173,10 +181,9 @@ public class Main extends Application {
     }
 
     /**
-     * lädt die About Oberfläche. Die About Oberfläche wird in einem seperaten Fenster (Stage) angezeigt.
-     * Das seperate Fenster ist ein Utility-Fenster, nicht Größen-veränderbar und immer im Vordergrund.
-     *
-     * @see StageStyle
+     * Lädt die About Oberfläche.
+     * Die About Oberfläche wird in einem seperaten Fenster (Stage) angezeigt.
+     * Das seperate Fenster ist ein Utility-Fenster ({@link StageStyle}), nicht Größen-veränderbar und immer im Vordergrund.
      */
     private void loadAboutPane() {
         try {
@@ -197,10 +204,9 @@ public class Main extends Application {
     }
 
     /**
-     * lädt die Rules Oberfläche. Die Regeln werden in einem seperaten Fenster angezeigt, sodass sowohl Regeln,
-     * als auch Spiel sichtbar sein können. Das Regeln Fenster ist ein Utility-Fenster.
-     *
-     * @see StageStyle
+     * Lädt die Regeln Oberfläche.
+     * Die Regeln werden in einem seperaten Fenster angezeigt, sodass sowohl Regeln,
+     * als auch Spiel sichtbar sein können. Das Regeln Fenster ist ein Utility-Fenster ({@link StageStyle}).
      */
     private void loadRulesPane() {
         try {
@@ -220,22 +226,23 @@ public class Main extends Application {
     }
 
     /**
-     * öffnet das About Fenster
+     * öffnet das About Fenster.
      */
     public void showAboutPane() {
         aboutStage.show();
     }
 
     /**
-     * öffnet das Regeln Fenster
+     * öffnet das Regeln Fenster.
      */
     public void showRulesPane() {
         rulesStage.show();
     }
 
     /**
-     * startet ein Spiel. Dazu wird das Spielfeld neu generiert und an den GamePaneController übergeben, der
-     * dieses Spielfeld grafisch darstellt. Der PlayerController wird neu initialisiert und generiert die neuen Spieler
+     * startet ein Spiel.
+     * Dazu wird das Spielfeld neu generiert und an den GamePaneController übergeben, der
+     * dieses Spielfeld grafisch darstellt. Der PlayerController wird neu initialisiert und generiert die neuen Spieler.
      * Die neuen Spieler werden wieder an den gamePaneController übergeben, sodasss die Steine der Spieler garfisch dargestellt
      * werden können.
      *
@@ -253,8 +260,9 @@ public class Main extends Application {
     }
 
     /**
-     * Zeigt ein Fesnter an sobald ein Spieler gewonnen hat. Der Spieler hat die Möglichkeit das Spiel neuzustarten,
-     * ins Hauptmenü zu wechseln, oder das Programm zu beenden
+     * Zeigt ein Fesnter an sobald ein Spieler gewonnen hat.
+     * Der Spieler hat die Möglichkeit das Spiel neuzustarten,
+     * ins Hauptmenü zu wechseln, oder das Programm zu beenden.
      *
      * @param name Name des Spielers, der gewonnen hat.
      */
@@ -284,7 +292,8 @@ public class Main extends Application {
     }
 
     /**
-     * gibt ein Objekt des PlayerControllers zurück
+     * gibt ein Objekt des PlayerControllers zurück.
+     *
      * @return PlayerController
      */
     public PlayerController getPlayerController() {
@@ -292,7 +301,8 @@ public class Main extends Application {
     }
 
     /**
-     * gibt ein Objekt von Game zurück
+     * gibt ein Objekt von Game zurück.
+     *
      * @return Game
      */
     public Game getGame() {
@@ -300,7 +310,8 @@ public class Main extends Application {
     }
 
     /**
-     * gibt das Image für die SuperDame zurück
+     * gibt das Image für die SuperDame zurück.
+     *
      * @return Image SuperDame
      */
     public Image getSuperDameImage() {
