@@ -23,10 +23,31 @@ import java.util.*;
 
 public class GamePaneController {
 
+    /**
+     * Objekt von der Main Klasse.
+     */
     private Main control;
 
+    /**
+     * Größe des Spielfelds in Feldern.
+     * Kann den Wert 8 oder 10 haben.
+     */
     private int size;
-    private int amount, tokenRadius;
+
+    /**
+     * Größe des Spielfelds in Pixeln.
+     */
+    private int amount;
+
+    /**
+     * Radius der {@link Circle} der Spielsteine.
+     */
+    private int tokenRadius;
+
+    /**
+     * Flag, um Benutzereingaben zu sperren.
+     * Während auf der Oberfläche ein Objekt bewegt wird, sind Benutzereingaben gesperrt.
+     */
     private boolean graphicAction;
 
     /**

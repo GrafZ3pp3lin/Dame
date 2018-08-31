@@ -11,6 +11,9 @@ import javafx.scene.control.MenuItem;
 
 public class MenuPaneController {
 
+    /**
+     * Objekt der Main Klasse.
+     */
     private Main control;
 
     /**

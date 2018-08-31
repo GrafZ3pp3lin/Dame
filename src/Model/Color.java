@@ -1,17 +1,17 @@
 package Model;
 
 /**
- * Farbe für die Steine
- * NONE sollte nie benutzt werden
+ * Farbe für die Steine.
+ *
  * @author Mareike Giek
  */
 public enum Color {
     /**
-     * Definiert einen weißen Stein
+     * Definiert einen weißen Stein.
      */
     WHITE,
     /**
-     * Definiert einen schwarzen Stein
+     * Definiert einen schwarzen Stein.
      */
     BLACK
 

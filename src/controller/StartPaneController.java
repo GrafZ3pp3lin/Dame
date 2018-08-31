@@ -12,9 +12,19 @@ import javafx.scene.control.TextField;
 
 public class StartPaneController {
 
+    /**
+     * String für ein 8 * 8 Feld
+     */
     private final String acht = "8 * 8";
+
+    /**
+     * String für ein 10 * 10 Feld
+     */
     private final String zehn = "10 * 10";
 
+    /**
+     * Objekt der Main Klasse
+     */
     private Main control;
 
     /**
@@ -38,6 +48,11 @@ public class StartPaneController {
     @FXML
     private TextField textField_Player2;
 
+    /**
+     * Methode, um Objekte zu übergeben.
+     *
+     * @param control Objekt der Main Klasse
+     */
     public void setObjects(Main control) {
         this.control = control;
     }

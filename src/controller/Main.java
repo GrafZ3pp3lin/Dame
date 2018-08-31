@@ -21,6 +21,7 @@ import java.util.Optional;
  * lädt alle Oberflächen und verwaltet diese.
  *
  * @author Johannes Gaiser
+ * @author Alexander Hengsteler
  */
 public class Main extends Application {
 

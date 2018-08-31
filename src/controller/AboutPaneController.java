@@ -11,6 +11,9 @@ import javafx.stage.Stage;
  */
 public class AboutPaneController {
 
+    /**
+     * Das "About" Fesnter.
+     */
     private Stage aboutStage;
 
     /**

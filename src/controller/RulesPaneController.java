@@ -11,6 +11,9 @@ import java.nio.charset.StandardCharsets;
 
 public class RulesPaneController {
 
+    /**
+     * Das "Regeln" Fenster.
+     */
     private Stage rulesStage;
 
     /**
@@ -19,6 +22,11 @@ public class RulesPaneController {
     @FXML
     private TextArea rules;
 
+    /**
+     * Methode, um Objekte zu übergeben.
+     *
+     * @param rules das "Regeln" Fenster
+     */
     public void setObjects(Stage rules) {
         this.rulesStage = rules;
     }
